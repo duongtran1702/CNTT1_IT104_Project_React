@@ -18,7 +18,7 @@ const PageTitle: React.FC<PageTitleProps> = ({ title, subtitle }) => {
         boxShadow: "0 1px 2px rgba(0,0,0,0.05)",
       }}
     >
-      <h2 className="text-[20px] font-semibold text-gray-800 m-0 p-0">{title}</h2>
+      <h2 className="text-[20px] font-semibold text-gray-700 m-0 p-0">{title}</h2>
       {subtitle && (
         <p className="text-gray-500 mt-0.5 text-sm">{subtitle}</p>
       )}

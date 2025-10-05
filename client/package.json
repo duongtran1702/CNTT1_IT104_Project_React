@@ -23,13 +23,16 @@
         "react-redux": "^9.2.0",
         "react-router-dom": "^7.9.3",
         "react-spinners": "^0.17.0",
-        "tailwindcss": "^4.1.14"
+        "react-toastify": "^11.0.5",
+        "tailwindcss": "^4.1.14",
+        "uuid": "^13.0.0"
     },
     "devDependencies": {
         "@eslint/js": "^9.36.0",
         "@types/lodash": "^4.17.20",
         "@types/react": "^19.1.13",
         "@types/react-dom": "^19.1.9",
+        "@types/uuid": "^10.0.0",
         "@vitejs/plugin-react-swc": "^4.1.0",
         "eslint": "^9.36.0",
         "eslint-plugin-react-hooks": "^5.2.0",

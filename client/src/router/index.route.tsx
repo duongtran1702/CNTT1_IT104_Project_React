@@ -4,6 +4,10 @@ import Register from '../pages/Register';
 import Login from '../pages/Login';
 import LayoutAtmin from '../Layout/LayoutAtmin';
 import { NotFoundPage } from '../pages/NotFoundPage';
+import { FoodMain } from '../components/MainFood';
+import { MainHome } from '../components/MainHome';
+// import { MainRecipe } from '../components/MainRecipe';
+import { AddImageRecipe } from '../components/AddImageRecipe';
 
 export const routers = createBrowserRouter([
     {
@@ -25,7 +29,28 @@ export const routers = createBrowserRouter([
     },
     {
         path: '/home',
-        element: <LayoutAtmin />,
+        element: (
+            <LayoutAtmin>
+                <MainHome />
+            </LayoutAtmin>
+        ),
+    },
+    {
+        path: '/foods',
+        element: (
+            <LayoutAtmin>
+                <FoodMain />
+            </LayoutAtmin>
+        ),
+    },
+    {
+        path: '/recipes',
+        element: (
+            <LayoutAtmin>
+                {/* <MainRecipe /> */}
+                <AddImageRecipe />
+            </LayoutAtmin>
+        ),
     },
     {
         path: '*',

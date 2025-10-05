@@ -1,22 +1,10 @@
 import { useState } from 'react';
 import { Input, Select, Pagination } from 'antd';
 import { CardRecipe } from './CardRecipe';
+import type { Recipe } from '../interfaces/recipe';
 
 const { Search } = Input;
 const { Option } = Select;
-
-type Recipe = {
-    id: number;
-    title: string;
-    author: string;
-    category: string;
-    image: string;
-    likes: number;
-    energy: number;
-    fat: number;
-    carbs: number;
-    protein: number;
-};
 
 const mockRecipes: Recipe[] = [
     {
@@ -69,17 +57,15 @@ const mockRecipes: Recipe[] = [
     },
 ];
 
-export const MainContainer = () => {
+export const MainHome = () => {
     const [currentPage, setCurrentPage] = useState(1);
 
     return (
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 w-[98%] flex flex-col justify-center mx-auto my-[1%]">
             {/* Title */}
-            <h3 className="text-xl font-semibold text-gray-800 mb-1">
-                Recipes
-            </h3>
+            <h3 className="text-xl font-[500] text-gray-800 mb-1">Home</h3>
             <p className="text-gray-500 mb-4">
-                Search, check and create new recipes
+                Explore, browse, and manage your dashboard
             </p>
 
             {/* Search + Filters */}
@@ -110,8 +96,8 @@ export const MainContainer = () => {
                     gap: '30px',
                     width: '100%',
                     boxSizing: 'border-box',
-                    maxWidth: '1200px', // tùy chọn, giới hạn tổng width nếu muốn
-                    margin: '0 auto', // căn giữa container
+                    maxWidth: '1200px',
+                    margin: '0 auto',
                 }}
             >
                 {mockRecipes.map((recipe) => (

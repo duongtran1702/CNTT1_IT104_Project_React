@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { Layout } from 'antd';
 import Sidebar from '../components/Sidebar';
 import HeaderBar from '../components/HeaderBar';
-import PageTitle from '../components/PageTitle';
-import { MainContainer } from '../components/MainContainer';
 
-const LayoutAtmin: React.FC = () => {
+interface LayoutAtminProps {
+    children: React.ReactNode;
+}
+
+function LayoutAtmin({ children }: LayoutAtminProps) {
     const [collapsed, setCollapsed] = useState(false);
-    const [selectedKey, setSelectedKey] = useState('1');
+    const [selectedKey, setSelectedKey] = useState('home');
 
     return (
         <Layout
@@ -22,14 +24,10 @@ const LayoutAtmin: React.FC = () => {
 
             <Layout style={{ flex: 1, overflowY: 'auto' }}>
                 <HeaderBar collapsed={collapsed} setCollapsed={setCollapsed} />
-                <PageTitle
-                    title="Recipes"
-                    subtitle="Create, check and update recipes"
-                />
-                <MainContainer />
+                {children}
             </Layout>
         </Layout>
     );
-};
+}
 
 export default LayoutAtmin;

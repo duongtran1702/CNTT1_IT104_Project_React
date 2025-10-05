@@ -1,12 +1,106 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, type ChangeEvent } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import brandLogo from '../assets/brand.png';
 import { Button } from 'antd';
+import type { Account } from '../interfaces/auth.interface';
+import { toast, ToastContainer } from 'react-toastify';
+import { atminDispatch, atminSelector } from '../hooks/reduxHook';
+import { createUser } from '../apis/user.api';
+import type { User } from '../interfaces/user.interface';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function Register() {
     const [focused, setFocused] = useState<
         'username' | 'email' | 'password' | 'confirmPassword' | null
     >(null);
+
+    const [account, setAccount] = useState<Account>({
+        username: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+    });
+
+    const users = atminSelector((s) => s.user.users);
+    const dispatch = atminDispatch();
+    const nvg = useNavigate();
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setAccount((pre) => ({ ...pre, [name]: value }));
+    };
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+
+        // Check empty fields
+        if (
+            !account.username ||
+            !account.email ||
+            !account.password ||
+            !account.confirmPassword
+        ) {
+            toast.error('Please fill in all fields!');
+            return;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(account.email)) {
+            toast.error('Invalid email format!');
+            return;
+        }
+
+        // Check password not match
+        if (account.password !== account.confirmPassword) {
+            toast.warning('Passwords do not match!');
+            return;
+        }
+
+        // Check username duplicate
+        const duplicateUsername = users.find(
+            (u) => u.account.username === account.username
+        );
+        if (duplicateUsername) {
+            toast.error('This username is already taken!');
+            return;
+        }
+
+        // Check email duplicate
+        const duplicateEmail = users.find(
+            (u) => u.account.email === account.email
+        );
+        if (duplicateEmail) {
+            toast.error('This email is already registered!');
+            return;
+        }
+
+        toast.success('Account created successfully!');
+
+        //create user
+        const newUser: User = {
+            account: {
+                email: account.email,
+                username: account.username,
+                password: account.password,
+            },
+            avata: null,
+            id: uuidv4(),
+        };
+
+        // add user
+        dispatch(createUser(newUser));
+
+        // Reset form
+        setAccount({
+            username: '',
+            email: '',
+            password: '',
+            confirmPassword: '',
+        });
+        setTimeout(() => {
+            nvg('/login');
+        }, 1500);
+    };
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 px-4">
@@ -20,8 +114,18 @@ export default function Register() {
                 Please sign up
             </h1>
 
+            <ToastContainer
+                autoClose={1000}
+                closeOnClick
+                pauseOnHover
+                draggable
+            />
+
             {/* Card */}
-            <div className="rounded-lg p-6 w-70 max-w-sm">
+            <form
+                onSubmit={handleSubmit}
+                className="rounded-lg p-6 w-70 max-w-sm"
+            >
                 <div className="w-70 rounded-md overflow-hidden bg-white">
                     {/* Username */}
                     <div
@@ -32,7 +136,10 @@ export default function Register() {
                         }`}
                     >
                         <input
+                            value={account.username}
+                            onChange={handleChange}
                             type="text"
+                            name="username"
                             placeholder="Username"
                             onFocus={() => setFocused('username')}
                             onBlur={() => setFocused(null)}
@@ -50,6 +157,9 @@ export default function Register() {
                     >
                         <input
                             type="email"
+                            name="email"
+                            value={account.email}
+                            onChange={handleChange}
                             placeholder="Email address"
                             onFocus={() => setFocused('email')}
                             onBlur={() => setFocused(null)}
@@ -66,7 +176,10 @@ export default function Register() {
                         } ${focused === 'email' ? 'border-t-blue-500' : ''}`}
                     >
                         <input
+                            value={account.password}
+                            onChange={handleChange}
                             type="password"
+                            name="password"
                             placeholder="Password"
                             onFocus={() => setFocused('password')}
                             onBlur={() => setFocused(null)}
@@ -84,6 +197,9 @@ export default function Register() {
                     >
                         <input
                             type="password"
+                            value={account.confirmPassword}
+                            onChange={handleChange}
+                            name="confirmPassword"
                             placeholder="Confirm Password"
                             onFocus={() => setFocused('confirmPassword')}
                             onBlur={() => setFocused(null)}
@@ -92,7 +208,7 @@ export default function Register() {
                     </div>
                 </div>
 
-                <div className="text-center mt-3 text-sm text-gray-800 font-[500] w-58">
+                <div className="text-center mt-3 text-sm text-gray-800 font-[400] w-58">
                     Already have an account?{' '}
                     <Link to="/login" className="text-blue-600 hover:underline">
                         Click here!
@@ -103,12 +219,13 @@ export default function Register() {
                 <Button
                     type="primary"
                     className="w-70 mt-4 bg-blue-500 hover:bg-blue-600 text-white font-medium h-12 rounded-md shadow-sm"
+                    htmlType="submit"
                 >
                     Sign up
                 </Button>
 
                 {/* Link to Login */}
-            </div>
+            </form>
 
             <footer className="ml-1 text-gray-600 text-sm mt-1">
                 &copy; 2025 - Rikkei Education

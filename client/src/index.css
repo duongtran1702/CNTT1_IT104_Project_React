@@ -1,133 +1,197 @@
-@import "tailwindcss";
-
 @import url('https://fonts.googleapis.com/css?family=Fira+Sans');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+@import 'tailwindcss';
 
+* {
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Css Page Not Found */
 body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Fira Sans', sans-serif;
-  color: #f5f6fa;
+    margin: 0;
+    padding: 0;
+    font-family: 'Fira Sans', sans-serif;
+    color: #f5f6fa;
 }
 
 .background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(#0C0E10, #446182);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(#0c0e10, #446182);
 }
 
 .background .ground {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 25vh;
-  background: #0C0E10;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 25vh;
+    background: #0c0e10;
 }
 
 .container {
-  position: relative;
-  margin: 0 auto;
-  width: 85%;
-  height: 100vh;
-  padding-bottom: 25vh;
-  display: flex;
-  justify-content: space-around;
-  flex-direction: row;
+    position: relative;
+    margin: 0 auto;
+    width: 85%;
+    height: 100vh;
+    padding-bottom: 25vh;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
 }
 
 .left-section {
-  width: 40%;
-  position: relative;
+    width: 40%;
+    position: relative;
 }
 
 .left-section .inner-content {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 100%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
 }
 
 .heading {
-  text-align: center;
-  font-size: 9em;
-  line-height: 1.3em;
-  margin: 2rem 0 0.5rem 0;
-  text-shadow: 0 0 1rem #fefefe;
+    text-align: center;
+    font-size: 9em;
+    line-height: 1.3em;
+    margin: 2rem 0 0.5rem 0;
+    text-shadow: 0 0 1rem #fefefe;
 }
 
 .subheading {
-  text-align: center;
-  max-width: 480px;
-  font-size: 1.5em;
-  margin: 0 auto;
+    text-align: center;
+    max-width: 480px;
+    font-size: 1.5em;
+    margin: 0 auto;
 }
 
 .right-section {
-  width: 50%;
-  position: relative;
+    width: 50%;
+    position: relative;
 }
 
 .svgimg {
-  position: absolute;
-  bottom: 0;
-  max-width: 100%;
-  max-height: 100%;
+    position: absolute;
+    bottom: 0;
+    max-width: 100%;
+    max-height: 100%;
 }
 
 @media (max-width: 770px) {
-  .container {
-    flex-direction: column;
-    padding-bottom: 0;
-  }
+    .container {
+        flex-direction: column;
+        padding-bottom: 0;
+    }
 
-  .left-section {
-    width: 100%;
-    height: 40%;
-    position: absolute;
-    top: 0;
-  }
+    .left-section {
+        width: 100%;
+        height: 40%;
+        position: absolute;
+        top: 0;
+    }
 
-  .left-section .inner-content {
-    position: relative;
-    padding: 1rem 0;
-  }
+    .left-section .inner-content {
+        position: relative;
+        padding: 1rem 0;
+    }
 
-  .right-section {
-    width: 100%;
-    height: 60%;
-    position: absolute;
-    bottom: 0;
-  }
+    .right-section {
+        width: 100%;
+        height: 60%;
+        position: absolute;
+        bottom: 0;
+    }
 
-  .heading {
-    font-size: 7em;
-    line-height: 1.15;
-    margin: 0;
-  }
+    .heading {
+        font-size: 7em;
+        line-height: 1.15;
+        margin: 0;
+    }
 
-  .subheading {
-    font-size: 1.3em;
-    max-width: 100%;
-  }
+    .subheading {
+        font-size: 1.3em;
+        max-width: 100%;
+    }
 
-  .background .ground {
-    height: 0;
-  }
+    .background .ground {
+        height: 0;
+    }
 
-  .svgimg {
-    padding: 0;
-  }
+    .svgimg {
+        padding: 0;
+    }
 }
 
 /* Glow animation for heading */
 @keyframes glow {
-  0% { text-shadow: 0 0 1rem #fefefe; }
-  50% { text-shadow: 0 0 1.85rem #ededed; }
-  100% { text-shadow: 0 0 1rem #fefefe; }
+    0% {
+        text-shadow: 0 0 1rem #fefefe;
+    }
+    50% {
+        text-shadow: 0 0 1.85rem #ededed;
+    }
+    100% {
+        text-shadow: 0 0 1rem #fefefe;
+    }
 }
 
 .heading {
-  animation: glow 2s infinite;
+    animation: glow 2s infinite;
+}
+
+/* Css menu sidebar */
+.custom-menu .ant-menu-item-selected {
+    background-color: #0d9488 !important;
+    color: white !important;
+}
+
+.custom-menu .ant-menu-item-selected .anticon {
+    color: white !important;
+}
+/* Hover cho các item chưa active */
+.custom-menu .ant-menu-item:not(.ant-menu-item-selected):hover {
+    background-color: #777e8d !important;
+    color: white !important;
+}
+
+.custom-menu .ant-menu-item:not(.ant-menu-item-selected):hover .anticon {
+    color: white !important;
+}
+
+/* === Custom Scrollbar (Màu #32BEC8) === */
+.custom-scroll::-webkit-scrollbar {
+    width: 8px; /* Độ dày thanh cuộn */
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+    background: #f5f5f5; /* Nền phía sau thanh */
+    border-radius: 8px;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+    background-color: #32bec8; /* Màu chính thanh kéo */
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+    background-color: #28aab3; /* Đậm hơn khi hover */
+}
+
+/* Firefox hỗ trợ */
+.custom-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: #34e7f4 #f5f5f5;
+}
+
+/* Xóa viền */
+.custom-select .ant-select-selector {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  color: rgb(244, 140, 4) !important;
 }
