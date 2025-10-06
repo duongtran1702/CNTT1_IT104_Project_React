@@ -5,9 +5,10 @@ import { HeartFilled, HeartOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 type CardProps = {
     data: Recipe;
+    onClick?: () => void;
 };
 
-export const CardRecipe = ({ data }: CardProps) => {
+export const CardRecipe = ({ data, onClick }: CardProps) => {
     const [liked, setLiked] = useState(false);
     return (
         <div
@@ -31,6 +32,7 @@ export const CardRecipe = ({ data }: CardProps) => {
             onMouseLeave={(e) =>
                 (e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.05)')
             }
+            onClick={onClick}
         >
             {/* Left Card */}
             <div

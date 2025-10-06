@@ -1,9 +1,10 @@
 import { Select } from 'antd';
 import { useState, useRef, useEffect } from 'react';
-import { AiOutlineClose, AiOutlineUpload, AiOutlinePlus } from 'react-icons/ai';
-import { BiCategory } from 'react-icons/bi';
+import { AiOutlineClose, AiOutlineEdit } from 'react-icons/ai';
 import { FaPen } from 'react-icons/fa';
 import { FiHeart } from 'react-icons/fi';
+import { IoAddOutline, IoCloseOutline } from 'react-icons/io5';
+import { MdAddHome } from 'react-icons/md';
 
 export const AddImageRecipe = () => {
     const [image, setImage] = useState<string | null>(null);
@@ -51,15 +52,15 @@ export const AddImageRecipe = () => {
     };
 
     return (
-        <div className="bg-white rounded-[8px] shadow-lg p-5 w-65 flex flex-col gap-4 transition hover:shadow-xl">
+        <div className="bg-white rounded-[8px] shadow-lg p-5 w-65 flex flex-col gap-4 transition hover:shadow-xl h-fit">
             <div className="flex justify-between items-center">
-                <button className="flex items-center gap-2 bg-blue-10 text-blue-500 px-3 py-1 rounded-full text-sm font-medium shadow">
+                <button className="flex items-center gap-2 bg-blue-10 text-blue-500 px-3 py-1 rounded-full text-sm font-medium shadow-sm">
                     <FaPen className="w-4 h-4" />
                     My Recipes
                 </button>
                 <div
                     onClick={() => setLiked(!liked)}
-                    className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm shadow cursor-pointer transition 
+                    className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm shadow-sm cursor-pointer transition 
         ${liked ? 'bg-red-50 text-red-500' : 'bg-gray-50 text-gray-500'}`}
                 >
                     <FiHeart
@@ -73,8 +74,8 @@ export const AddImageRecipe = () => {
             {/* Upload / Preview */}
             {!image ? (
                 <div className="flex justify-center items-center h-40">
-                    <label className="flex items-center gap-2 px-2 py-1 text-sm border-[2px] border-dashed border-orange-400 text-orange-500 rounded-[5px] cursor-pointer hover:bg-orange-50 transition">
-                        <AiOutlineUpload className="text-orange-500" />
+                    <label className="flex items-center gap-2 px-2 py-1 text-sm shadow-sm border-orange-400 text-gray-500 rounded-[5px] cursor-pointer hover:bg-orange-50 hover:text-orange-500 transition">
+                        <AiOutlineEdit className="text-orange-500" size={18} />
                         Upload image
                         <input
                             type="file"
@@ -89,11 +90,11 @@ export const AddImageRecipe = () => {
                     <img
                         src={image}
                         alt="preview"
-                        className="rounded-xl w-full h-40 object-cover shadow"
+                        className="rounded-[10px] w-full h-40 object-cover shadow"
                     />
                     <button
                         onClick={handleClearImage}
-                        className="absolute top-2 right-2 bg-white rounded-full p-1 shadow hover:bg-red-100 transition"
+                        className="absolute top-2 right-2 bg-white rounded-full p-1 shadow hover:bg-red-100 transition cursor-pointer"
                     >
                         <AiOutlineClose className="w-4 h-4 text-red-500" />
                     </button>
@@ -101,11 +102,10 @@ export const AddImageRecipe = () => {
             )}
 
             {/* Category / Input */}
-            <div className="flex items-center gap-2 bg-orange-10 border border-gray-200 rounded-[10px] px-3 text-sm shadow-sm h-[30px]">
-                <BiCategory
-                    className="text-orange-500 w-5 h-5 flex-shrink-0"
-                    size={16}
-                />
+            <div className="flex items-center gap-2 bg-orange-10 border border-gray-200 rounded-[10px] px-3 text-sm shadow-sm h-[30px] w-50">
+                <div className="text-orange-500 transform rotate-90">
+                    <MdAddHome size={18}/>
+                </div>
 
                 {isAdding ? (
                     <input
@@ -115,7 +115,7 @@ export const AddImageRecipe = () => {
                         onChange={(e) => setNewCategory(e.target.value)}
                         onKeyDown={handleKeyDown}
                         placeholder="New category..."
-                        className="text-sm text-orange-500 outline-none flex-1 h-[30px] w-29"
+                        className="text-sm text-gray-500 outline-none flex-1 h-[30px] w-29"
                     />
                 ) : (
                     <Select
@@ -131,7 +131,7 @@ export const AddImageRecipe = () => {
                         style={{
                             width: '100%',
                             background: 'transparent',
-                            color: selectedCategory ? '#ff7a00' : '#efc081',
+                            color: selectedCategory ? '#6B7280' : '#6B7280',
                             border: 'none',
                         }}
                         styles={{
@@ -151,9 +151,13 @@ export const AddImageRecipe = () => {
 
                 <button
                     onClick={() => setIsAdding(!isAdding)}
-                    className="text-orange-500 hover:text-orange-600 cursor-pointer transition"
+                    className="text-orange-500 hover:text-orange-500 cursor-pointer transition"
                 >
-                    <AiOutlinePlus className="w-5 h-5" />
+                    {isAdding ? (
+                        <IoCloseOutline className="w-5 h-5" />
+                    ) : (
+                        <IoAddOutline className="w-5 h-5" />
+                    )}
                 </button>
             </div>
         </div>

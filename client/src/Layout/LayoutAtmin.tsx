@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Layout } from 'antd';
 import Sidebar from '../components/Sidebar';
 import HeaderBar from '../components/HeaderBar';
@@ -10,6 +10,12 @@ interface LayoutAtminProps {
 function LayoutAtmin({ children }: LayoutAtminProps) {
     const [collapsed, setCollapsed] = useState(false);
     const [selectedKey, setSelectedKey] = useState('home');
+    const page = useMemo(() => ['home', 'recipes', 'foods'], []);
+
+    const locationPath = window.location.pathname.split('/')[1];
+    useEffect(() => {
+        if (page.includes(locationPath)) setSelectedKey(locationPath);
+    }, [page, locationPath]);
 
     return (
         <Layout

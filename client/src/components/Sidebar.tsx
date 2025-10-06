@@ -29,13 +29,11 @@ const Sidebar: React.FC<SidebarProps> = ({
         nvg('/login');
     };
 
-    // Hủy logout
     const handleCancel = () => {
         setIsModalOpen(false);
     };
     return (
         <>
-            {' '}
             <Sider
                 trigger={null}
                 collapsible

@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { Input, Select, Pagination } from 'antd';
-import { CardRecipe } from './CardRecipe';
 import type { Recipe } from '../interfaces/recipe';
+import { FaCheckSquare, FaHeart, FaPen, FaPlus } from 'react-icons/fa';
+import { CardRecipe } from '../components/CardRecipe';
+import { useNavigate } from 'react-router-dom';
 
 const { Search } = Input;
 const { Option } = Select;
@@ -57,19 +59,32 @@ const mockRecipes: Recipe[] = [
     },
 ];
 
-export const MainHome = () => {
+export const MainRecipe = () => {
     const [currentPage, setCurrentPage] = useState(1);
+    const nvg = useNavigate();
 
     return (
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 w-[98%] flex flex-col justify-center mx-auto my-[1%]">
             {/* Title */}
-            <h3 className="text-xl font-[500] text-gray-800 mb-1">Home</h3>
-            <p className="text-gray-500 mb-4">
-                Explore, browse, and manage your dashboard
-            </p>
+            <div className="flex justify-between items-center mb-4">
+                <div>
+                    <h3 className="text-xl font-[500] text-gray-800 mb-1">
+                        Recipes
+                    </h3>
+                    <p className="text-gray-500 mb-4">
+                        Search, check and create new recipes
+                    </p>
+                </div>
+                <button
+                    className="flex items-center gap-2 text-gray-800  px-4 py-2 rounded hover:text-teal-600 transition cursor-pointer"
+                    onClick={() => nvg('/add_recipe')}
+                >
+                    <FaPlus size={24} />
+                </button>
+            </div>
 
             {/* Search + Filters */}
-            <div className="flex flex-col md:flex-row gap-4 mb-6">
+            <div className="flex flex-col md:flex-row gap-4">
                 <Search
                     placeholder="Search food"
                     allowClear
@@ -88,6 +103,22 @@ export const MainHome = () => {
                 </Select>
             </div>
 
+            <div className="w-full my-4 flex justify-between">
+                <div className="flex items-center gap-2 p-2 rounded-md w-fit border-2 border-gray-300">
+                    <FaHeart size={18} className="text-red-500" />
+                    <span className="font-medium text-gray-800">Favorites</span>
+                    <span className="ml-2 text-gray-600 px-2 py-0.5 rounded-md text-sm">
+                        0
+                    </span>
+                </div>
+
+                <div className="flex items-center gap-2 text-blue-500 font-semibold text-lg cursor-pointer mr-2">
+                    <FaCheckSquare size={20} />
+                    <FaPen size={16} />
+                    <span>My Recipes</span>
+                </div>
+            </div>
+
             {/* Recipes Grid */}
             <div
                 style={{
@@ -101,7 +132,7 @@ export const MainHome = () => {
                 }}
             >
                 {mockRecipes.map((recipe) => (
-                    <CardRecipe data={recipe} key={recipe.id} />
+                    <CardRecipe data={recipe} key={recipe.id} onClick={()=>nvg('/detail_recipe')}/>
                 ))}
             </div>
 

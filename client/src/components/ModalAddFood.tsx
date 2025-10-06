@@ -35,9 +35,7 @@ export const ModalAddFood: React.FC<AddFoodModalProps> = ({
         setFormFood((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
+    const handleSubmit = async () => {
         // Kiểm tra empty
         const allFields = Object.keys(formFood) as (keyof typeof formFood)[];
         const emptyFields = allFields.filter(
@@ -65,7 +63,7 @@ export const ModalAddFood: React.FC<AddFoodModalProps> = ({
         ];
 
         allNumberFields.forEach((key) => {
-            if (newFormFood[key]) {
+            if (newFormFood[key] && Number(newFormFood[key]) >= 1) {
                 const value = newFormFood[key].toString();
                 newFormFood[key] = value.replace(/^0+/, '') || '0';
             }
@@ -134,10 +132,7 @@ export const ModalAddFood: React.FC<AddFoodModalProps> = ({
                         ? ' Fill in the fields below with the food information'
                         : 'Check and update the+ information about the food'}
                 </div>
-                <form
-                    className=" overflow-y-auto custom-scroll"
-                    onSubmit={handleSubmit}
-                >
+                <form className=" overflow-y-auto custom-scroll">
                     {/* Box 1 */}
                     <div className="flex flex-col gap-3">
                         <div className="flex justify-between w-[820px]">
@@ -325,27 +320,26 @@ export const ModalAddFood: React.FC<AddFoodModalProps> = ({
                             </div>
                         ))}
                     </div>
-
-                    {/* Footer */}
-                    <div className="flex justify-end mt-6 gap-3 mr-5">
-                        <Button onClick={onClose} className="border-gray-400">
-                            Cancel
-                        </Button>
-                        <Button
-                            type="primary"
-                            htmlType="submit"
-                            className={
-                                foodDetail !== null
-                                    ? '!bg-emerald-500 !hover:bg-emerald-600 !text-white'
-                                    : ''
-                            }
-                        >
-                            {foodDetail === null
-                                ? 'Save and close'
-                                : 'Update and close'}
-                        </Button>
-                    </div>
                 </form>
+                <div className="flex justify-end mt-6 gap-3 mr-5">
+                    <Button onClick={onClose} className="border-gray-400">
+                        Cancel
+                    </Button>
+                    <Button
+                        type="primary"
+                        htmlType="submit"
+                        className={
+                            foodDetail !== null
+                                ? '!bg-emerald-500 !hover:bg-emerald-600 !text-white'
+                                : ''
+                        }
+                        onClick={handleSubmit}
+                    >
+                        {foodDetail === null
+                            ? 'Save and close'
+                            : 'Update and close'}
+                    </Button>
+                </div>
             </div>
         </Modal>
     );

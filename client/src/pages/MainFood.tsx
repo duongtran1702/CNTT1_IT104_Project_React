@@ -1,11 +1,11 @@
 import { Button, Input, Pagination, Select } from 'antd';
 import { useEffect, useState } from 'react';
-import { ModalAddFood } from './ModalAddFood';
 import { atminDispatch, atminSelector } from '../hooks/reduxHook';
 import { getFoods } from '../apis/food.api';
-import CardFood from './CardFood';
 import type { Food } from '../interfaces/foods.interface';
 import { getDetaiFood, resetDetailFood } from '../redux/reducers/food.reducer';
+import CardFood from '../components/CardFood';
+import { ModalAddFood } from '../components/ModalAddFood';
 
 const { Search } = Input;
 const { Option } = Select;

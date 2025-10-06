@@ -4,10 +4,12 @@ import Register from '../pages/Register';
 import Login from '../pages/Login';
 import LayoutAtmin from '../Layout/LayoutAtmin';
 import { NotFoundPage } from '../pages/NotFoundPage';
-import { FoodMain } from '../components/MainFood';
-import { MainHome } from '../components/MainHome';
+
 // import { MainRecipe } from '../components/MainRecipe';
-import { AddImageRecipe } from '../components/AddImageRecipe';
+import { MainAddRecipe } from '../pages/MainAddRecipe';
+import { FoodMain } from '../pages/MainFood';
+import { MainHome } from '../pages/MainHome';
+import { MainRecipe } from '../pages/MainRecipe';
 
 export const routers = createBrowserRouter([
     {
@@ -25,7 +27,7 @@ export const routers = createBrowserRouter([
     },
     {
         index: true,
-        element: <Navigate to="/login" replace />,
+        element: <Navigate to="/recipes" replace />,
     },
     {
         path: '/home',
@@ -44,11 +46,26 @@ export const routers = createBrowserRouter([
         ),
     },
     {
+        path: '/add_recipe',
+        element: (
+            <LayoutAtmin>
+                <MainAddRecipe />
+            </LayoutAtmin>
+        ),
+    },
+    {
+        path: '/detail_recipe',
+        element: (
+            <LayoutAtmin>
+                <MainAddRecipe />
+            </LayoutAtmin>
+        ),
+    },
+    {
         path: '/recipes',
         element: (
             <LayoutAtmin>
-                {/* <MainRecipe /> */}
-                <AddImageRecipe />
+                <MainRecipe />
             </LayoutAtmin>
         ),
     },

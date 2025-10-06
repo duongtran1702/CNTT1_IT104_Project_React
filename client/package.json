@@ -16,7 +16,9 @@
         "@types/react-redux": "^7.1.34",
         "antd": "^5.27.4",
         "axios": "^1.12.2",
+        "framer-motion": "^12.23.22",
         "lodash": "^4.17.21",
+        "lucide-react": "^0.544.0",
         "react": "^18.0.0",
         "react-dom": "^18.0.0",
         "react-icons": "^5.5.0",
@@ -24,6 +26,7 @@
         "react-router-dom": "^7.9.3",
         "react-spinners": "^0.17.0",
         "react-toastify": "^11.0.5",
+        "recharts": "^3.2.1",
         "tailwindcss": "^4.1.14",
         "uuid": "^13.0.0"
     },

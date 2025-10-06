@@ -1,8 +1,7 @@
-import { useState } from 'react';
-import { Input, Select, Pagination } from 'antd';
-import { CardRecipe } from './CardRecipe';
+import { useEffect, useState } from 'react';
+import { Input, Select, Pagination, Skeleton } from 'antd';
 import type { Recipe } from '../interfaces/recipe';
-import { FaCheckSquare, FaHeart, FaPen } from 'react-icons/fa';
+import { CardRecipe } from '../components/CardRecipe';
 
 const { Search } = Input;
 const { Option } = Select;
@@ -58,19 +57,37 @@ const mockRecipes: Recipe[] = [
     },
 ];
 
-export const MainRecipe = () => {
+export const MainHome = () => {
     const [currentPage, setCurrentPage] = useState(1);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        document.title = 'Home - Nutrium';
+
+        // Simulate API call
+        const timer = setTimeout(() => {
+            setLoading(false);
+        }, 1500); // 1.5 seconds loading
+
+        return () => clearTimeout(timer);
+    }, []);
+
+    const renderSkeletons = () => {
+        return Array.from({ length: 4 }).map((_, index) => (
+            <Skeleton active key={index} avatar paragraph={{ rows: 4 }} title />
+        ));
+    };
 
     return (
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 w-[98%] flex flex-col justify-center mx-auto my-[1%]">
             {/* Title */}
-            <h3 className="text-xl font-[500] text-gray-800 mb-1">Recipes</h3>
+            <h3 className="text-xl font-[500] text-gray-800 mb-1">Home</h3>
             <p className="text-gray-500 mb-4">
-                Search, check and create new recipes
+                Explore, browse, and manage your dashboard
             </p>
 
             {/* Search + Filters */}
-            <div className="flex flex-col md:flex-row gap-4">
+            <div className="flex flex-col md:flex-row gap-4 mb-6">
                 <Search
                     placeholder="Search food"
                     allowClear
@@ -89,22 +106,6 @@ export const MainRecipe = () => {
                 </Select>
             </div>
 
-            <div className="w-full my-4 flex justify-between">
-                <div className="flex items-center gap-2 p-2 rounded-md w-fit border-2 border-gray-300">
-                    <FaHeart size={18} className="text-red-500" />
-                    <span className="font-medium text-gray-800">Favorites</span>
-                    <span className="ml-2 text-gray-600 px-2 py-0.5 rounded-md text-sm">
-                        0
-                    </span>
-                </div>
-
-                <div className="flex items-center gap-2 text-blue-500 font-semibold text-lg cursor-pointer mr-2">
-                    <FaCheckSquare size={20} />
-                    <FaPen size={16} />
-                    <span>My Recipes</span>
-                </div>
-            </div>
-
             {/* Recipes Grid */}
             <div
                 style={{
@@ -117,9 +118,11 @@ export const MainRecipe = () => {
                     margin: '0 auto',
                 }}
             >
-                {mockRecipes.map((recipe) => (
-                    <CardRecipe data={recipe} key={recipe.id} />
-                ))}
+                {loading
+                    ? renderSkeletons()
+                    : mockRecipes.map((recipe) => (
+                          <CardRecipe data={recipe} key={recipe.id} />
+                      ))}
             </div>
 
             {/* Pagination */}
