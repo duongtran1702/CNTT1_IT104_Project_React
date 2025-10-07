@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Input, Select, Pagination } from 'antd';
-import type { Recipe } from '../interfaces/recipe';
+import type { Recipe } from '../interfaces/recipe.interface';
 import { FaCheckSquare, FaHeart, FaPen, FaPlus } from 'react-icons/fa';
 import { CardRecipe } from '../components/CardRecipe';
 import { useNavigate } from 'react-router-dom';
@@ -132,7 +132,11 @@ export const MainRecipe = () => {
                 }}
             >
                 {mockRecipes.map((recipe) => (
-                    <CardRecipe data={recipe} key={recipe.id} onClick={()=>nvg('/detail_recipe')}/>
+                    <CardRecipe
+                        data={recipe}
+                        key={recipe.id}
+                        onClick={() => nvg('/detail_recipe')}
+                    />
                 ))}
             </div>
 

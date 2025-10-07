@@ -1,4 +1,4 @@
-import type { Recipe } from '../interfaces/recipe';
+import type { Recipe } from '../interfaces/recipe.interface';
 import image from '../assets/Icon-2.png';
 import image2 from '../assets/diversity_3.svg.png';
 import { HeartFilled, HeartOutlined } from '@ant-design/icons';

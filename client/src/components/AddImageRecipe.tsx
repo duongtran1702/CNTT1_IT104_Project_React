@@ -5,6 +5,8 @@ import { FaPen } from 'react-icons/fa';
 import { FiHeart } from 'react-icons/fi';
 import { IoAddOutline, IoCloseOutline } from 'react-icons/io5';
 import { MdAddHome } from 'react-icons/md';
+import { atminDispatch } from '../hooks/reduxHook';
+import { setCreateRecipe } from '../redux/reducers/createRecipe.reducer';
 
 export const AddImageRecipe = () => {
     const [image, setImage] = useState<string | null>(null);
@@ -15,17 +17,26 @@ export const AddImageRecipe = () => {
         'Drinks',
     ]);
     const [selectedCategory, setSelectedCategory] = useState('');
-
     const [isAdding, setIsAdding] = useState(false);
     const [newCategory, setNewCategory] = useState('');
     const inputRef = useRef<HTMLInputElement | null>(null);
-
+    const dispatch = atminDispatch();
     // Khi chuyển sang input -> tự focus
     useEffect(() => {
         if (isAdding && inputRef.current) {
             inputRef.current.focus();
         }
     }, [isAdding]);
+    // Cập nhật image,like,categoty vào redux
+    useEffect(() => {
+        dispatch(
+            setCreateRecipe({
+                image,
+                like: liked ? '1' : '0',
+                category: selectedCategory,
+            })
+        );
+    }, [image, liked, selectedCategory, dispatch]);
 
     // Upload ảnh
     const handleSelectImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -104,7 +115,7 @@ export const AddImageRecipe = () => {
             {/* Category / Input */}
             <div className="flex items-center gap-2 bg-orange-10 border border-gray-200 rounded-[10px] px-3 text-sm shadow-sm h-[30px] w-50">
                 <div className="text-orange-500 transform rotate-90">
-                    <MdAddHome size={18}/>
+                    <MdAddHome size={18} />
                 </div>
 
                 {isAdding ? (

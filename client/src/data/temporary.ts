@@ -1,3 +1,5 @@
+import type { Micronutrient } from "../components/MicronutrientCard";
+
 export interface Ingredient {
     id: number;
     name: string;
@@ -106,3 +108,30 @@ export interface SelectedIngredient {
     name: string;
     grams: number;
 }
+
+export const micronutrientData: Micronutrient[] = [
+    { name: 'Sodium', value: 0, unit: 'mg' },
+    { name: 'Vitamin A', value: 4, unit: 'µg' },
+    { name: 'Vitamin B-6', value: 0, unit: 'mg' },
+    { name: 'Vitamin B-12', value: 0, unit: 'µg' },
+    { name: 'Vitamin C', value: 14, unit: 'mg' },
+    { name: 'Vitamin D (D2 + D3)', value: 0, unit: 'µg' },
+    { name: 'Vitamin E', value: 0, unit: 'mg' },
+    { name: 'Vitamin K', value: 1, unit: 'µg' },
+    { name: 'Sugars', value: 9, unit: 'g' },
+    { name: 'Calcium', value: 0, unit: 'mg' },
+    { name: 'Iron', value: 0, unit: 'mg' },
+    { name: 'Magnesium', value: 4, unit: 'mg' },
+    { name: 'Phosphorus', value: 10, unit: 'mg' },
+    { name: 'Potassium', value: 124, unit: 'mg' },
+    { name: 'Zinc', value: 0, unit: 'mg' },
+    { name: 'Copper', value: 0, unit: 'mg' },
+    { name: 'Fluoride', value: 49, unit: 'µg' },
+    { name: 'Manganese', value: 0, unit: 'mg' },
+    { name: 'Selenium', value: 0, unit: 'µg' },
+    { name: 'Thiamin', value: 0, unit: 'mg' },
+    { name: 'Riboflavin', value: 0, unit: 'mg' },
+    { name: 'Niacin', value: 0, unit: 'mg' },
+    { name: 'Pantothenic acid', value: 0, unit: 'mg' },
+    { name: 'Folate, total', value: 2, unit: 'µg' },
+];

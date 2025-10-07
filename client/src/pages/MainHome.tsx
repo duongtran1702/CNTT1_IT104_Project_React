@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Input, Select, Pagination, Skeleton } from 'antd';
-import type { Recipe } from '../interfaces/recipe';
+import type { Recipe } from '../interfaces/recipe.interface';
 import { CardRecipe } from '../components/CardRecipe';
 
 const { Search } = Input;

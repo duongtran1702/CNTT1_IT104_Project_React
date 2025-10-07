@@ -27,7 +27,7 @@ export const routers = createBrowserRouter([
     },
     {
         index: true,
-        element: <Navigate to="/recipes" replace />,
+        element: <Navigate to="/home" replace />,
     },
     {
         path: '/home',
