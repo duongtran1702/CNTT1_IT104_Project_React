@@ -8,6 +8,24 @@
       },
       "avata": "https://res.cloudinary.com/atmin/image/upload/v1759841314/xcnzareanbj56adjmgll.jpg",
       "id": "4afeab9f-912b-4c98-b12a-36ff94dde457"
+    },
+    {
+      "account": {
+        "email": "a@gmail.com",
+        "username": "a",
+        "password": "1"
+      },
+      "avata": null,
+      "id": "e58db889-bb5b-4c42-b5e4-ac03d94cb1a3"
+    },
+    {
+      "account": {
+        "email": "evelyn1@gmail.com",
+        "username": "alice",
+        "password": "A12345678@"
+      },
+      "avata": "https://res.cloudinary.com/atmin/image/upload/v1759954310/zbhxucsmf33uzngdt6jw.jpg",
+      "id": "6b457634-92ad-448d-b480-8c82c1a92b31"
     }
   ],
   "foods": [
@@ -298,6 +316,101 @@
       "monoFats": "0",
       "polyFats": "0",
       "chloride": "0"
+    }
+  ],
+  "recipes": [
+    {
+      "image": "https://res.cloudinary.com/atmin/image/upload/v1759951103/dz0xtsurfdpaz4gdseeu.webp",
+      "like": "0",
+      "category": "Vegetables",
+      "name": "Hello world",
+      "description": "hello world",
+      "totalTime": "0:50",
+      "prepTime": "0:50",
+      "finalWeight": "200",
+      "protions": "4",
+      "ingredients": [
+        {
+          "main": {
+            "id": 1,
+            "serving": 1
+          },
+          "equivalents": []
+        },
+        {
+          "main": {
+            "id": 4,
+            "serving": 1
+          },
+          "equivalents": []
+        },
+        {
+          "main": {
+            "id": 2,
+            "serving": 1
+          },
+          "equivalents": []
+        }
+      ],
+      "cookingSteps": [
+        {
+          "id": 1,
+          "content": "Beautiful!!",
+          "editable": false
+        },
+        {
+          "id": 2,
+          "content": "",
+          "editable": false
+        }
+      ],
+      "macro": {
+        "protein": 79.6,
+        "carb": 38,
+        "fat": 21.9,
+        "fiber": 1.8,
+        "calories": 667.5
+      },
+      "micro": {
+        "cholesterol": 190,
+        "sodium": 182,
+        "water": 263,
+        "vitaminA": 65,
+        "vitaminB6": 1.6,
+        "vitaminB12": 2.7,
+        "vitaminC": 0,
+        "vitaminD": 10,
+        "vitaminE": 2.4,
+        "vitaminK": 1,
+        "starch": 20,
+        "lactose": 0,
+        "alcohol": 0,
+        "caffeine": 0,
+        "sugars": 0.4,
+        "calcium": 42,
+        "iron": 1.8,
+        "magnesium": 104,
+        "phosphorus": 550,
+        "potassium": 730,
+        "zinc": 2.3,
+        "copper": 0.2,
+        "fluoride": 0,
+        "manganese": 0.8,
+        "selenium": 74,
+        "thiamin": 0.3,
+        "riboflavin": 0.2,
+        "niacin": 23,
+        "pantothenicAcid": 2,
+        "folateTotal": 30,
+        "folicAcid": 0,
+        "transFats": 0,
+        "saturatedFats": 5.2,
+        "monoFats": 8.3,
+        "polyFats": 6,
+        "chloride": 185
+      },
+      "id": "8dddb58e-5b4a-43c6-b903-be44bd133c14",
+      "author": "alice"
     }
   ]
 }

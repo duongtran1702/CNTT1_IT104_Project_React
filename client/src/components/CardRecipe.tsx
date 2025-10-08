@@ -1,8 +1,13 @@
-import type { Recipe } from '../interfaces/recipe.interface';
 import image from '../assets/Icon-2.png';
 import image2 from '../assets/diversity_3.svg.png';
 import { HeartFilled, HeartOutlined } from '@ant-design/icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import type { Recipe } from '../interfaces/recipe.interface';
+import atmin1 from '../assets/atmin-1.png';
+import { Avatar } from 'antd';
+import { atminDispatch, atminSelector } from '../hooks/reduxHook';
+import { getUsers } from '../apis/user.api';
+
 type CardProps = {
     data: Recipe;
     onClick?: () => void;
@@ -10,6 +15,15 @@ type CardProps = {
 
 export const CardRecipe = ({ data, onClick }: CardProps) => {
     const [liked, setLiked] = useState(false);
+    const users = atminSelector((s) => s.user.users);
+    const dispatch = atminDispatch();
+    
+    useEffect(() => {
+        if (users.length === 0) dispatch(getUsers());
+    }, [dispatch, users]);
+
+    if (!data) return;
+    const author = users.find((u) => u.account.username === data.author);
     return (
         <div
             style={{
@@ -54,7 +68,7 @@ export const CardRecipe = ({ data, onClick }: CardProps) => {
                     }}
                 >
                     <img
-                        src={data.image}
+                        src={data.image || atmin1}
                         style={{
                             width: '100%',
                             height: '100%',
@@ -110,25 +124,36 @@ export const CardRecipe = ({ data, onClick }: CardProps) => {
                         fontSize: '18px',
                     }}
                 >
-                    {data.title}
+                    {data.name}
                 </div>
 
                 <div
                     style={{
                         display: 'flex',
                         alignItems: 'center',
-                        padding: '5px 15px 5px 30px',
+                        padding: '5px 15px 5px 0px',
                         justifyContent: 'space-between',
                     }}
                 >
-                    <div
-                        style={{
-                            color: 'rgba(103, 106, 108, 1)',
-                            fontSize: '15px',
-                            fontWeight: 600,
-                        }}
-                    >
-                        {data.author}
+                    <div className="flex items-center gap-3">
+                        <Avatar
+                            src={author?.avata || atmin1}
+                            style={{
+                                width: 40,
+                                height: 40,
+                                border: '2px solid #e5e7eb',
+                                cursor: 'pointer',
+                            }}
+                        />
+                        <div
+                            style={{
+                                color: 'rgba(103, 106, 108, 1)',
+                                fontSize: '15px',
+                                fontWeight: 600,
+                            }}
+                        >
+                            {data.author}
+                        </div>
                     </div>
 
                     <div
@@ -142,7 +167,10 @@ export const CardRecipe = ({ data, onClick }: CardProps) => {
                             borderRadius: '5px',
                             cursor: 'pointer',
                         }}
-                        onClick={() => setLiked(!liked)}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setLiked(!liked);
+                        }}
                     >
                         {liked ? (
                             <HeartFilled
@@ -160,7 +188,7 @@ export const CardRecipe = ({ data, onClick }: CardProps) => {
                                 color: '#000',
                             }}
                         >
-                            {data.likes}
+                            {liked ? Number(data.like) + 1 : Number(data.like)}
                         </div>
                     </div>
                 </div>
@@ -229,7 +257,7 @@ export const CardRecipe = ({ data, onClick }: CardProps) => {
                             Energy
                         </li>
                         <li style={{ textAlign: 'center', fontSize: '13px' }}>
-                            {data.energy} kcal
+                            {data.macro.calories} kcal
                         </li>
                     </ul>
                     <ul
@@ -247,7 +275,7 @@ export const CardRecipe = ({ data, onClick }: CardProps) => {
                             Fat
                         </li>
                         <li style={{ textAlign: 'center', fontSize: '13px' }}>
-                            {data.fat} g
+                            {data.macro.fat} g
                         </li>
                     </ul>
                     <ul
@@ -265,7 +293,7 @@ export const CardRecipe = ({ data, onClick }: CardProps) => {
                             Carbohydrate
                         </li>
                         <li style={{ textAlign: 'center', fontSize: '13px' }}>
-                            {data.carbs} g
+                            {data.macro.carb} g
                         </li>
                     </ul>
                     <ul
@@ -283,7 +311,7 @@ export const CardRecipe = ({ data, onClick }: CardProps) => {
                             Protein
                         </li>
                         <li style={{ textAlign: 'center', fontSize: '13px' }}>
-                            {data.protein} g
+                            {data.macro.protein} g
                         </li>
                     </ul>
                 </div>

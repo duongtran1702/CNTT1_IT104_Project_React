@@ -1,17 +1,19 @@
 import { useState, useRef, useEffect } from 'react';
 import { Pencil, Trash2 } from 'lucide-react';
-
-interface CookingStep {
-    id: number;
-    content: string;
-    editable: boolean;
-}
+import { atminDispatch } from '../hooks/reduxHook';
+import { setCreateRecipe } from '../redux/reducers/createRecipe.reducer';
+import type { CookingStep } from '../interfaces/recipe.interface';
 
 export const CookingMethod = () => {
     const [steps, setSteps] = useState<CookingStep[]>([
         { id: 1, content: '', editable: true },
     ]);
 
+    const dispatch = atminDispatch();
+    useEffect(() => {
+        dispatch(setCreateRecipe({ cookingSteps: steps }));
+    }, [dispatch, steps]);
+    
     const textareaRefs = useRef<(HTMLTextAreaElement | null)[]>([]);
 
     // 🟢 Khi click ra ngoài => disable tất cả step
@@ -153,7 +155,7 @@ export const CookingMethod = () => {
                                     disabled={!step.editable}
                                     className={`w-full text-base bg-transparent overflow-hidden resize-none ${
                                         step.editable
-                                            ? 'text-gray-700 italic'
+                                            ? 'text-gray-700'
                                             : 'text-gray-500 bg-gray-50 cursor-not-allowed'
                                     } placeholder:text-gray-400 placeholder:italic focus:outline-none focus:ring-0`}
                                     rows={1}

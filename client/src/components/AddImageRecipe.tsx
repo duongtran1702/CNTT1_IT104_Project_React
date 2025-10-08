@@ -7,9 +7,16 @@ import { IoAddOutline, IoCloseOutline } from 'react-icons/io5';
 import { MdAddHome } from 'react-icons/md';
 import { atminDispatch } from '../hooks/reduxHook';
 import { setCreateRecipe } from '../redux/reducers/createRecipe.reducer';
+import type { Recipe } from '../interfaces/recipe.interface';
 
-export const AddImageRecipe = () => {
-    const [image, setImage] = useState<string | null>(null);
+interface AddImageRecipeProps {
+    onFileSelect: (file: File | null) => void;
+}
+
+export const AddImageRecipe = ({
+    onFileSelect,
+}: AddImageRecipeProps) => {
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null); 
     const [liked, setLiked] = useState(false);
     const [categories, setCategories] = useState([
         'Fruits',
@@ -21,41 +28,46 @@ export const AddImageRecipe = () => {
     const [newCategory, setNewCategory] = useState('');
     const inputRef = useRef<HTMLInputElement | null>(null);
     const dispatch = atminDispatch();
-    // Khi chuyển sang input -> tự focus
-    useEffect(() => {
-        if (isAdding && inputRef.current) {
-            inputRef.current.focus();
-        }
-    }, [isAdding]);
-    // Cập nhật image,like,categoty vào redux
-    useEffect(() => {
-        dispatch(
-            setCreateRecipe({
-                image,
-                like: liked ? '1' : '0',
-                category: selectedCategory,
-            })
-        );
-    }, [image, liked, selectedCategory, dispatch]);
 
-    // Upload ảnh
+    // Focus input khi thêm category
+    useEffect(() => {
+        if (isAdding && inputRef.current) inputRef.current.focus();
+    }, [isAdding]);
+
+    // Cập nhật Redux mỗi khi like / category thay đổi
+    useEffect(() => {
+        const payload: Partial<Omit<Recipe, 'id'>> = {
+            like: liked ? '1' : '0',
+            category: selectedCategory,
+        };
+        dispatch(setCreateRecipe(payload));
+    }, [liked, selectedCategory, dispatch]);
+
+    // Chọn ảnh
     const handleSelectImage = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
-        if (file) {
-            const previewUrl = URL.createObjectURL(file);
-            setImage(previewUrl);
-        }
+        if (!file) return;
+
+        const url = URL.createObjectURL(file);
+        if (previewUrl) URL.revokeObjectURL(previewUrl);
+
+        onFileSelect(file); // lưu File
+        setPreviewUrl(url); // dùng cho preview
     };
 
-    const handleClearImage = () => setImage(null);
+    // Xóa ảnh
+    const handleClearImage = () => {
+        if (previewUrl) URL.revokeObjectURL(previewUrl);
+        onFileSelect(null);
+        setPreviewUrl(null);
+    };
 
-    // Thêm category khi nhấn Enter
+    // Thêm category
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter' && newCategory.trim() !== '') {
             const trimmed = newCategory.trim();
-            if (!categories.includes(trimmed)) {
+            if (!categories.includes(trimmed))
                 setCategories((prev) => [...prev, trimmed]);
-            }
             setSelectedCategory(trimmed);
             setNewCategory('');
             setIsAdding(false);
@@ -64,29 +76,33 @@ export const AddImageRecipe = () => {
 
     return (
         <div className="bg-white rounded-[8px] shadow-lg p-5 w-65 flex flex-col gap-4 transition hover:shadow-xl h-fit">
+            {/* Header */}
             <div className="flex justify-between items-center">
                 <button className="flex items-center gap-2 bg-blue-10 text-blue-500 px-3 py-1 rounded-full text-sm font-medium shadow-sm">
-                    <FaPen className="w-4 h-4" />
-                    My Recipes
+                    <FaPen className="w-4 h-4" /> My Recipes
                 </button>
                 <div
                     onClick={() => setLiked(!liked)}
-                    className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm shadow-sm cursor-pointer transition 
-        ${liked ? 'bg-red-50 text-red-500' : 'bg-gray-50 text-gray-500'}`}
+                    className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm shadow-sm cursor-pointer transition ${
+                        liked
+                            ? 'bg-red-50 text-red-500'
+                            : 'bg-gray-50 text-gray-500'
+                    }`}
                 >
                     <FiHeart
-                        className={`w-4 h-4 transition 
-          ${liked ? 'fill-red-500 text-red-500' : ''}`}
+                        className={`w-4 h-4 transition ${
+                            liked ? 'fill-red-500 text-red-500' : ''
+                        }`}
                     />
                     <span>{liked ? 1 : 0}</span>
                 </div>
             </div>
 
             {/* Upload / Preview */}
-            {!image ? (
+            {!previewUrl ? (
                 <div className="flex justify-center items-center h-40">
                     <label className="flex items-center gap-2 px-2 py-1 text-sm shadow-sm border-orange-400 text-gray-500 rounded-[5px] cursor-pointer hover:bg-orange-50 hover:text-orange-500 transition">
-                        <AiOutlineEdit className="text-orange-500" size={18} />
+                        <AiOutlineEdit className="text-orange-500" size={18} />{' '}
                         Upload image
                         <input
                             type="file"
@@ -99,7 +115,7 @@ export const AddImageRecipe = () => {
             ) : (
                 <div className="relative">
                     <img
-                        src={image}
+                        src={previewUrl}
                         alt="preview"
                         className="rounded-[10px] w-full h-40 object-cover shadow"
                     />
@@ -112,12 +128,11 @@ export const AddImageRecipe = () => {
                 </div>
             )}
 
-            {/* Category / Input */}
+            {/* Category */}
             <div className="flex items-center gap-2 bg-orange-10 border border-gray-200 rounded-[10px] px-3 text-sm shadow-sm h-[30px] w-50">
                 <div className="text-orange-500 transform rotate-90">
                     <MdAddHome size={18} />
                 </div>
-
                 {isAdding ? (
                     <input
                         ref={inputRef}
@@ -138,28 +153,16 @@ export const AddImageRecipe = () => {
                             value: c,
                         }))}
                         className="custom-select"
-                        // style cho chính input trigger
                         style={{
                             width: '100%',
                             background: 'transparent',
-                            color: selectedCategory ? '#6B7280' : '#6B7280',
                             border: 'none',
-                        }}
-                        styles={{
-                            popup: {
-                                root: {
-                                    borderRadius: 10,
-                                    padding: 6,
-                                    backgroundColor: '#ffffff',
-                                    boxShadow: '0 8px 20px rgba(0,0,0,0.08)',
-                                },
-                            },
+                            color: '#6B7280',
                         }}
                         placement="bottomLeft"
                         popupMatchSelectWidth={false}
                     />
                 )}
-
                 <button
                     onClick={() => setIsAdding(!isAdding)}
                     className="text-orange-500 hover:text-orange-500 cursor-pointer transition"

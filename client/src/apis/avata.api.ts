@@ -14,7 +14,7 @@ interface UpdateAvatarProps {
 }
 
 // Resize ảnh trước khi upload
-const resizeImage = (file: File, maxWidth: number, maxHeight: number) => {
+export const resizeImage = (file: File, maxWidth: number, maxHeight: number) => {
     return new Promise<File>((resolve, reject) => {
         const img = new Image();
         const reader = new FileReader();
@@ -58,7 +58,6 @@ const resizeImage = (file: File, maxWidth: number, maxHeight: number) => {
         };
 
         reader.onerror = (error) => reject(error);
-
         reader.readAsDataURL(file);
     });
 };

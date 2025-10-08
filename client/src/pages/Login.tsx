@@ -30,8 +30,8 @@ export default function Login() {
     const nvg = useNavigate();
 
     useEffect(() => {
-        dispatch(getUsers());
-    }, [dispatch]);
+        if (users.length === 0) dispatch(getUsers());
+    }, [dispatch, users.length]);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;

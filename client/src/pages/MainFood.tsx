@@ -16,14 +16,12 @@ export const FoodMain = () => {
     const dispatch = atminDispatch();
     const foods: Food[] = atminSelector((s) => s.food.foods);
     useEffect(() => {
-        dispatch(getFoods());
-    },[dispatch]);
+        if (foods.length === 0) dispatch(getFoods());
+    }, [dispatch,foods]);
     return (
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 w-[98%] flex flex-col justify-center mx-auto my-[1%]">
             {/* Title */}
-            <h3 className="text-xl font-[500] text-gray-800 mb-1">
-                Recipes
-            </h3>
+            <h3 className="text-xl font-[500] text-gray-800 mb-1">Recipes</h3>
             <p className="text-gray-500 mb-4">
                 Search, check and create new recipes
             </p>
@@ -79,7 +77,7 @@ export const FoodMain = () => {
                     >
                         Add new Food
                     </Button>
-                    
+
                     <ModalAddFood open={open} onClose={() => setOpen(false)} />
                 </div>
             </div>

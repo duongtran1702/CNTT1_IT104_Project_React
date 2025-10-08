@@ -1,24 +1,40 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ArrowUpDown, Plus, ChevronRight, ChevronsRight } from 'lucide-react';
-import {
-    mockFoodItems,
-   
-} from '../data/temporary';
+import { atminDispatch, atminSelector } from '../../hooks/reduxHook';
+import { getFoods } from '../../apis/food.api';
+import type { Food } from '../../interfaces/foods.interface';
+import type {
+    FoodServing,
+    Ingredient,
+} from '../../interfaces/recipe.interface';
+import { calMacronutrients } from '../../redux/reducers/createRecipe.reducer';
 
 interface ModalIngredientProps {
-    onClose: () => void;
+    // onClose: () => void;
+    onAddMainIng?: (ingredient: Ingredient) => void;
+    onAddEquivalentIng?: (id: number, equivalent: FoodServing) => void;
+    currentMainId?: number;
 }
 
 const ModalIngredient: React.FC<ModalIngredientProps> = ({
-    onClose,
+    // onClose,
+    onAddEquivalentIng,
+    onAddMainIng,
+    currentMainId,
 }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [sortBy, setSortBy] = useState('nutrient');
     const [filterDatabase, setFilterDatabase] = useState('all');
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5;
-    // Dữ liệu tạm để hiển thị bảng
-    const allItems = mockFoodItems;
+    const allItems: Food[] = atminSelector((s) => s.food.foods);
+    const dispatch = atminDispatch();
+
+    useEffect(() => {
+        if (allItems.length === 0) {
+            dispatch(getFoods());
+        }
+    }, [dispatch, allItems]);
 
     const filtered = allItems.filter(
         (item) =>
@@ -39,9 +55,21 @@ const ModalIngredient: React.FC<ModalIngredientProps> = ({
         return pages;
     };
 
-    const handleAdd = (): void => {
-        
-        onClose();
+    const handleAddMain = (id: number, serving: number) => {
+        if (onAddMainIng) {
+            const newIngredient: Ingredient = {
+                main: { id, serving },
+                equivalents: [],
+            };
+            onAddMainIng(newIngredient);
+            dispatch(calMacronutrients(allItems));
+        }
+    };
+
+    const handleAddEquivalent = (mainId: number, item: FoodServing) => {
+        if (onAddEquivalentIng) {
+            onAddEquivalentIng(mainId, item);
+        }
     };
 
     return (
@@ -53,7 +81,7 @@ const ModalIngredient: React.FC<ModalIngredientProps> = ({
                     placeholder="Search food"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="px-3 py-1.5 border border-gray-300 rounded text-sm flex-1 focus:outline-none focus:border-teal-500"
+                    className="px-3 py-1.5 border border-gray-300 rounded text-sm flex-1 focus:outline-none focus:border-teal-500 text-gray-600"
                 />
 
                 <div className="flex items-center gap-2 border border-gray-300 rounded bg-white px-2 py-1">
@@ -90,7 +118,7 @@ const ModalIngredient: React.FC<ModalIngredientProps> = ({
                     <div>Nutritional Information</div>
                     <div className="text-center">Energy</div>
                     <div className="text-center">Fat</div>
-                    <div className="text-center">Carboh...</div>
+                    <div className="text-center">Carbohidrat</div>
                     <div className="text-center">Protein</div>
                     <div></div>
                 </div>
@@ -110,20 +138,22 @@ const ModalIngredient: React.FC<ModalIngredientProps> = ({
                             </div>
                             <div className="flex items-center gap-1 text-xs">
                                 <input
-                                    type="text"
-                                    defaultValue={item.quantity}
-                                    className="w-12 px-1 py-0.5 border border-gray-300 rounded text-center"
+                                    type="number"
+                                    min={1}
+                                    defaultValue={1}
+                                    id={`qty-${item.id}`}
+                                    className="w-12 px-1 py-0.5 border border-gray-300 rounded text-center text-gray-500"
                                 />
-                                <span className="px-2 py-0.5 bg-gray-100 border border-gray-300 min-w-[100px]">
-                                    {item.unit}
+                                <span className="px-2 py-0.5  border border-gray-300 min-w-[100px] text-gray-500 rounded">
+                                    portion ({item.quantity} g)
                                 </span>
-                                <span className="px-2 py-0.5 bg-gray-100 border border-gray-300 rounded-r">
-                                    {item.grams}g
+                                <span className="px-2 py-0.5 border border-gray-300 rounded text-gray-500">
+                                    {item.quantity}g
                                 </span>
                             </div>
                         </div>
                         <div className="text-center text-sm text-gray-700">
-                            {item.energy} kcal
+                            {item.calories} kcal
                         </div>
                         <div className="text-center text-sm text-gray-700">
                             {item.fat} g
@@ -136,8 +166,27 @@ const ModalIngredient: React.FC<ModalIngredientProps> = ({
                         </div>
                         <div className="flex justify-center">
                             <button
-                                onClick={handleAdd}
-                                className="w-10 h-10 bg-teal-500 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center hover:bg-teal-600"
+                                onClick={() => {
+                                    const input = document.getElementById(
+                                        `qty-${item.id}`
+                                    ) as HTMLInputElement;
+                                    const qty = input
+                                        ? parseInt(input.value)
+                                        : 1;
+
+                                    if (onAddMainIng) {
+                                        handleAddMain(item.id, qty);
+                                    } else if (
+                                        onAddEquivalentIng &&
+                                        currentMainId
+                                    ) {
+                                        handleAddEquivalent(currentMainId, {
+                                            id: item.id,
+                                            serving: qty,
+                                        });
+                                    }
+                                }}
+                                className="w-10 h-10 bg-teal-500 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center hover:bg-teal-600 cursor-pointer"
                             >
                                 <Plus className="w-5 h-5" />
                             </button>

@@ -1,23 +1,23 @@
 import { Skeleton } from 'antd';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Introduction from '../components/Introduction';
 import { BasicInfo } from '../components/BasicInfo';
 import { PublishBox } from '../components/PublishBox';
 import { AddImageRecipe } from '../components/AddImageRecipe';
 import { useLocation } from 'react-router-dom';
-import IngredientManager from '../components/IngredientManager';
+import IngredientManager from '../components/ingredient/IngredientManager';
 import { CookingMethod } from '../components/CookingMethod';
 import { NutritionInfo } from '../components/NutritionInfo';
 import MacronutrientChart from '../components/MacronutrientChart';
 import MicronutrientCard from '../components/MicronutrientCard';
-import { micronutrientData } from '../data/temporary';
-
+// import { micronutrientData } from '../data/temporary';
+import { atminSelector } from '../hooks/reduxHook';
 
 export const MainAddRecipe = () => {
     const [loading, setLoading] = useState(true);
-
+    const [imageFile, setImageFile] = useState<File | null>(null);
     useEffect(() => {
-        const timer = setTimeout(() => setLoading(false), 500);
+        const timer = setTimeout(() => setLoading(false), 1000);
         return () => clearTimeout(timer);
     }, []);
 
@@ -25,6 +25,43 @@ export const MainAddRecipe = () => {
     const pathSegments = location.pathname.split('/');
     const firstSegment = pathSegments[1];
 
+    const macro = atminSelector((s) => s.createRecipe.macro);
+    const micro = atminSelector((s) => s.createRecipe.micro);
+    const total = macro.protein + macro.carb + macro.fat;
+
+    const micronutrientData = useMemo(
+        () => [
+            { name: 'Sodium', value: micro.sodium, unit: 'mg' },
+            { name: 'Vitamin A', value: micro.vitaminA, unit: 'µg' },
+            { name: 'Vitamin B-6', value: micro.vitaminB6, unit: 'mg' },
+            { name: 'Vitamin B-12', value: micro.vitaminB12, unit: 'µg' },
+            { name: 'Vitamin C', value: micro.vitaminC, unit: 'mg' },
+            { name: 'Vitamin D (D2 + D3)', value: micro.vitaminD, unit: 'µg' },
+            { name: 'Vitamin E', value: micro.vitaminE, unit: 'mg' },
+            { name: 'Vitamin K', value: micro.vitaminK, unit: 'µg' },
+            { name: 'Sugars', value: micro.sugars, unit: 'g' },
+            { name: 'Calcium', value: micro.calcium, unit: 'mg' },
+            { name: 'Iron', value: micro.iron, unit: 'mg' },
+            { name: 'Magnesium', value: micro.magnesium, unit: 'mg' },
+            { name: 'Phosphorus', value: micro.phosphorus, unit: 'mg' },
+            { name: 'Potassium', value: micro.potassium, unit: 'mg' },
+            { name: 'Zinc', value: micro.zinc, unit: 'mg' },
+            { name: 'Copper', value: micro.copper, unit: 'mg' },
+            { name: 'Fluoride', value: micro.fluoride, unit: 'µg' },
+            { name: 'Manganese', value: micro.manganese, unit: 'mg' },
+            { name: 'Selenium', value: micro.selenium, unit: 'µg' },
+            { name: 'Thiamin', value: micro.thiamin, unit: 'mg' },
+            { name: 'Riboflavin', value: micro.riboflavin, unit: 'mg' },
+            { name: 'Niacin', value: micro.niacin, unit: 'mg' },
+            {
+                name: 'Pantothenic acid',
+                value: micro.pantothenicAcid,
+                unit: 'mg',
+            },
+            { name: 'Folate, total', value: micro.folateTotal, unit: 'µg' },
+        ],
+        [micro]
+    );
     return (
         <div className="flex flex-col w-[98%] my-[1%] mx-[1%]">
             {/* Top section: image + basic info */}
@@ -34,7 +71,7 @@ export const MainAddRecipe = () => {
                         <Skeleton.Image style={{ width: 300, height: 200 }} />
                     </div>
                 ) : (
-                    <AddImageRecipe />
+                    <AddImageRecipe onFileSelect={setImageFile} />
                 )}
                 <div className="flex flex-col gap-4">
                     {loading ? (
@@ -52,7 +89,12 @@ export const MainAddRecipe = () => {
                         </div>
                     ) : (
                         <>
-                            {firstSegment !== 'detail_recipe' && <PublishBox />}
+                            {firstSegment !== 'detail_recipe' && (
+                                <PublishBox
+                                    imageFile={imageFile}
+                                    onLoading={setLoading}
+                                />
+                            )}
                             <BasicInfo />
                         </>
                     )}
@@ -112,16 +154,16 @@ export const MainAddRecipe = () => {
                     ) : (
                         <>
                             <NutritionInfo
-                                energy={0}
-                                fat={1}
-                                carbohydrate={2}
-                                protein={3}
-                                fiber={4}
+                                energy={macro.calories}
+                                fat={macro.fat}
+                                carbohydrate={macro.carb}
+                                protein={macro.protein}
+                                fiber={macro.fiber}
                             />
                             <MacronutrientChart
-                                fat={10}
-                                carbohydrate={10}
-                                protein={10}
+                                fat={(macro.fat / total) * 100}
+                                carbohydrate={(macro.carb / total) * 100}
+                                protein={(macro.protein / total) * 100}
                             />
                             <MicronutrientCard data={micronutrientData} />
                         </>

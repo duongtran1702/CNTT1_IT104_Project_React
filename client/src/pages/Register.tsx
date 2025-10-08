@@ -1,11 +1,11 @@
-import { useState, type ChangeEvent } from 'react';
+import { useEffect, useState, type ChangeEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import brandLogo from '../assets/brand.png';
 import { Button } from 'antd';
 import type { Account } from '../interfaces/auth.interface';
 import { toast, ToastContainer } from 'react-toastify';
 import { atminDispatch, atminSelector } from '../hooks/reduxHook';
-import { createUser } from '../apis/user.api';
+import { createUser, getUsers } from '../apis/user.api';
 import type { User } from '../interfaces/user.interface';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -22,7 +22,11 @@ export default function Register() {
     });
 
     const users = atminSelector((s) => s.user.users);
+
     const dispatch = atminDispatch();
+    useEffect(() => {
+        if (users.length === 0) dispatch(getUsers());
+    }, [dispatch, users]);
     const nvg = useNavigate();
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -53,6 +57,26 @@ export default function Register() {
         // Check password not match
         if (account.password !== account.confirmPassword) {
             toast.warning('Passwords do not match!');
+            return;
+        }
+
+        if (account.password.length < 8) {
+            toast.error('The number of characters must be larger than 8');
+            return;
+        }
+
+        if (!/^[A-Z]/.test(account.password)) {
+            toast.warn('Password must start with an uppercase letter.');
+            return;
+        }
+
+        if (!/\d/.test(account.password)) {
+            toast.warn('Password must contain at least one number.');
+            return;
+        }
+
+        if (!/[!@#$%^&*(),.?":{}|<>]/.test(account.password)) {
+            toast.warn('Password must contain at least one special character.');
             return;
         }
 

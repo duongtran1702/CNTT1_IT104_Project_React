@@ -7,20 +7,30 @@ import { setCreateRecipe } from '../redux/reducers/createRecipe.reducer';
 
 export const BasicInfo: React.FC = () => {
     const [editingIndex, setEditingIndex] = useState<number | null>(null);
-    const inforBasic: Omit<Recipe, 'id'> = atminSelector((s) => s.createRecipe);
+    const inforBasic: Omit<Recipe, 'id'|'author'> = atminSelector((s) => s.createRecipe);
     const [fields, setFields] = useState([
         {
             label: 'Name',
             value: inforBasic.name,
+            placeholder: 'Enter name recipe',
         },
         {
             label: 'Description',
             value: inforBasic.description,
+            placeholder: 'Enter description about recipe',
         },
-        { label: 'Total time', value: inforBasic.totalTime },
-        { label: 'Preparation time', value: inforBasic.prepTime },
-        { label: 'Final weight', value: inforBasic.finalWeight ,unit:'g'},
-        { label: 'Portions', value: inforBasic.protions },
+        {
+            label: 'Total time',
+            value: inforBasic.totalTime,
+            placeholder: '00:00',
+        },
+        {
+            label: 'Preparation time',
+            value: inforBasic.prepTime,
+            placeholder: '00:00',
+        },
+        { label: 'Final weight', value: inforBasic.finalWeight, unit: 'g',placeholder:'0 g' },
+        { label: 'Portions', value: inforBasic.protions,placeholder:'Enter the portions' },
     ]);
 
     const [touchedEmpty, setTouchedEmpty] = useState<boolean[]>(
@@ -148,6 +158,7 @@ export const BasicInfo: React.FC = () => {
                                 ref={(el) => {
                                     textareaRefs.current[index] = el;
                                 }}
+                                placeholder={field.placeholder}
                                 value={field.value}
                                 onChange={(e) => {
                                     handleChange(index, e.target.value);
@@ -177,6 +188,7 @@ export const BasicInfo: React.FC = () => {
                             <input
                                 type="text"
                                 value={field.value}
+                                placeholder={field.placeholder}
                                 onChange={(e) =>
                                     handleChange(index, e.target.value)
                                 }
@@ -196,13 +208,18 @@ export const BasicInfo: React.FC = () => {
                         )
                     ) : (
                         <div
-                            className={`min-h-[40px] w-[720px] text-[17px] text-[#625f5f] flex items-center border-l-[1.5px] border-r-[1.5px] border-[#c0c0c0] px-2 transition-colors duration-300 ${
-                                touchedEmpty[index]
-                                    ? 'bg-red-50'
-                                    : 'bg-white'
+                            className={`min-h-[40px] w-[720px] text-[17px]  flex items-center border-l-[1.5px] border-r-[1.5px] border-[#c0c0c0] px-2 transition-colors duration-300 ${
+                                touchedEmpty[index] ? 'bg-red-50' : 'bg-white'
+                            } ${
+                                field.value.trim() === ''
+                                    ? 'text-[#b6bbc4]'
+                                    : 'text-[#625f5f]'
                             }`}
                         >
-                            {field.value || ''} {field.unit && ` ${field.unit}`}
+                            {field.value || field.placeholder}{' '}
+                            {field.value &&
+                                field.unit &&
+                                ` ${field.unit}`}
                         </div>
                     )}
 
