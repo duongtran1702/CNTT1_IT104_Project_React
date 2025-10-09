@@ -31,6 +31,7 @@ const selectIngredients = createSelector(
                     ...ing.main,
                     name: mainFood?.name,
                     weight: mainFood?.quantity,
+                    category: mainFood?.category,
                 },
                 equivalents,
             };

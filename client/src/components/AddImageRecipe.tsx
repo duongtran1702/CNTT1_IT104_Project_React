@@ -5,29 +5,28 @@ import { FaPen } from 'react-icons/fa';
 import { FiHeart } from 'react-icons/fi';
 import { IoAddOutline, IoCloseOutline } from 'react-icons/io5';
 import { MdAddHome } from 'react-icons/md';
-import { atminDispatch } from '../hooks/reduxHook';
+import { atminDispatch, atminSelector } from '../hooks/reduxHook';
 import { setCreateRecipe } from '../redux/reducers/createRecipe.reducer';
 import type { Recipe } from '../interfaces/recipe.interface';
+import { recipeCategories } from '../data/helpData';
 
 interface AddImageRecipeProps {
     onFileSelect: (file: File | null) => void;
 }
 
-export const AddImageRecipe = ({
-    onFileSelect,
-}: AddImageRecipeProps) => {
-    const [previewUrl, setPreviewUrl] = useState<string | null>(null); 
+export const AddImageRecipe = ({ onFileSelect }: AddImageRecipeProps) => {
+    const dispatch = atminDispatch();
+    const data: Omit<Recipe, 'id' | 'author'> = atminSelector(
+        (s) => s.createRecipe
+    );
+    const [previewUrl, setPreviewUrl] = useState<string | null>(data.image);
     const [liked, setLiked] = useState(false);
-    const [categories, setCategories] = useState([
-        'Fruits',
-        'Vegetables',
-        'Drinks',
-    ]);
-    const [selectedCategory, setSelectedCategory] = useState('');
+    const [like, setLike] = useState<string>(data.like); //like
+    const [categories, setCategories] = useState<string[]>(recipeCategories);
+    const [selectedCategory, setSelectedCategory] = useState(data.category);
     const [isAdding, setIsAdding] = useState(false);
     const [newCategory, setNewCategory] = useState('');
     const inputRef = useRef<HTMLInputElement | null>(null);
-    const dispatch = atminDispatch();
 
     // Focus input khi thêm category
     useEffect(() => {
@@ -37,11 +36,12 @@ export const AddImageRecipe = ({
     // Cập nhật Redux mỗi khi like / category thay đổi
     useEffect(() => {
         const payload: Partial<Omit<Recipe, 'id'>> = {
-            like: liked ? '1' : '0',
+            like: like,
             category: selectedCategory,
+            image: previewUrl,
         };
         dispatch(setCreateRecipe(payload));
-    }, [liked, selectedCategory, dispatch]);
+    }, [like, selectedCategory, dispatch, previewUrl]);
 
     // Chọn ảnh
     const handleSelectImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,7 +82,14 @@ export const AddImageRecipe = ({
                     <FaPen className="w-4 h-4" /> My Recipes
                 </button>
                 <div
-                    onClick={() => setLiked(!liked)}
+                    onClick={() => {
+                        setLiked(!liked);
+                        setLike((pre) =>
+                            liked
+                                ? String(Number(pre) - 1)
+                                : String(Number(pre) + 1)
+                        );
+                    }}
                     className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm shadow-sm cursor-pointer transition ${
                         liked
                             ? 'bg-red-50 text-red-500'
@@ -94,7 +101,7 @@ export const AddImageRecipe = ({
                             liked ? 'fill-red-500 text-red-500' : ''
                         }`}
                     />
-                    <span>{liked ? 1 : 0}</span>
+                    <span>{like}</span>
                 </div>
             </div>
 

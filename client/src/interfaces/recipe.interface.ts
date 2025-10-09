@@ -1,6 +1,6 @@
 export interface Recipe {
     id: string;
-    author:string
+    author: string;
 
     image: null | string;
     like: string;
@@ -27,6 +27,7 @@ export interface Macronutrients {
     carb: number;
     protein: number;
     fiber: number;
+    weight: number;
 }
 
 export interface MicroNutrients {

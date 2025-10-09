@@ -1,4 +1,4 @@
-import type { Food } from "../interfaces/foods.interface";
+import type { Food } from '../interfaces/foods.interface';
 
 export const categories = [
     'Thịt',
@@ -63,7 +63,7 @@ export const nutrients = [
     { key: 'chloride', name: 'Chloride', unit: 'mg' },
 ];
 
-export const initialFoodValues:Omit<Food,'id'> = {
+export const initialFoodValues: Omit<Food, 'id'> = {
     name: '',
     category: '',
     source: 'My food',
@@ -110,3 +110,16 @@ export const initialFoodValues:Omit<Food,'id'> = {
     polyFats: '0',
     chloride: '0',
 };
+
+export const recipeCategories = [
+    'Món chính',
+    'Món phụ',
+    'Khai vị',
+    'Tráng miệng',
+    'Ăn sáng',
+    'Ăn nhẹ / Ăn vặt',
+    'Món chay',
+    'Đồ uống',
+    'Súp và Cháo',
+    'Nước sốt & Gia vị',
+];

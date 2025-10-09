@@ -1,59 +1,61 @@
-import React, { useEffect, useState } from 'react';
-import { ArrowUpDown, Plus, ChevronRight, ChevronsRight } from 'lucide-react';
+import React, { useEffect, useState, type ChangeEvent } from 'react';
+import { Plus } from 'lucide-react';
 import { atminDispatch, atminSelector } from '../../hooks/reduxHook';
-import { getFoods } from '../../apis/food.api';
-import type { Food } from '../../interfaces/foods.interface';
+import { filterFoods, getFoods } from '../../apis/food.api';
+import type {
+    FilterFoodPayload,
+    InitialFoodProps,
+} from '../../interfaces/foods.interface';
 import type {
     FoodServing,
     Ingredient,
 } from '../../interfaces/recipe.interface';
 import { calMacronutrients } from '../../redux/reducers/createRecipe.reducer';
+import { FaSortAmountDown, FaSortAmountUp } from 'react-icons/fa';
+import { IoIosArrowDown } from 'react-icons/io';
+import { Pagination, Select } from 'antd';
 
 interface ModalIngredientProps {
-    // onClose: () => void;
     onAddMainIng?: (ingredient: Ingredient) => void;
     onAddEquivalentIng?: (id: number, equivalent: FoodServing) => void;
     currentMainId?: number;
 }
 
 const ModalIngredient: React.FC<ModalIngredientProps> = ({
-    // onClose,
     onAddEquivalentIng,
     onAddMainIng,
     currentMainId,
 }) => {
-    const [searchTerm, setSearchTerm] = useState('');
-    const [sortBy, setSortBy] = useState('nutrient');
-    const [filterDatabase, setFilterDatabase] = useState('all');
+    const [keyword, setKeyWord] = useState('');
+    const [sortBy, setSortBy] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 5;
-    const allItems: Food[] = atminSelector((s) => s.food.foods);
+    const dataFoods: InitialFoodProps = atminSelector((s) => s.food);
     const dispatch = atminDispatch();
+    const [sortOrder, setSortOrder] = useState<'increase' | 'decrease'>(
+        'increase'
+    );
+    const [itemsPerPage, setItemsPerPage] = useState(5);
+    const categoryOptions = Array.from(
+        new Set(dataFoods.foods.map((f) => f.category))
+    ).map((c) => ({ value: c, label: c.charAt(0).toUpperCase() + c.slice(1) }));
+
+    categoryOptions.unshift({ value: '', label: 'All' });
+
+    const [category, setCategory] = useState('');
 
     useEffect(() => {
-        if (allItems.length === 0) {
-            dispatch(getFoods());
-        }
-    }, [dispatch, allItems]);
+        if (dataFoods.foods.length === 0) dispatch(getFoods());
+    }, [dispatch, dataFoods]);
 
-    const filtered = allItems.filter(
-        (item) =>
-            (filterDatabase === 'all' || item.category === filterDatabase) &&
-            item.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-
-    const totalPages = Math.max(1, Math.ceil(filtered.length / itemsPerPage));
-
-    const paginatedItems = filtered.slice(
-        (currentPage - 1) * itemsPerPage,
-        currentPage * itemsPerPage
-    );
-
-    const renderPagination = () => {
-        const pages: number[] = [];
-        for (let i = 1; i <= totalPages; i++) pages.push(i);
-        return pages;
-    };
+    useEffect(() => {
+        const data: FilterFoodPayload = {
+            keyword,
+            category,
+            page: String(currentPage),
+            sort: { by: sortBy, order: sortOrder },
+        };
+        dispatch(filterFoods(data));
+    }, [keyword, category, currentPage, sortBy, sortOrder, dispatch]);
 
     const handleAddMain = (id: number, serving: number) => {
         if (onAddMainIng) {
@@ -62,7 +64,7 @@ const ModalIngredient: React.FC<ModalIngredientProps> = ({
                 equivalents: [],
             };
             onAddMainIng(newIngredient);
-            dispatch(calMacronutrients(allItems));
+            dispatch(calMacronutrients(dataFoods.foods));
         }
     };
 
@@ -74,41 +76,78 @@ const ModalIngredient: React.FC<ModalIngredientProps> = ({
 
     return (
         <div className="bg-gray-50 rounded p-1 space-y-4">
-            {/* Control Panel */}
-            <div className="flex gap-3 items-center">
-                <input
-                    type="text"
-                    placeholder="Search food"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="px-3 py-1.5 border border-gray-300 rounded text-sm flex-1 focus:outline-none focus:border-teal-500 text-gray-600"
-                />
+            <div className="flex gap-3 items-center"></div>
 
-                <div className="flex items-center gap-2 border border-gray-300 rounded bg-white px-2 py-1">
-                    <ArrowUpDown className="w-4 h-4 text-gray-500" />
-                    <select
-                        value={sortBy}
-                        onChange={(e) => setSortBy(e.target.value)}
-                        className="text-sm border-none outline-none bg-transparent text-gray-600"
-                    >
-                        <option value="nutrient">Sort by nutrient</option>
-                        <option value="energy">Sort by energy</option>
-                        <option value="fat">Sort by fat</option>
-                        <option value="carbohydrate">
-                            Sort by carbohydrate
-                        </option>
-                        <option value="protein">Sort by protein</option>
-                    </select>
+            <div className="bg-white rounded-lg my-5 w-full">
+                <div className="flex gap-4 items-center md:flex-row flex-col">
+                    <input
+                        placeholder="Search food"
+                        value={keyword}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                            setKeyWord(e.target.value)
+                        }
+                        className="focus:outline-none focus:border-[#36acf5] focus:shadow-[0_0_0_1px_rgba(22,119,255,0.2)] transition-all duration-200 w-[50%] border border-gray-300 h-10 rounded-[5px] text-gray-500 px-4 py-2"
+                    />
+
+                    <div className="relative flex-1 w-[25%]">
+                        <div
+                            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer hover:text-yellow-500"
+                            onClick={() =>
+                                setSortOrder((pre) =>
+                                    pre === 'decrease' ? 'increase' : 'decrease'
+                                )
+                            }
+                        >
+                            {sortOrder === 'decrease' ? (
+                                <FaSortAmountDown size={18} />
+                            ) : (
+                                <FaSortAmountUp size={18} />
+                            )}
+                        </div>
+
+                        <select
+                            value={sortBy}
+                            onChange={(e) => setSortBy(e.target.value)}
+                            className="w-full h-10 pl-10 px-4 py-2 border border-gray-300 rounded-[5px] text-gray-700 bg-white cursor-pointer appearance-none
+                            focus:outline-none focus:border-[#36acf5] focus:shadow-[0_0_0_1px_rgba(22,119,255,0.2)] transition-all duration-200 "
+                        >
+                            <option value="">Sort by nutrient</option>
+                            <option value="calories">Energy</option>
+                            <option value="protein">Protein</option>
+                            <option value="fat">Fat</option>
+                            <option value="carbohydrate">Carbohydrates</option>
+                        </select>
+                        <span className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                            <IoIosArrowDown />
+                        </span>
+                    </div>
+
+                    <Select
+                        value={category || undefined}
+                        onChange={(value) => setCategory(value)}
+                        placeholder="Category"
+                        style={{
+                            width: '25%',
+                            height: 40,
+                            borderRadius: 5,
+                        }}
+                        className="text-gray-700"
+                        popupMatchSelectWidth={false}
+                        options={
+                            categoryOptions && categoryOptions.length > 0
+                                ? categoryOptions
+                                : [
+                                      {
+                                          value: 'vegetarian',
+                                          label: 'Vegetarian',
+                                      },
+                                      { value: 'desserts', label: 'Desserts' },
+                                      { value: 'drinks', label: 'Drinks' },
+                                      { value: 'snacks', label: 'Snacks' },
+                                  ]
+                        }
+                    />
                 </div>
-
-                <select
-                    value={filterDatabase}
-                    onChange={(e) => setFilterDatabase(e.target.value)}
-                    className="px-2 py-1.5 border border-gray-300 rounded text-sm outline-none focus:border-teal-500 text-gray-600"
-                >
-                    <option value="all">All databases</option>
-                    <option value="Community Recipes">Community Recipes</option>
-                </select>
             </div>
 
             {/* Table */}
@@ -124,7 +163,7 @@ const ModalIngredient: React.FC<ModalIngredientProps> = ({
                 </div>
 
                 {/* Table Rows */}
-                {paginatedItems.map((item) => (
+                {dataFoods.foodFilter.map((item) => (
                     <div
                         key={item.id}
                         className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr_60px] gap-4 px-4 py-3 border-b border-gray-200 hover:bg-gray-50 group items-center"
@@ -196,31 +235,20 @@ const ModalIngredient: React.FC<ModalIngredientProps> = ({
             </div>
 
             {/* Pagination */}
-            <div className="flex justify-center items-center gap-1 py-2">
-                {renderPagination().map((page) => (
-                    <button
-                        key={page}
-                        onClick={() => setCurrentPage(page)}
-                        className={`w-8 h-8 rounded text-sm flex items-center justify-center ${
-                            currentPage === page
-                                ? 'bg-gray-200 text-gray-900 font-medium'
-                                : 'text-gray-600 hover:bg-gray-100'
-                        }`}
-                    >
-                        {page}
-                    </button>
-                ))}
-                {totalPages > 5 && (
-                    <>
-                        <span className="px-2 text-gray-400">...</span>
-                        <button className="w-8 h-8 rounded text-sm flex items-center justify-center text-gray-600 hover:bg-gray-100">
-                            <ChevronRight className="w-4 h-4" />
-                        </button>
-                        <button className="w-8 h-8 rounded text-sm flex items-center justify-center text-gray-600 hover:bg-gray-100">
-                            <ChevronsRight className="w-4 h-4" />
-                        </button>
-                    </>
-                )}
+            <div className="flex justify-center py-2">
+                <Pagination
+                    current={currentPage}
+                    pageSize={itemsPerPage} // số item mỗi trang
+                    total={dataFoods.totalItems} // tổng số item
+                    onChange={(page) => setCurrentPage(page)} // khi đổi trang
+                    showSizeChanger // bật dropdown chọn số item/trang
+                    pageSizeOptions={['5', '10', '20', '50']} // các lựa chọn
+                    onShowSizeChange={(_, size) => {
+                        setItemsPerPage(size); // cập nhật số item mỗi trang
+                        setCurrentPage(1); // reset về trang 1
+                    }}
+                    showQuickJumper // cho nhập trang nhanh
+                />
             </div>
         </div>
     );

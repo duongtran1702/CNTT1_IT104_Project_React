@@ -1,19 +1,20 @@
 import { useState, useRef, useEffect } from 'react';
 import { Pencil, Trash2 } from 'lucide-react';
-import { atminDispatch } from '../hooks/reduxHook';
+import { atminDispatch, atminSelector } from '../hooks/reduxHook';
 import { setCreateRecipe } from '../redux/reducers/createRecipe.reducer';
-import type { CookingStep } from '../interfaces/recipe.interface';
+import type { CookingStep, Recipe } from '../interfaces/recipe.interface';
 
 export const CookingMethod = () => {
-    const [steps, setSteps] = useState<CookingStep[]>([
-        { id: 1, content: '', editable: true },
-    ]);
-
     const dispatch = atminDispatch();
+    const data: Omit<Recipe, 'id' | 'author'> = atminSelector(
+        (s) => s.createRecipe
+    );
+    const [steps, setSteps] = useState<CookingStep[]>(data.cookingSteps);
+
     useEffect(() => {
         dispatch(setCreateRecipe({ cookingSteps: steps }));
     }, [dispatch, steps]);
-    
+
     const textareaRefs = useRef<(HTMLTextAreaElement | null)[]>([]);
 
     // 🟢 Khi click ra ngoài => disable tất cả step

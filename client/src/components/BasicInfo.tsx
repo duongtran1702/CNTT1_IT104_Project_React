@@ -7,7 +7,9 @@ import { setCreateRecipe } from '../redux/reducers/createRecipe.reducer';
 
 export const BasicInfo: React.FC = () => {
     const [editingIndex, setEditingIndex] = useState<number | null>(null);
-    const inforBasic: Omit<Recipe, 'id'|'author'> = atminSelector((s) => s.createRecipe);
+    const inforBasic: Omit<Recipe, 'id' | 'author'> = atminSelector(
+        (s) => s.createRecipe
+    );
     const [fields, setFields] = useState([
         {
             label: 'Name',
@@ -29,8 +31,17 @@ export const BasicInfo: React.FC = () => {
             value: inforBasic.prepTime,
             placeholder: '00:00',
         },
-        { label: 'Final weight', value: inforBasic.finalWeight, unit: 'g',placeholder:'0 g' },
-        { label: 'Portions', value: inforBasic.protions,placeholder:'Enter the portions' },
+        {
+            label: 'Final weight',
+            value: String(inforBasic.macro.weight),
+            unit: 'g',
+            placeholder: '0 g',
+        },
+        {
+            label: 'Portions',
+            value: inforBasic.protions,
+            placeholder: 'Enter the portions',
+        },
     ]);
 
     const [touchedEmpty, setTouchedEmpty] = useState<boolean[]>(
@@ -38,6 +49,7 @@ export const BasicInfo: React.FC = () => {
     );
 
     const dispatch = atminDispatch();
+
     useEffect(() => {
         const updatedRecipe = {
             name: fields[0].value,
@@ -50,8 +62,17 @@ export const BasicInfo: React.FC = () => {
         dispatch(setCreateRecipe(updatedRecipe));
     }, [fields, dispatch]);
 
+    const disabledFieldLabelsRef = useRef(new Set(['Final weight']));
+    const isDisabledField = (label: string) =>
+        disabledFieldLabelsRef.current.has(label);
+
+    const handleEdit = (index: number) => {
+        const label = fields[index]?.label;
+        if (isDisabledField(label)) return;
+        setEditingIndex(index);
+    };
+
     const textareaRefs = useRef<(HTMLTextAreaElement | null)[]>([]);
-    const handleEdit = (index: number) => setEditingIndex(index);
 
     const handleChange = (index: number, value: string) => {
         const newFields = [...fields];
@@ -65,7 +86,6 @@ export const BasicInfo: React.FC = () => {
     };
 
     useEffect(() => {
-        // Khi editingIndex thay đổi, focus textarea/input và đặt caret cuối
         if (
             editingIndex !== null &&
             fields[editingIndex].label === 'Description' &&
@@ -128,6 +148,17 @@ export const BasicInfo: React.FC = () => {
         setEditingIndex(null);
     };
 
+    useEffect(() => {
+        const weightStr = String(inforBasic?.macro?.weight ?? '');
+        setFields((prev) => {
+            const curr = prev[4]?.value ?? '';
+            if (curr === weightStr) return prev;
+            const copy = [...prev];
+            copy[4] = { ...copy[4], value: weightStr };
+            return copy;
+        });
+    }, [inforBasic?.macro?.weight]);
+
     return (
         <div className="bg-white p-5 rounded-md flex flex-col shadow-sm">
             {/* Header */}
@@ -178,7 +209,9 @@ export const BasicInfo: React.FC = () => {
                                         e.preventDefault();
                                         handleBlur(index);
                                         if (index < fields.length - 1) {
-                                            setEditingIndex(index + 1);
+                                            if (index === 3)
+                                                setEditingIndex(index + 2);
+                                            else setEditingIndex(index + 1);
                                         }
                                     }
                                 }}
@@ -198,7 +231,9 @@ export const BasicInfo: React.FC = () => {
                                         e.preventDefault();
                                         handleBlur(index);
                                         if (index < fields.length - 1) {
-                                            setEditingIndex(index + 1);
+                                            if (index === 3)
+                                                setEditingIndex(index + 2);
+                                            else setEditingIndex(index + 1);
                                         }
                                     }
                                 }}
@@ -208,25 +243,36 @@ export const BasicInfo: React.FC = () => {
                         )
                     ) : (
                         <div
-                            className={`min-h-[40px] w-[720px] text-[17px]  flex items-center border-l-[1.5px] border-r-[1.5px] border-[#c0c0c0] px-2 transition-colors duration-300 ${
-                                touchedEmpty[index] ? 'bg-red-50' : 'bg-white'
-                            } ${
-                                field.value.trim() === ''
-                                    ? 'text-[#b6bbc4]'
-                                    : 'text-[#625f5f]'
-                            }`}
+                            className={`min-h-[40px] w-[720px] text-[17px] flex items-center border-l-[1.5px] border-r-[1.5px] border-[#c0c0c0] px-2 transition-colors duration-300 
+                        ${
+                            touchedEmpty[index]
+                                ? 'bg-red-50'
+                                : isDisabledField(field.label)
+                                ? 'bg-gray-100'
+                                : 'bg-white'
+                        }
+                        ${
+                            field.value.trim() === ''
+                                ? 'text-[#b6bbc4]'
+                                : 'text-[#625f5f]'
+                        }`}
                         >
                             {field.value || field.placeholder}{' '}
-                            {field.value &&
-                                field.unit &&
-                                ` ${field.unit}`}
+                            {field.value && field.unit && ` ${field.unit}`}
                         </div>
                     )}
 
-                    {/* Edit Icon */}
                     <div
-                        className="w-[40px] bg-[#fbf8f8] flex justify-center items-center  hover:text-green-600 cursor-pointer text-teal-500 transition-colors"
-                        onClick={() => handleEdit(index)}
+                        onClick={() => {
+                            if (!isDisabledField(field.label))
+                                handleEdit(index);
+                        }}
+                        className={`w-[40px] bg-[#fbf8f8] flex justify-center items-center transition-colors
+                        ${
+                            isDisabledField(field.label)
+                                ? 'cursor-not-allowed text-gray-300'
+                                : 'cursor-pointer text-teal-500 hover:text-green-600'
+                        }`}
                     >
                         <FaPen size={17} />
                     </div>

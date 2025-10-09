@@ -193,24 +193,30 @@ body {
     border: none !important;
     box-shadow: none !important;
     background: transparent !important;
-    color: #6B7280 !important;
+    color: #6b7280 !important;
 }
 
 /* scroll modern */
 .custom-scrollbar::-webkit-scrollbar {
-  width: 6px;
+    width: 6px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: #f0f0f0;
-  border-radius: 3px;
+    background: #f0f0f0;
+    border-radius: 3px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #c0c0c0;
-  border-radius: 3px;
+    background: #c0c0c0;
+    border-radius: 3px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #7aa6ff;
+    background: #7aa6ff;
 }
+
+.sort-select-1 .ant-select-selector {
+    padding-left: 30px !important;
+}
+
+

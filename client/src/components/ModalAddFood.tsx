@@ -20,9 +20,18 @@ export const ModalAddFood: React.FC<AddFoodModalProps> = ({
     const foodDetail: Food | null = atminSelector((s) => s.food.foodDetail);
     const [formFood, setFormFood] =
         useState<Omit<Food, 'id'>>(initialFoodValues);
+    const [initialForm, setInitialForm] =
+        useState<Omit<Food, 'id'>>(initialFoodValues);
+    const [isChanged, setIsChanged] = useState(false);
 
     useEffect(() => {
-        if (foodDetail) setFormFood(foodDetail);
+        if (foodDetail) {
+            setFormFood(foodDetail);
+            setInitialForm(foodDetail); // 🟢 lưu snapshot ban đầu
+        } else {
+            setFormFood(initialFoodValues);
+            setInitialForm(initialFoodValues);
+        }
     }, [foodDetail]);
 
     const dataLocal = localStorage.getItem('currentUser');
@@ -34,6 +43,17 @@ export const ModalAddFood: React.FC<AddFoodModalProps> = ({
         const { name, value } = e.target;
         setFormFood((prev) => ({ ...prev, [name]: value }));
     };
+
+    useEffect(() => {
+        // 🕒 debounce 300ms để tránh check liên tục
+        const timer = setTimeout(() => {
+            const hasChanged =
+                JSON.stringify(formFood) !== JSON.stringify(initialForm);
+            setIsChanged(hasChanged);
+        }, 300);
+
+        return () => clearTimeout(timer);
+    }, [formFood, initialForm]);
 
     const handleSubmit = async () => {
         // Kiểm tra empty
@@ -328,11 +348,14 @@ export const ModalAddFood: React.FC<AddFoodModalProps> = ({
                     <Button
                         type="primary"
                         htmlType="submit"
-                        className={
-                            foodDetail !== null
+                        disabled={foodDetail !== null && !isChanged}
+                        className={`transition-all duration-300 ${
+                            foodDetail === null
+                                ? ''
+                                : isChanged
                                 ? '!bg-emerald-500 !hover:bg-emerald-600 !text-white'
-                                : ''
-                        }
+                                : '!bg-gray-300 !text-gray-600 !cursor-not-allowed'
+                        }`}
                         onClick={handleSubmit}
                     >
                         {foodDetail === null

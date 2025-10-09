@@ -24,6 +24,7 @@ export const MainRecipe = () => {
     });
 
     useEffect(() => {
+        document.title = 'Recipes - Nutrium';
         // Giả lập loading khi fetch dữ liệu
         const timer = setTimeout(() => setLoading(false), 1800);
         return () => clearTimeout(timer);

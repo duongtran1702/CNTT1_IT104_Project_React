@@ -1,12 +1,24 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { Food, InitialFoodProps } from '../../interfaces/foods.interface';
-import { createFood, getFoods, updateFood } from '../../apis/food.api';
+import type {
+    DataFilter,
+    Food,
+    InitialFoodProps,
+} from '../../interfaces/foods.interface';
+import {
+    createFood,
+    filterFoods,
+    getFoods,
+    updateFood,
+} from '../../apis/food.api';
 
 const initialState: InitialFoodProps = {
     foods: [],
     status: 'idle',
     error: null,
     foodDetail: null,
+    url: '',
+    totalItems: 0,
+    foodFilter: [],
 };
 
 const foodSlice = createSlice({
@@ -48,6 +60,14 @@ const foodSlice = createSlice({
                     state.foods = state.foods.map((f) =>
                         f.id === action.payload.id ? action.payload : f
                     );
+                }
+            )
+            .addCase(
+                filterFoods.fulfilled,
+                (state, action: PayloadAction<DataFilter<Food>>) => {
+                    state.foodFilter = action.payload.data;
+                    state.url = action.payload.url;
+                    state.totalItems = action.payload.totalItems;
                 }
             );
     },

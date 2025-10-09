@@ -52,4 +52,25 @@ export interface InitialFoodProps {
     status: 'idle' | 'pending' | 'success' | 'failed';
     error: null | undefined | string;
     foodDetail: Food | null;
+    url: string;
+    totalItems: number;
+    foodFilter: Food[];
+}
+
+export interface Sort {
+    by: string;
+    order: 'increase' | 'decrease';
+}
+
+export interface DataFilter<T> {
+    data: T[];
+    url: string;
+    totalItems: number;
+}
+
+export interface FilterFoodPayload {
+    keyword: string;
+    category: string;
+    page: string;
+    sort: Sort;
 }

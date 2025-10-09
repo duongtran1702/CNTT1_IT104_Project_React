@@ -39,6 +39,7 @@ export const CardRecipe = ({ data, onClick }: CardProps) => {
                 boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
                 transition: 'all 0.3s ease',
                 cursor: 'pointer',
+                maxWidth:590
             }}
             onMouseEnter={(e) =>
                 (e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.1)')

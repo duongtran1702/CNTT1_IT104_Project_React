@@ -36,7 +36,7 @@ const recipeSlice = createSlice({
             .addCase(
                 createRecipe.fulfilled,
                 (state, action: PayloadAction<Recipe>) => {
-                    state.recipes.push(action.payload);
+                    state.recipes.unshift(action.payload);
                 }
             );
     },

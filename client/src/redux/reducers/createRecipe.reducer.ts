@@ -8,9 +8,9 @@ import type {
 import { toast } from 'react-toastify';
 import type { Food } from '../../interfaces/foods.interface';
 
-export const initialRecipeValues: Omit<Recipe, 'id'|'author'> = {
+export const initialRecipeValues: Omit<Recipe, 'id' | 'author'> = {
     image: null,
-    like: '',
+    like: '0',
     category: '',
 
     name: '',
@@ -21,7 +21,7 @@ export const initialRecipeValues: Omit<Recipe, 'id'|'author'> = {
     protions: '',
 
     ingredients: [],
-    cookingSteps: [],
+    cookingSteps: [{ id: 1, content: '', editable: true }],
 
     macro: {
         calories: 0,
@@ -29,6 +29,7 @@ export const initialRecipeValues: Omit<Recipe, 'id'|'author'> = {
         carb: 0,
         protein: 0,
         fiber: 0,
+        weight: 0,
     },
 
     micro: {
@@ -136,6 +137,7 @@ export const createRecipeStore = createSlice({
             let totalCarb = 0;
             let totalFat = 0;
             let totalFiber = 0;
+            let totalWeight = 0;
 
             // 🟢 Khởi tạo tổng micro
             const totalMicro: MicroNutrients = {
@@ -193,6 +195,7 @@ export const createRecipeStore = createSlice({
                 totalCarb += Number(foodData.carbohydrate) * serving;
                 totalFat += Number(foodData.fat) * serving;
                 totalFiber += Number(foodData.fiber || 0) * serving;
+                totalWeight += Number(foodData.quantity || 0) * serving;
 
                 // Micro
                 (Object.keys(totalMicro) as (keyof MicroNutrients)[]).forEach(
@@ -208,6 +211,7 @@ export const createRecipeStore = createSlice({
                 carb: formatNumber(totalCarb),
                 fat: formatNumber(totalFat),
                 fiber: formatNumber(totalFiber),
+                weight: formatNumber(totalWeight),
                 calories: formatNumber(
                     totalProtein * 4 + totalCarb * 4 + totalFat * 9
                 ),
