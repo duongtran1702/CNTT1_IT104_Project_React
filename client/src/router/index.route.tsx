@@ -56,7 +56,7 @@ export const routers = createBrowserRouter([
         ),
     },
     {
-        path: '/detail_recipe',
+        path: '/detail_recipe/:id',
         element: (
             <LayoutAtmin>
                 <MainAddRecipe />

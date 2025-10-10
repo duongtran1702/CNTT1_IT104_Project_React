@@ -4,10 +4,10 @@ export interface Food {
     category: string;
     source: string;
     quantity: string;
-    calories: string;
-    protein: string;
-    fat: string;
-    carbohydrate: string;
+    calories: string | number;
+    protein: string | number;
+    fat: string | number;
+    carbohydrate: string | number;
     cholesterol: string;
     fiber: string;
     sodium: string;
@@ -60,6 +60,7 @@ export interface InitialFoodProps {
 export interface Sort {
     by: string;
     order: 'increase' | 'decrease';
+    itemsPerPage: string;
 }
 
 export interface DataFilter<T> {

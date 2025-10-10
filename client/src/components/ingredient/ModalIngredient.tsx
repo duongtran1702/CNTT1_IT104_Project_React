@@ -52,10 +52,22 @@ const ModalIngredient: React.FC<ModalIngredientProps> = ({
             keyword,
             category,
             page: String(currentPage),
-            sort: { by: sortBy, order: sortOrder },
+            sort: {
+                by: sortBy,
+                order: sortOrder,
+                itemsPerPage: String(itemsPerPage),
+            },
         };
         dispatch(filterFoods(data));
-    }, [keyword, category, currentPage, sortBy, sortOrder, dispatch]);
+    }, [
+        keyword,
+        category,
+        currentPage,
+        sortBy,
+        sortOrder,
+        dispatch,
+        itemsPerPage,
+    ]);
 
     const handleAddMain = (id: number, serving: number) => {
         if (onAddMainIng) {
@@ -76,8 +88,6 @@ const ModalIngredient: React.FC<ModalIngredientProps> = ({
 
     return (
         <div className="bg-gray-50 rounded p-1 space-y-4">
-            <div className="flex gap-3 items-center"></div>
-
             <div className="bg-white rounded-lg my-5 w-full">
                 <div className="flex gap-4 items-center md:flex-row flex-col">
                     <input
@@ -133,19 +143,7 @@ const ModalIngredient: React.FC<ModalIngredientProps> = ({
                         }}
                         className="text-gray-700"
                         popupMatchSelectWidth={false}
-                        options={
-                            categoryOptions && categoryOptions.length > 0
-                                ? categoryOptions
-                                : [
-                                      {
-                                          value: 'vegetarian',
-                                          label: 'Vegetarian',
-                                      },
-                                      { value: 'desserts', label: 'Desserts' },
-                                      { value: 'drinks', label: 'Drinks' },
-                                      { value: 'snacks', label: 'Snacks' },
-                                  ]
-                        }
+                        options={categoryOptions}
                     />
                 </div>
             </div>
@@ -238,16 +236,17 @@ const ModalIngredient: React.FC<ModalIngredientProps> = ({
             <div className="flex justify-center py-2">
                 <Pagination
                     current={currentPage}
-                    pageSize={itemsPerPage} // số item mỗi trang
-                    total={dataFoods.totalItems} // tổng số item
-                    onChange={(page) => setCurrentPage(page)} // khi đổi trang
-                    showSizeChanger // bật dropdown chọn số item/trang
-                    pageSizeOptions={['5', '10', '20', '50']} // các lựa chọn
+                    pageSize={itemsPerPage}
+                    total={dataFoods.totalItems}
+                    onChange={(page) => setCurrentPage(page)}
+                    showSizeChanger
+                    pageSizeOptions={['5', '7', '10']}
                     onShowSizeChange={(_, size) => {
-                        setItemsPerPage(size); // cập nhật số item mỗi trang
-                        setCurrentPage(1); // reset về trang 1
+                        setItemsPerPage(Number(size));
+                        setCurrentPage(1);
                     }}
-                    showQuickJumper // cho nhập trang nhanh
+                    showQuickJumper={false}
+                    style={{ cursor: 'pointer' }}
                 />
             </div>
         </div>

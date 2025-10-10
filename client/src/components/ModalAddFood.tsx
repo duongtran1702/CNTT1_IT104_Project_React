@@ -111,8 +111,12 @@ export const ModalAddFood: React.FC<AddFoodModalProps> = ({
 
         // Tạo object final
         let newFood: Food = {
-            id: Math.floor(Math.random() * 1000),
+            id: foodDetail ? foodDetail.id : Math.floor(Math.random() * 1000),
             ...newFormFood,
+            calories: Number(newFormFood.calories),
+            fat: Number(newFormFood.fat),
+            carbohydrate: Number(newFormFood.carbohydrate),
+            protein: Number(newFormFood.protein),
             source: userLocal.username,
         };
 

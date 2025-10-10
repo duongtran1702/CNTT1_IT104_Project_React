@@ -23,14 +23,12 @@ export const initialRecipeValues: Omit<Recipe, 'id' | 'author'> = {
     ingredients: [],
     cookingSteps: [{ id: 1, content: '', editable: true }],
 
-    macro: {
-        calories: 0,
-        fat: 0,
-        carb: 0,
-        protein: 0,
-        fiber: 0,
-        weight: 0,
-    },
+    calories: 0,
+    fat: 0,
+    carb: 0,
+    protein: 0,
+    fiber: 0,
+    weight: 0,
 
     micro: {
         cholesterol: 0,
@@ -80,12 +78,19 @@ export const createRecipeStore = createSlice({
             state,
             action: PayloadAction<Partial<Omit<Recipe, 'id'>>>
         ) => {
-            state = { ...state, ...action.payload };
-            return state;
+            Object.assign(state, action.payload);
         },
+
         resetCreateRecipe: () => {
             return initialRecipeValues;
         },
+
+        setDetailRecipe: (state, action: PayloadAction<Recipe>) => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { id, author, ...rest } = action.payload;
+            Object.assign(state, rest);
+        },
+
         addMainIng: (state, action: PayloadAction<Ingredient>) => {
             const idx = state.ingredients.findIndex(
                 (i) => i.main.id === action.payload.main.id
@@ -98,6 +103,7 @@ export const createRecipeStore = createSlice({
                 toast.success('Add ingredient successful!');
             }
         },
+
         addEquivalentIng: (
             state,
             action: PayloadAction<{
@@ -206,16 +212,15 @@ export const createRecipeStore = createSlice({
             });
 
             // 🟢 Cập nhật state macro
-            state.macro = {
-                protein: formatNumber(totalProtein),
-                carb: formatNumber(totalCarb),
-                fat: formatNumber(totalFat),
-                fiber: formatNumber(totalFiber),
-                weight: formatNumber(totalWeight),
-                calories: formatNumber(
-                    totalProtein * 4 + totalCarb * 4 + totalFat * 9
-                ),
-            };
+
+            state.protein = formatNumber(totalProtein);
+            state.carb = formatNumber(totalCarb);
+            state.fat = formatNumber(totalFat);
+            state.fiber = formatNumber(totalFiber);
+            state.weight = formatNumber(totalWeight);
+            state.calories = formatNumber(
+                totalProtein * 4 + totalCarb * 4 + totalFat * 9
+            );
 
             // 🟢 Cập nhật state micro
             const formattedMicro: MicroNutrients = {} as MicroNutrients;
@@ -235,6 +240,7 @@ export const {
     addMainIng,
     addEquivalentIng,
     calMacronutrients,
+    setDetailRecipe
 } = createRecipeStore.actions;
 
 export const createRecipeReducer = createRecipeStore.reducer;

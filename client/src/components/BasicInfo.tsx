@@ -33,7 +33,7 @@ export const BasicInfo: React.FC = () => {
         },
         {
             label: 'Final weight',
-            value: String(inforBasic.macro.weight),
+            value: String(inforBasic.weight),
             unit: 'g',
             placeholder: '0 g',
         },
@@ -149,7 +149,7 @@ export const BasicInfo: React.FC = () => {
     };
 
     useEffect(() => {
-        const weightStr = String(inforBasic?.macro?.weight ?? '');
+        const weightStr = String(inforBasic?.weight ?? '');
         setFields((prev) => {
             const curr = prev[4]?.value ?? '';
             if (curr === weightStr) return prev;
@@ -157,7 +157,7 @@ export const BasicInfo: React.FC = () => {
             copy[4] = { ...copy[4], value: weightStr };
             return copy;
         });
-    }, [inforBasic?.macro?.weight]);
+    }, [inforBasic?.weight]);
 
     return (
         <div className="bg-white p-5 rounded-md flex flex-col shadow-sm">

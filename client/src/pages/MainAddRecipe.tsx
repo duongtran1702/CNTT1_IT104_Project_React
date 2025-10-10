@@ -4,14 +4,16 @@ import Introduction from '../components/Introduction';
 import { BasicInfo } from '../components/BasicInfo';
 import { PublishBox } from '../components/PublishBox';
 import { AddImageRecipe } from '../components/AddImageRecipe';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import IngredientManager from '../components/ingredient/IngredientManager';
 import { CookingMethod } from '../components/CookingMethod';
 import { NutritionInfo } from '../components/NutritionInfo';
 import MacronutrientChart from '../components/MacronutrientChart';
 import MicronutrientCard from '../components/MicronutrientCard';
 // import { micronutrientData } from '../data/temporary';
-import { atminSelector } from '../hooks/reduxHook';
+import { atminDispatch, atminSelector } from '../hooks/reduxHook';
+import { getRecipes } from '../apis/recipe.api';
+import { setDetailRecipe } from '../redux/reducers/createRecipe.reducer';
 
 export const MainAddRecipe = () => {
     const [loading, setLoading] = useState(true);
@@ -24,10 +26,17 @@ export const MainAddRecipe = () => {
     const location = useLocation();
     const pathSegments = location.pathname.split('/');
     const firstSegment = pathSegments[1];
+    const { id } = useParams();
 
-    const macro = atminSelector((s) => s.createRecipe.macro);
+    const recipes = atminSelector((s) => s.recipe.recipes);
+    const dispatch = atminDispatch();
+    useEffect(() => {
+        if (recipes.length === 0) dispatch(getRecipes());
+    }, [dispatch, recipes.length]);
+
+    const data = atminSelector((s) => s.createRecipe);
     const micro = atminSelector((s) => s.createRecipe.micro);
-    const total = macro.protein + macro.carb + macro.fat;
+    const total = data.protein + data.carb + data.fat;
 
     const micronutrientData = useMemo(
         () => [
@@ -62,6 +71,15 @@ export const MainAddRecipe = () => {
         ],
         [micro]
     );
+    if (id !== undefined && firstSegment === 'detail_recipe') {
+        const recipeDetail = recipes.find((i) => i.id === id);
+        console.log(id);
+        console.log(recipeDetail);
+        if (!recipeDetail) return;
+        console.log(recipeDetail);
+        dispatch(setDetailRecipe(recipeDetail));
+    }
+
     return (
         <div className="flex flex-col w-[98%] my-[1%] mx-[1%]">
             {/* Top section: image + basic info */}
@@ -154,16 +172,16 @@ export const MainAddRecipe = () => {
                     ) : (
                         <>
                             <NutritionInfo
-                                energy={macro.calories}
-                                fat={macro.fat}
-                                carbohydrate={macro.carb}
-                                protein={macro.protein}
-                                fiber={macro.fiber}
+                                energy={data.calories}
+                                fat={data.fat}
+                                carbohydrate={data.carb}
+                                protein={data.protein}
+                                fiber={data.fiber}
                             />
                             <MacronutrientChart
-                                fat={(macro.fat / total) * 100}
-                                carbohydrate={(macro.carb / total) * 100}
-                                protein={(macro.protein / total) * 100}
+                                fat={(data.fat / total) * 100}
+                                carbohydrate={(data.carb / total) * 100}
+                                protein={(data.protein / total) * 100}
                             />
                             <MicronutrientCard data={micronutrientData} />
                         </>

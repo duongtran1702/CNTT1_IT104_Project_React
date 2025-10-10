@@ -1,3 +1,5 @@
+import type { Sort } from './foods.interface';
+
 export interface Recipe {
     id: string;
     author: string;
@@ -17,18 +19,15 @@ export interface Recipe {
 
     cookingSteps: CookingStep[];
 
-    macro: Macronutrients;
-    micro: MicroNutrients;
-}
-
-export interface Macronutrients {
     calories: number;
     fat: number;
     carb: number;
     protein: number;
     fiber: number;
     weight: number;
+    micro: MicroNutrients;
 }
+
 
 export interface MicroNutrients {
     cholesterol: number;
@@ -89,6 +88,17 @@ export interface InitialRecipeProps {
     recipes: Recipe[];
     status: 'idle' | 'pending' | 'success' | 'failed';
     error: null | undefined | string;
-    recipeDetail: Recipe | null;
     loading: boolean;
+    recipeDetail: Recipe | null;
+
+    url: string;
+    totalItems: number;
+    recipeFilter: Recipe[];
+}
+
+export interface FilterRecipePayload {
+    keyword: string;
+    category: string;
+    page: string;
+    sort: Sort;
 }

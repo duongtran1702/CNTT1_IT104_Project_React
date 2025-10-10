@@ -1,34 +1,105 @@
-import { useState, useEffect } from 'react';
-import { Input, Select, Pagination, Skeleton } from 'antd';
-import { FaCheckSquare, FaHeart, FaPen, FaPlus } from 'react-icons/fa';
+import { useState, useEffect, type ChangeEvent, useMemo } from 'react';
+import { Select, Pagination, Skeleton } from 'antd';
+import debounce from 'lodash/debounce';
+
+import {
+    FaCheckSquare,
+    FaHeart,
+    FaPen,
+    FaPlus,
+    FaSortAmountDown,
+    FaSortAmountUp,
+} from 'react-icons/fa';
 import { CardRecipe } from '../components/CardRecipe';
 import { useNavigate } from 'react-router-dom';
-import type { Recipe } from '../interfaces/recipe.interface';
+import type {
+    FilterRecipePayload,
+    InitialRecipeProps,
+} from '../interfaces/recipe.interface';
 import { atminDispatch, atminSelector } from '../hooks/reduxHook';
-import { getRecipes } from '../apis/recipe.api';
-
-const { Search } = Input;
-const { Option } = Select;
+import { filterRecipes, getRecipes } from '../apis/recipe.api';
+import { IoIosArrowDown } from 'react-icons/io';
 
 export const MainRecipe = () => {
+    const [keyword, setKeyWord] = useState('');
+    const [sortBy, setSortBy] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
+    const dataRecipes: InitialRecipeProps = atminSelector((s) => s.recipe);
+    const dispatch = atminDispatch();
+    const [sortOrder, setSortOrder] = useState<'increase' | 'decrease'>(
+        'increase'
+    );
+    const [itemsPerPage, setItemsPerPage] = useState(5);
+    const categoryOptions = Array.from(
+        new Set(dataRecipes.recipes.map((i) => i.category))
+    ).map((c) => ({ value: c, label: c.charAt(0).toUpperCase() + c.slice(1) }));
+
+    categoryOptions.unshift({ value: '', label: 'All' });
+
+    const [category, setCategory] = useState('');
     const [loading, setLoading] = useState(true);
     const nvg = useNavigate();
-    const recipes: Recipe[] = atminSelector((s) => s.recipe.recipes);
-    const dispatch = atminDispatch();
 
     useEffect(() => {
-        if (recipes.length === 0) {
+        if (dataRecipes.recipes.length === 0) {
             dispatch(getRecipes());
         }
-    });
+    }, [dataRecipes.recipes.length, dispatch]);
 
     useEffect(() => {
         document.title = 'Recipes - Nutrium';
-        // Giả lập loading khi fetch dữ liệu
         const timer = setTimeout(() => setLoading(false), 1800);
         return () => clearTimeout(timer);
     }, []);
+
+    const debouncedDispatch = useMemo(
+        () =>
+            debounce((kw: string) => {
+                const data: FilterRecipePayload = {
+                    keyword: kw,
+                    category,
+                    page: String(currentPage),
+                    sort: {
+                        by: sortBy,
+                        order: sortOrder,
+                        itemsPerPage: String(itemsPerPage),
+                    },
+                };
+                dispatch(filterRecipes(data));
+            }, 500),
+        [category, currentPage, sortBy, sortOrder, itemsPerPage, dispatch]
+    );
+
+    useEffect(() => {
+        debouncedDispatch(keyword);
+        return () => {
+            debouncedDispatch.cancel();
+        };
+    }, [keyword, debouncedDispatch]);
+
+    useEffect(() => {
+        if (keyword === '') {
+            const data: FilterRecipePayload = {
+                keyword: '',
+                category,
+                page: String(currentPage),
+                sort: {
+                    by: sortBy,
+                    order: sortOrder,
+                    itemsPerPage: String(itemsPerPage),
+                },
+            };
+            dispatch(filterRecipes(data));
+        }
+    }, [
+        category,
+        currentPage,
+        sortBy,
+        sortOrder,
+        itemsPerPage,
+        dispatch,
+        keyword,
+    ]);
 
     return (
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 w-[98%] flex flex-col justify-center mx-auto my-[1%]">
@@ -91,27 +162,67 @@ export const MainRecipe = () => {
                         />
                     </>
                 ) : (
-                    <>
-                        <Search
+                    <div className="flex gap-4 items-center md:flex-row flex-col w-full">
+                        <input
                             placeholder="Search food"
-                            allowClear
-                            enterButton
-                            className="md:w-1/2"
+                            value={keyword}
+                            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                                setKeyWord(e.target.value)
+                            }
+                            className="focus:outline-none focus:border-[#36acf5] focus:shadow-[0_0_0_1px_rgba(22,119,255,0.2)] transition-all duration-200 w-[50%] border border-gray-300 h-10 rounded-[5px] text-gray-500 px-4 py-2"
                         />
+
+                        <div className="relative flex-1 w-[25%]">
+                            <div
+                                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer hover:text-yellow-500"
+                                onClick={() =>
+                                    setSortOrder((pre) =>
+                                        pre === 'decrease'
+                                            ? 'increase'
+                                            : 'decrease'
+                                    )
+                                }
+                            >
+                                {sortOrder === 'decrease' ? (
+                                    <FaSortAmountDown size={18} />
+                                ) : (
+                                    <FaSortAmountUp size={18} />
+                                )}
+                            </div>
+
+                            <select
+                                value={sortBy}
+                                onChange={(e) => setSortBy(e.target.value)}
+                                className="w-full h-10 pl-10 px-4 py-2 border border-gray-300 rounded-[5px] text-gray-700 bg-white cursor-pointer appearance-none
+                                                    focus:outline-none focus:border-[#36acf5] focus:shadow-[0_0_0_1px_rgba(22,119,255,0.2)] transition-all duration-200 "
+                            >
+                                <option value="">Sort by nutrient</option>
+                                <option value="calories">Energy</option>
+                                <option value="protein">Protein</option>
+                                <option value="fat">Fat</option>
+                                <option value="carbohydrate">
+                                    Carbohydrates
+                                </option>
+                            </select>
+                            <span className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                                <IoIosArrowDown />
+                            </span>
+                        </div>
+
                         <Select
-                            defaultValue="nutrient"
-                            className="md:w-1/4 w-full"
-                        >
-                            <Option value="nutrient">Sort by nutrient</Option>
-                            <Option value="energy">Energy</Option>
-                            <Option value="protein">Protein</Option>
-                        </Select>
-                        <Select defaultValue="all" className="md:w-1/4 w-full">
-                            <Option value="all">Category</Option>
-                            <Option value="vegetarian">Vegetarian</Option>
-                            <Option value="desserts">Desserts</Option>
-                        </Select>
-                    </>
+                            value={category || undefined}
+                            onChange={(value) => setCategory(value)}
+                            placeholder="Category"
+                            style={{
+                                width: '25%',
+                                height: 40,
+                                borderRadius: 5,
+                            }}
+                            className="text-gray-700"
+                            popupMatchSelectWidth={false}
+                            options={categoryOptions}
+                        />
+                    </div>
                 )}
             </div>
 
@@ -199,17 +310,19 @@ export const MainRecipe = () => {
                               </div>
                           </div>
                       ))
-                    : recipes.map((recipe) => (
+                    : dataRecipes.recipeFilter.map((recipe) => (
                           <CardRecipe
                               data={recipe}
                               key={recipe.id}
-                              onClick={() => nvg('/detail_recipe')}
+                              onClick={() => {
+                                  nvg(`/detail_recipe/${recipe.id}`);
+                              }}
                           />
                       ))}
             </div>
 
             {/* Pagination */}
-            <div className="flex justify-center mt-6">
+            <div className="flex justify-center py-2">
                 {loading ? (
                     <Skeleton.Input
                         active
@@ -219,9 +332,17 @@ export const MainRecipe = () => {
                 ) : (
                     <Pagination
                         current={currentPage}
-                        total={40}
-                        pageSize={4}
+                        pageSize={itemsPerPage}
+                        total={dataRecipes.totalItems}
                         onChange={(page) => setCurrentPage(page)}
+                        showSizeChanger
+                        pageSizeOptions={['5', '7', '10']}
+                        onShowSizeChange={(_, size) => {
+                            setItemsPerPage(Number(size));
+                            setCurrentPage(1);
+                        }}
+                        showQuickJumper={false}
+                        style={{ cursor: 'pointer' }}
                     />
                 )}
             </div>

@@ -258,7 +258,7 @@ export const CardRecipe = ({ data, onClick }: CardProps) => {
                             Energy
                         </li>
                         <li style={{ textAlign: 'center', fontSize: '13px' }}>
-                            {data.macro.calories} kcal
+                            {data.calories} kcal
                         </li>
                     </ul>
                     <ul
@@ -276,7 +276,7 @@ export const CardRecipe = ({ data, onClick }: CardProps) => {
                             Fat
                         </li>
                         <li style={{ textAlign: 'center', fontSize: '13px' }}>
-                            {data.macro.fat} g
+                            {data.fat} g
                         </li>
                     </ul>
                     <ul
@@ -294,7 +294,7 @@ export const CardRecipe = ({ data, onClick }: CardProps) => {
                             Carbohydrate
                         </li>
                         <li style={{ textAlign: 'center', fontSize: '13px' }}>
-                            {data.macro.carb} g
+                            {data.carb} g
                         </li>
                     </ul>
                     <ul
@@ -312,7 +312,7 @@ export const CardRecipe = ({ data, onClick }: CardProps) => {
                             Protein
                         </li>
                         <li style={{ textAlign: 'center', fontSize: '13px' }}>
-                            {data.macro.protein} g
+                            {data.protein} g
                         </li>
                     </ul>
                 </div>

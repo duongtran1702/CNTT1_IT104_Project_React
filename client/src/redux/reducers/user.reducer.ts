@@ -43,8 +43,6 @@ const userSlice = createSlice({
                     );
                     if (index !== -1) {
                         state.users[index] = action.payload;
-                        console.log(action.payload);
-                        
                     }
                 }
             );

@@ -50,7 +50,7 @@ export const filterFoods = createAsyncThunk(
 
         if (payload.page) {
             query.append('_page', payload.page);
-            query.append('_limit', '5');
+            query.append('_limit', payload.sort.itemsPerPage);
         }
 
         const url = query.toString() ? `foods?${query.toString()}` : 'foods';
