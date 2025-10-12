@@ -86,7 +86,7 @@ export const PublishBox = ({ imageFile, onLoading }: PublishBoxProps) => {
 
             const recipe: Recipe = {
                 ...data,
-                id: crypto.randomUUID(),
+                id: `recipe-${Math.floor(Math.random() * 1000)}`,
                 image: link,
                 author: userLocal.username,
             };

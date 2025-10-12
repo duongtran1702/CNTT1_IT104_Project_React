@@ -27,7 +27,7 @@ export const ModalAddFood: React.FC<AddFoodModalProps> = ({
     useEffect(() => {
         if (foodDetail) {
             setFormFood(foodDetail);
-            setInitialForm(foodDetail); // 🟢 lưu snapshot ban đầu
+            setInitialForm(foodDetail); 
         } else {
             setFormFood(initialFoodValues);
             setInitialForm(initialFoodValues);

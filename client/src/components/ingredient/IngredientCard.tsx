@@ -77,7 +77,8 @@ const IngredientCard: React.FC<IngredientCardProps> = ({
                                     <div className="flex items-center gap-3 flex-1">
                                         <SwapOutlined className="text-emerald-500 text-lg" />
                                         <span className="text-sm font-medium">
-                                            {item.serving} serving of {item.name} ({item.weight} g)
+                                            {item.serving} serving of{' '}
+                                            {item.name} ({item.weight} g)
                                         </span>
                                     </div>
                                     <button className="text-gray-400 hover:text-gray-600">
@@ -105,14 +106,13 @@ const IngredientCard: React.FC<IngredientCardProps> = ({
             <AnimatePresence>
                 {isModalOpen && (
                     <motion.div
-                        initial={{ opacity: 0, y: -40 }} // trượt từ trên xuống khi mở
-                        animate={{ opacity: 1, y: 0 }} // hiện ra đầy đủ
-                        exit={{ opacity: 0, y: -8 }} // trượt xuống khi tắt
+                        initial={{ opacity: 0, y: -40 }}
+                        animate={{ opacity: 1, y: 0 }} // hiện ra đầy đ
+                        exit={{ opacity: 0, y: -8 }} // trượt xuống khi tắ
                         transition={{ duration: 0.8, ease: 'easeOut' }}
                         className="bg-gray-50 border border-gray-200 rounded p-4 space-y-4 shadow-lg mt-2"
                     >
                         <ModalIngredient
-                            // onClose={() => setIsModalOpen(false)}
                             onAddEquivalentIng={(
                                 id: number,
                                 equivalent: FoodServing

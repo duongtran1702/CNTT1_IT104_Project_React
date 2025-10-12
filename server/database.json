@@ -26,6 +26,96 @@
       },
       "avata": "https://res.cloudinary.com/atmin/image/upload/v1760056960/p5ryeaiaznshce5lhgra.jpg",
       "id": "6b457634-92ad-448d-b480-8c82c1a92b31"
+    },
+    {
+      "account": {
+        "email": "mynato@gmail.com",
+        "username": "Love",
+        "password": "Love12345@"
+      },
+      "avata": "https://res.cloudinary.com/atmin/image/upload/v1760061395/rhyphgogibtvzq63wuut.jpg",
+      "id": "26258ab9-79cd-4e09-af63-91fbbba99f31"
+    },
+    {
+      "account": {
+        "email": "mahiru@gmail.com",
+        "username": "Mahiru",
+        "password": "Mahiru12345@"
+      },
+      "avata": null,
+      "id": "5ac45c36-58b0-4184-9354-1b836fee5e8a"
+    },
+    {
+      "account": {
+        "email": "atmintran@gmail.com",
+        "username": "atmintran",
+        "password": "Atmintran123@"
+      },
+      "avata": null,
+      "id": "08b54497-c2e1-4ce9-9da5-ff54a4ea2345"
+    },
+    {
+      "account": {
+        "email": "haruka@gmail.com",
+        "username": "Haruka",
+        "password": "Haruka123@"
+      },
+      "avata": null,
+      "id": "f7dda778-842d-4fa6-9ef5-82874f8f8bab"
+    },
+    {
+      "account": {
+        "email": "kiennv@gmail.com",
+        "username": "Kiennv",
+        "password": "Kien1234@"
+      },
+      "avata": null,
+      "id": "6e823704-08f3-4e97-9953-4bb995105af8"
+    },
+    {
+      "account": {
+        "email": "hola@gmail.com",
+        "username": "Hola",
+        "password": "Hola1234@"
+      },
+      "avata": null,
+      "id": "d70d36b5-cd19-4c20-affd-9772fab3cfe5"
+    },
+    {
+      "account": {
+        "email": "kien@gmail.com",
+        "username": "Kiennv2004",
+        "password": "Kien1234@"
+      },
+      "avata": null,
+      "id": "0933c4f0-16db-4a1c-9c81-3d8def8e8573"
+    },
+    {
+      "account": {
+        "email": "kiendz@gmail.com",
+        "username": "Kiendz",
+        "password": "Kiendz123@"
+      },
+      "avata": "https://res.cloudinary.com/atmin/image/upload/v1760102670/xmfipfvtohdftjaswsnh.jpg",
+      "id": "e1671a1d-3532-4aa3-9415-52d67e2d9eae"
+    },
+    {
+      "account": {
+        "email": "quyn3307@gmail.com",
+        "username": "quydzai",
+        "password": "Quy2007@"
+      },
+      "avata": null,
+      "id": "425481b6-5826-4a87-b9fd-47408db9a807"
+    },
+    {
+      "account": {
+        "email": "CHUHANGDC22@GMAIL.COM",
+        "username": "B25DCCN222",
+        "password": "Hung123@"
+      },
+      "avata": "https://res.cloudinary.com/atmin/image/upload/v1760106970/p0igsxshjmcpvftkdscp.jpg",
+      "id": "eabaf855-0688-47d4-922d-ecdf64a872fe"
     }
   ],
   "foods": [
@@ -2912,7 +3002,7 @@
   ],
   "recipes": [
     {
-      "image": "https://picsum.photos/seed/1/500/300",
+      "image": "https://www.foodandwine.com/thmb/8YAIANQTZnGpVWj2XgY0dYH1V4I=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/spicy-chicken-curry-FT-RECIPE0321-58f84fdf7b484e7f86894203eb7834e7.jpg",
       "like": "0",
       "category": "Vegetables",
       "name": "Spicy Chicken Curry",
@@ -3003,7 +3093,7 @@
       "calories": 667.5
     },
     {
-      "image": "https://picsum.photos/seed/2/500/300",
+      "image": "https://sarahscucinabella.com/wp-content/uploads/2022/05/Grilled-Salmon-Salad-for-One-2-720x720.jpg",
       "like": "0",
       "category": "Vegetables",
       "name": "Grilled Salmon Salad",
@@ -3094,7 +3184,7 @@
       "calories": 667.5
     },
     {
-      "image": "https://picsum.photos/seed/3/500/300",
+      "image": "https://www.allrecipes.com/thmb/txgejbRaNYg1Pbzw87YKZsTAXYI=/0x512/filters:no_upscale():max_bytes(150000):strip_icc()/16311-simple-beef-stroganoff-DDMFS-4x3-1e966286eef54c0f96c882e569926eb3.jpg",
       "like": "0",
       "category": "Vegetables",
       "name": "Beef Stroganoff",
@@ -3185,7 +3275,7 @@
       "calories": 667.5
     },
     {
-      "image": "https://picsum.photos/seed/4/500/300",
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOFhcbP5r6JkEyqPApLr71n6U7GbJTGz8e8w&s",
       "like": "0",
       "category": "Vegetables",
       "name": "Vegetable Stir Fry",
@@ -3276,7 +3366,7 @@
       "calories": 667.5
     },
     {
-      "image": "https://picsum.photos/seed/5/500/300",
+      "image": "https://cdn.loveandlemons.com/wp-content/uploads/2023/01/mushroom-risotto.jpg",
       "like": "0",
       "category": "Vegetables",
       "name": "Mushroom Risotto",
@@ -3367,7 +3457,7 @@
       "calories": 667.5
     },
     {
-      "image": "https://picsum.photos/seed/6/500/300",
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIgOucISXPullJISitXX0WuCO7ErdlNtQ4GQ&s",
       "like": "0",
       "category": "Fruits",
       "name": "Lemon Garlic Shrimp",
@@ -3482,7 +3572,7 @@
       "calories": 624.5
     },
     {
-      "image": "https://picsum.photos/seed/7/500/300",
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhLF7839URt1kRllnua84eoUKrzW-xr3gcug&s",
       "like": "0",
       "category": "Vegetables",
       "name": "Pasta Carbonara",
@@ -3569,6 +3659,384 @@
       "fat": 15.9,
       "fiber": 1.8,
       "calories": 385.5
+    },
+    {
+      "image": "https://res.cloudinary.com/atmin/image/upload/v1760058563/fvnxmkt6prti1ozbdq26.jpg",
+      "like": "0",
+      "category": "Món phụ",
+      "name": "Recipe-1",
+      "description": "a",
+      "totalTime": "1:10",
+      "prepTime": "1:10",
+      "finalWeight": "200",
+      "protions": "4",
+      "ingredients": [
+        {
+          "main": {
+            "id": "Food-37",
+            "serving": 1
+          },
+          "equivalents": []
+        },
+        {
+          "main": {
+            "id": "Food-32",
+            "serving": 1
+          },
+          "equivalents": []
+        }
+      ],
+      "cookingSteps": [
+        {
+          "id": 1,
+          "content": "A",
+          "editable": false
+        },
+        {
+          "id": 2,
+          "content": "a",
+          "editable": false
+        },
+        {
+          "id": 3,
+          "content": "",
+          "editable": false
+        }
+      ],
+      "calories": 481.9,
+      "fat": 13.1,
+      "carb": 74.9,
+      "protein": 16.1,
+      "fiber": 35.3,
+      "weight": 200,
+      "micro": {
+        "cholesterol": 0,
+        "sodium": 96,
+        "water": 77.2,
+        "vitaminA": 2081,
+        "vitaminB6": 2.1,
+        "vitaminB12": 0,
+        "vitaminC": 76,
+        "vitaminD": 0,
+        "vitaminE": 29.8,
+        "vitaminK": 80.3,
+        "starch": 0,
+        "lactose": 0,
+        "alcohol": 0,
+        "caffeine": 0,
+        "sugars": 7.2,
+        "calcium": 153,
+        "iron": 8,
+        "magnesium": 154,
+        "phosphorus": 303,
+        "potassium": 2029,
+        "zinc": 2.6,
+        "copper": 0.4,
+        "fluoride": 0,
+        "manganese": 1.6,
+        "selenium": 0,
+        "thiamin": 0.7,
+        "riboflavin": 0.9,
+        "niacin": 11.6,
+        "pantothenicAcid": 1.1,
+        "folateTotal": 51,
+        "folicAcid": 0,
+        "transFats": 0,
+        "saturatedFats": 2.1,
+        "monoFats": 2.7,
+        "polyFats": 6.8,
+        "chloride": 0
+      },
+      "id": "a88db994-c136-43fd-ae64-c7aeb887637d",
+      "author": "alice"
+    },
+    {
+      "image": "https://res.cloudinary.com/atmin/image/upload/v1760062411/mglbbyafni262jpcggtr.jpg",
+      "like": "0",
+      "category": "Ăn sáng",
+      "name": "Hot Dog",
+      "description": "A healthy fusion hotdog made with grilled chicken, beef, and mashed potatoes.\nRich in protein and fiber from mung beans and carrots.\nPerfect for a quick, balanced, and energizing meal.",
+      "totalTime": "0:30",
+      "prepTime": "0:30",
+      "finalWeight": "750",
+      "protions": "1",
+      "ingredients": [
+        {
+          "main": {
+            "id": "Food-42",
+            "serving": 1
+          },
+          "equivalents": []
+        },
+        {
+          "main": {
+            "id": "Food-1",
+            "serving": 1
+          },
+          "equivalents": []
+        },
+        {
+          "main": {
+            "id": "Food-58",
+            "serving": 1
+          },
+          "equivalents": []
+        },
+        {
+          "main": {
+            "id": "Food-6",
+            "serving": 1
+          },
+          "equivalents": []
+        },
+        {
+          "main": {
+            "id": "Food-49",
+            "serving": 1
+          },
+          "equivalents": []
+        },
+        {
+          "main": {
+            "id": "Food-51",
+            "serving": 1
+          },
+          "equivalents": []
+        }
+      ],
+      "cookingSteps": [
+        {
+          "id": 1,
+          "content": "Chuẩn bị khoai tây: Gọt vỏ, hấp hoặc luộc mềm, nghiền nhuyễn",
+          "editable": false
+        },
+        {
+          "id": 2,
+          "content": "Làm hỗn hợp bánh: Trộn khoai tây nghiền với đậu xanh hấp chín → thêm 1 quả trứng → khuấy đều → tạo thành lớp “bánh kẹp hotdog”.",
+          "editable": false
+        },
+        {
+          "id": 3,
+          "content": "Chiên/nướng bánh: Đổ hỗn hợp vào chảo chống dính, chiên vàng hai mặt hoặc nướng ở 180°C 10 phút.",
+          "editable": false
+        },
+        {
+          "id": 4,
+          "content": "Chuẩn bị nhân:\nNướng lại ức gà và thịt bò cho thơm, cắt dọc thành miếng.\nCà rốt bào sợi, trộn với chút muối và đường (làm salad nhỏ).",
+          "editable": false
+        },
+        {
+          "id": 5,
+          "content": "Lắp Hotdog:\nĐặt lớp bánh (khoai + đậu) xuống, cho ức gà, thịt bò, cà rốt.\nRưới tương cà hoặc sốt mayonnaise lên trên.",
+          "editable": false
+        },
+        {
+          "id": 6,
+          "content": "Hoàn thiện:\nRán thêm một quả trứng ốp la, đặt lên trên cho đẹp.\nCó thể gói bằng giấy nướng hoặc ăn như sandwich năng lượng.",
+          "editable": false
+        },
+        {
+          "id": 7,
+          "content": "",
+          "editable": false
+        }
+      ],
+      "calories": 1155.5,
+      "fat": 33.5,
+      "carb": 95.7,
+      "protein": 117.8,
+      "fiber": 21.3,
+      "weight": 750,
+      "micro": {
+        "cholesterol": 583,
+        "sodium": 374,
+        "water": 473,
+        "vitaminA": 992,
+        "vitaminB6": 2.4,
+        "vitaminB12": 3.9,
+        "vitaminC": 30.4,
+        "vitaminD": 2,
+        "vitaminE": 2.9,
+        "vitaminK": 16.4,
+        "starch": 70,
+        "lactose": 0,
+        "alcohol": 0,
+        "caffeine": 0,
+        "sugars": 13.2,
+        "calcium": 253,
+        "iron": 12.5,
+        "magnesium": 284,
+        "phosphorus": 1051,
+        "potassium": 2721,
+        "zinc": 10.6,
+        "copper": 1.3,
+        "fluoride": 3.6,
+        "manganese": 1.2,
+        "selenium": 99.3,
+        "thiamin": 1,
+        "riboflavin": 1.2,
+        "niacin": 22.1,
+        "pantothenicAcid": 4.6,
+        "folateTotal": 724,
+        "folicAcid": 0,
+        "transFats": 0,
+        "saturatedFats": 11.5,
+        "monoFats": 13.3,
+        "polyFats": 4.9,
+        "chloride": 150
+      },
+      "id": "23cab5c1-2cf1-4b10-86e3-97e3850e0f20",
+      "author": "Love"
+    },
+    {
+      "image": "https://res.cloudinary.com/atmin/image/upload/v1760103004/jjhogiialbxsujdcfmiw.jpg",
+      "like": "0",
+      "category": "Món chính",
+      "name": "Mỳ xào bò",
+      "description": "Mì xào bò là món ăn thơm ngon, đậm đà và giàu dinh dưỡng, kết hợp giữa thịt bò mềm ngọt, rau củ tươi giòn và hương vị đặc trưng của nước tương, dầu hào. Sợi mì vàng dai hòa quyện cùng nước sốt mặn ngọt vừa miệng, tạo nên món ăn hấp dẫn, dễ thực hiện cho bữa trưa hay bữa tối. Bông cải xanh, cà rốt và ngò rí không chỉ giúp món ăn thêm màu sắc bắt mắt mà còn bổ sung nhiều vitamin và chất xơ, mang lại cảm giác ngon miệng mà vẫn đảm bảo dinh dưỡng cân bằng.",
+      "totalTime": "1:10",
+      "prepTime": "1:10",
+      "finalWeight": "800",
+      "protions": "2",
+      "ingredients": [
+        {
+          "main": {
+            "id": "Food-6",
+            "serving": 1
+          },
+          "equivalents": []
+        },
+        {
+          "main": {
+            "id": "Food-49",
+            "serving": 1
+          },
+          "equivalents": []
+        },
+        {
+          "main": {
+            "id": "Food-27",
+            "serving": 1
+          },
+          "equivalents": []
+        },
+        {
+          "main": {
+            "id": "Food-50",
+            "serving": 1
+          },
+          "equivalents": []
+        },
+        {
+          "main": {
+            "id": "Food-32",
+            "serving": 1
+          },
+          "equivalents": []
+        },
+        {
+          "main": {
+            "id": "Food-31",
+            "serving": 1
+          },
+          "equivalents": []
+        },
+        {
+          "main": {
+            "id": "Food-28",
+            "serving": 1
+          },
+          "equivalents": []
+        }
+      ],
+      "cookingSteps": [
+        {
+          "id": 1,
+          "content": "Chuẩn bị nguyên liệu\nMì tươi hoặc mì trứng: 1–2 vắt\nThịt bò nướng: thái lát mỏng (nếu chưa nướng thì ướp trước 15 phút với dầu hào + nước tương + tiêu + tỏi băm).\nBông cải xanh: cắt miếng vừa ăn, trụng sơ 2 phút trong nước sôi rồi để ráo.\nCà rốt: gọt vỏ, thái sợi.\nNgò rí: rửa sạch, để ráo, cắt nhỏ.\nGia vị: nước tương, dầu hào, ớt bột, dầu ăn, tỏi băm.",
+          "editable": false
+        },
+        {
+          "id": 2,
+          "content": "Sơ chế và ướp thịt bò\nCho thịt bò vào tô, thêm:\n1 muỗng dầu hào\n1 muỗng nước tương\n½ muỗng ớt bột\n1 ít tiêu xay, tỏi băm\nTrộn đều và ướp khoảng 15 phút cho thấm gia vị.",
+          "editable": false
+        },
+        {
+          "id": 3,
+          "content": "Luộc mì\nNấu nước sôi, cho mì vào luộc 2–3 phút cho vừa chín.\nVớt ra, xả qua nước lạnh để mì không dính, để ráo.",
+          "editable": false
+        },
+        {
+          "id": 4,
+          "content": "Xào rau củ\nPhi thơm 1 muỗng tỏi băm với ít dầu ăn.\nCho cà rốt và bông cải xanh vào xào 2 phút, nêm 1 muỗng nước tương.\nKhi rau vừa chín tới thì trút ra dĩa riêng.",
+          "editable": false
+        },
+        {
+          "id": 5,
+          "content": "Xào thịt bò\nTrong chảo khác, thêm 1 ít dầu, cho thịt bò đã ướp vào xào lửa lớn cho chín tái (khoảng 2 phút).\nKhi thịt bò săn lại, thêm nước tương và dầu hào cho đậm vị.",
+          "editable": false
+        },
+        {
+          "id": 6,
+          "content": "Xào mì\nCho mì đã luộc vào chảo thịt bò, thêm rau củ đã xào.\nRưới 1 muỗng dầu hào + 1 muỗng nước tương + ½ muỗng ớt bột (tùy khẩu vị).\nĐảo đều tay 2–3 phút cho mọi thứ hòa quyện.",
+          "editable": false
+        },
+        {
+          "id": 7,
+          "content": "Hoàn thiện\nRắc thêm ngò rí lên trên cho thơm.\nCó thể thêm chút tiêu xay, vài lát ớt nếu thích cay.\nDọn ra đĩa và thưởng thức nóng.",
+          "editable": false
+        },
+        {
+          "id": 8,
+          "content": "",
+          "editable": false
+        }
+      ],
+      "calories": 827,
+      "fat": 29,
+      "carb": 86.6,
+      "protein": 54.9,
+      "fiber": 43,
+      "weight": 800,
+      "micro": {
+        "cholesterol": 80,
+        "sodium": 8769,
+        "water": 566.2,
+        "vitaminA": 3284,
+        "vitaminB6": 3.1,
+        "vitaminB12": 2.5,
+        "vitaminC": 198.1,
+        "vitaminD": 0,
+        "vitaminE": 34,
+        "vitaminK": 505.1,
+        "starch": 0,
+        "lactose": 0,
+        "alcohol": 0,
+        "caffeine": 0,
+        "sugars": 20.5,
+        "calcium": 353,
+        "iron": 14.9,
+        "magnesium": 310,
+        "phosphorus": 642,
+        "potassium": 3956,
+        "zinc": 8.8,
+        "copper": 0.9,
+        "fluoride": 3.6,
+        "manganese": 2.7,
+        "selenium": 32.6,
+        "thiamin": 1.1,
+        "riboflavin": 1.4,
+        "niacin": 18.2,
+        "pantothenicAcid": 2.7,
+        "folateTotal": 203,
+        "folicAcid": 0,
+        "transFats": 0,
+        "saturatedFats": 8.3,
+        "monoFats": 9.8,
+        "polyFats": 9.2,
+        "chloride": 50
+      },
+      "id": "recipe-768",
+      "author": "Kiendz"
     }
   ]
 }

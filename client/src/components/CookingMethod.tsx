@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Pencil, Trash2 } from 'lucide-react';
+import { Pencil, Plus, Trash2 } from 'lucide-react';
 import { atminDispatch, atminSelector } from '../hooks/reduxHook';
 import { setCreateRecipe } from '../redux/reducers/createRecipe.reducer';
 import type { CookingStep, Recipe } from '../interfaces/recipe.interface';
@@ -40,6 +40,12 @@ export const CookingMethod = () => {
         el.style.height = 'auto';
         el.style.height = `${el.scrollHeight}px`;
     };
+
+    useEffect(() => {
+        textareaRefs.current.forEach((el) => {
+            if (el) autoResize(el);
+        });
+    }, [steps]);
 
     // 🟢 Cập nhật nội dung bước
     const updateStepContent = (id: number, content: string) => {
@@ -123,12 +129,10 @@ export const CookingMethod = () => {
                             key={step.id}
                             className="flex border border-gray-300 bg-white group"
                         >
-                            {/* Step Number */}
                             <div className="w-10 border-r bg-gray-50 flex items-center border-gray-300 justify-center text-gray-500 font-normal text-xl">
                                 {step.id}
                             </div>
 
-                            {/* Content Area */}
                             <div className="flex-1 flex items-center px-4">
                                 <textarea
                                     ref={(el) => {
@@ -142,6 +146,33 @@ export const CookingMethod = () => {
                                         );
                                         autoResize(e.target);
                                     }}
+                                    onPaste={(e) => {
+                                        e.preventDefault();
+                                        const pastedText =
+                                            e.clipboardData.getData('text');
+                                        // 🧹 Chuẩn hóa: bỏ khoảng trắng và dòng trống thừa
+                                        const cleaned = pastedText
+                                            .replace(/\r\n/g, '\n') // chuẩn hóa newline
+                                            .replace(/\n{2,}/g, '\n') // bỏ dòng trống kép trở lên
+                                            .trim();
+
+                                        // Chèn text vào đúng vị trí con trỏ
+                                        const target =
+                                            e.target as HTMLTextAreaElement;
+                                        const start = target.selectionStart;
+                                        const end = target.selectionEnd;
+                                        const newValue =
+                                            target.value.substring(0, start) +
+                                            cleaned +
+                                            target.value.substring(end);
+
+                                        updateStepContent(step.id, newValue);
+                                        setTimeout(
+                                            () => autoResize(target),
+                                            50
+                                        );
+                                    }}
+
                                     onKeyDown={(e) => {
                                         if (e.key === 'Enter' && !e.shiftKey) {
                                             e.preventDefault();
@@ -154,6 +185,7 @@ export const CookingMethod = () => {
                                             : 'Click pencil to edit'
                                     }
                                     disabled={!step.editable}
+                                    wrap="soft"
                                     className={`w-full text-base bg-transparent overflow-hidden resize-none ${
                                         step.editable
                                             ? 'text-gray-700'
@@ -189,13 +221,13 @@ export const CookingMethod = () => {
                 </div>
 
                 {/* Add Step Button */}
-                {/* <button
+                <button
                     onClick={addStep}
-                    className="mt-6 flex items-center gap-2 text-teal-500 hover:text-teal-600 transition"
+                    className="mt-6 flex items-center gap-2 text-teal-500 hover:text-teal-600 transition cursor-pointer"
                 >
                     <Plus className="w-5 h-5" />
                     <span className="text-base">Add new step</span>
-                </button> */}
+                </button>
             </div>
         </div>
     );

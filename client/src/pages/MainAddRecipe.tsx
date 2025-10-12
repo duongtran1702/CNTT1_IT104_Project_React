@@ -14,12 +14,14 @@ import MicronutrientCard from '../components/MicronutrientCard';
 import { atminDispatch, atminSelector } from '../hooks/reduxHook';
 import { getRecipes } from '../apis/recipe.api';
 import { setDetailRecipe } from '../redux/reducers/createRecipe.reducer';
+import Favourite from '../components/Favorite';
 
 export const MainAddRecipe = () => {
     const [loading, setLoading] = useState(true);
     const [imageFile, setImageFile] = useState<File | null>(null);
+    const [isFavourite, setIsFavourite] = useState(false);
     useEffect(() => {
-        const timer = setTimeout(() => setLoading(false), 1000);
+        const timer = setTimeout(() => setLoading(false), 200);
         return () => clearTimeout(timer);
     }, []);
 
@@ -80,6 +82,10 @@ export const MainAddRecipe = () => {
         dispatch(setDetailRecipe(recipeDetail));
     }
 
+    const toggleFavourite = () => {
+        setIsFavourite(!isFavourite);
+    };
+
     return (
         <div className="flex flex-col w-[98%] my-[1%] mx-[1%]">
             {/* Top section: image + basic info */}
@@ -89,7 +95,15 @@ export const MainAddRecipe = () => {
                         <Skeleton.Image style={{ width: 300, height: 200 }} />
                     </div>
                 ) : (
-                    <AddImageRecipe onFileSelect={setImageFile} />
+                    <div className="flex flex-col gap-5">
+                        <AddImageRecipe onFileSelect={setImageFile} />
+                        {firstSegment === 'detail_recipe' && (
+                            <Favourite
+                                onToggle={toggleFavourite}
+                                isFavorite={isFavourite}
+                            />
+                        )}
+                    </div>
                 )}
                 <div className="flex flex-col gap-4">
                     {loading ? (

@@ -19,6 +19,7 @@ import type {
 import { atminDispatch, atminSelector } from '../hooks/reduxHook';
 import { filterRecipes, getRecipes } from '../apis/recipe.api';
 import { IoIosArrowDown } from 'react-icons/io';
+import { resetCreateRecipe } from '../redux/reducers/createRecipe.reducer';
 
 export const MainRecipe = () => {
     const [keyword, setKeyWord] = useState('');
@@ -29,7 +30,7 @@ export const MainRecipe = () => {
     const [sortOrder, setSortOrder] = useState<'increase' | 'decrease'>(
         'increase'
     );
-    const [itemsPerPage, setItemsPerPage] = useState(5);
+    const [itemsPerPage, setItemsPerPage] = useState(6);
     const categoryOptions = Array.from(
         new Set(dataRecipes.recipes.map((i) => i.category))
     ).map((c) => ({ value: c, label: c.charAt(0).toUpperCase() + c.slice(1) }));
@@ -134,7 +135,10 @@ export const MainRecipe = () => {
                 ) : (
                     <button
                         className="flex items-center gap-2 text-gray-800 px-4 py-2 rounded hover:text-teal-600 transition cursor-pointer"
-                        onClick={() => nvg('/add_recipe')}
+                        onClick={() => {
+                            dispatch(resetCreateRecipe());
+                            nvg('/add_recipe');
+                        }}
                     >
                         <FaPlus size={24} />
                     </button>
@@ -336,7 +340,7 @@ export const MainRecipe = () => {
                         total={dataRecipes.totalItems}
                         onChange={(page) => setCurrentPage(page)}
                         showSizeChanger
-                        pageSizeOptions={['5', '7', '10']}
+                        pageSizeOptions={['6', '8', '10']}
                         onShowSizeChange={(_, size) => {
                             setItemsPerPage(Number(size));
                             setCurrentPage(1);

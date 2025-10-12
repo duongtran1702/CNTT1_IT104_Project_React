@@ -34,7 +34,7 @@ export default function Register() {
         setAccount((pre) => ({ ...pre, [name]: value }));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         // Check empty fields
@@ -98,8 +98,6 @@ export default function Register() {
             return;
         }
 
-        toast.success('Account created successfully!');
-
         //create user
         const newUser: User = {
             account: {
@@ -112,18 +110,26 @@ export default function Register() {
         };
 
         // add user
-        dispatch(createUser(newUser));
+        const result = await dispatch(createUser(newUser));
+        if (result.meta.requestStatus === 'fulfilled') {
+            toast.success('Account created successfully!', {
+                autoClose: 1000,
+                onClose: () => {
+                    nvg('/login');
+                    setAccount({
+                        username: '',
+                        email: '',
+                        password: '',
+                        confirmPassword: '',
+                    });
+                },
 
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+            });
+        }
         // Reset form
-        setAccount({
-            username: '',
-            email: '',
-            password: '',
-            confirmPassword: '',
-        });
-        setTimeout(() => {
-            nvg('/login');
-        }, 1500);
     };
 
     return (
@@ -138,12 +144,7 @@ export default function Register() {
                 Please sign up
             </h1>
 
-            <ToastContainer
-                autoClose={1000}
-                closeOnClick
-                pauseOnHover
-                draggable
-            />
+            <ToastContainer />
 
             {/* Card */}
             <form
@@ -180,7 +181,7 @@ export default function Register() {
                         } ${focused === 'username' ? 'border-t-blue-500' : ''}`}
                     >
                         <input
-                            type="email"
+                            type="text"
                             name="email"
                             value={account.email}
                             onChange={handleChange}
