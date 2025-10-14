@@ -15,6 +15,7 @@ function LayoutAtmin({ children }: LayoutAtminProps) {
     const locationPath = window.location.pathname.split('/')[1];
     useEffect(() => {
         if (page.includes(locationPath)) setSelectedKey(locationPath);
+        else if(locationPath==='detail_recipe'||locationPath==='add_recipe') setSelectedKey('recipes')
     }, [page, locationPath]);
 
     return (

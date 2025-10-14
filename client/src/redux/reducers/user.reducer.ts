@@ -1,12 +1,19 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { InitialUserProps, User } from '../../interfaces/user.interface';
-import { createUser, getUsers } from '../../apis/user.api';
+import {
+    createUser,
+    getUsers,
+    loadUser,
+    updateFavorite,
+    updateLike,
+} from '../../apis/user.api';
 import { updateAvatar } from '../../apis/avata.api';
 
 const initialState: InitialUserProps = {
     users: [],
     status: 'idle',
     error: null,
+    userCurrent: null,
 };
 
 const userSlice = createSlice({
@@ -44,6 +51,24 @@ const userSlice = createSlice({
                     if (index !== -1) {
                         state.users[index] = action.payload;
                     }
+                }
+            )
+            .addCase(
+                loadUser.fulfilled,
+                (state, action: PayloadAction<User>) => {
+                    state.userCurrent = action.payload;
+                }
+            )
+            .addCase(
+                updateLike.fulfilled,
+                (state, action: PayloadAction<User>) => {
+                    state.userCurrent = action.payload;
+                }
+            )
+            .addCase(
+                updateFavorite.fulfilled,
+                (state, action: PayloadAction<User>) => {
+                    state.userCurrent = action.payload;
                 }
             );
     },

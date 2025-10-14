@@ -7,16 +7,20 @@
         "password": "evelyn123"
       },
       "avata": "https://res.cloudinary.com/atmin/image/upload/v1759841314/xcnzareanbj56adjmgll.jpg",
-      "id": "4afeab9f-912b-4c98-b12a-36ff94dde457"
-    },
-    {
-      "account": {
-        "email": "a@gmail.com",
-        "username": "a",
-        "password": "1"
-      },
-      "avata": null,
-      "id": "e58db889-bb5b-4c42-b5e4-ac03d94cb1a3"
+      "id": "4afeab9f-912b-4c98-b12a-36ff94dde457",
+      "likes": [
+        "Recipe-1",
+        "Recipe-2",
+        "Recipe-3",
+        "Recipe-4",
+        "Recipe-5",
+        "Recipe-6",
+        "recipe-376",
+        "recipe-768",
+        "23cab5c1-2cf1-4b10-86e3-97e3850e0f20",
+        "a88db994-c136-43fd-ae64-c7aeb887637d",
+        "Recipe-7"
+      ]
     },
     {
       "account": {
@@ -33,8 +37,16 @@
         "username": "Love",
         "password": "Love12345@"
       },
-      "avata": "https://res.cloudinary.com/atmin/image/upload/v1760061395/rhyphgogibtvzq63wuut.jpg",
-      "id": "26258ab9-79cd-4e09-af63-91fbbba99f31"
+      "avata": "https://res.cloudinary.com/atmin/image/upload/v1760291461/mxknpiimzgs7mgkackax.jpg",
+      "id": "26258ab9-79cd-4e09-af63-91fbbba99f31",
+      "likes": [
+        "Recipe-5",
+        "Recipe-1",
+        "Recipe-2",
+        "Recipe-3",
+        "Recipe-4"
+      ],
+      "favorites": []
     },
     {
       "account": {
@@ -43,7 +55,20 @@
         "password": "Mahiru12345@"
       },
       "avata": null,
-      "id": "5ac45c36-58b0-4184-9354-1b836fee5e8a"
+      "id": "5ac45c36-58b0-4184-9354-1b836fee5e8a",
+      "likes": [
+        "Recipe-1",
+        "Recipe-2",
+        "Recipe-3",
+        "Recipe-5",
+        "Recipe-4",
+        "Recipe-6",
+        "recipe-376",
+        "recipe-768",
+        "23cab5c1-2cf1-4b10-86e3-97e3850e0f20",
+        "a88db994-c136-43fd-ae64-c7aeb887637d",
+        "Recipe-7"
+      ]
     },
     {
       "account": {
@@ -56,48 +81,23 @@
     },
     {
       "account": {
-        "email": "haruka@gmail.com",
-        "username": "Haruka",
-        "password": "Haruka123@"
-      },
-      "avata": null,
-      "id": "f7dda778-842d-4fa6-9ef5-82874f8f8bab"
-    },
-    {
-      "account": {
-        "email": "kiennv@gmail.com",
-        "username": "Kiennv",
-        "password": "Kien1234@"
-      },
-      "avata": null,
-      "id": "6e823704-08f3-4e97-9953-4bb995105af8"
-    },
-    {
-      "account": {
-        "email": "hola@gmail.com",
-        "username": "Hola",
-        "password": "Hola1234@"
-      },
-      "avata": null,
-      "id": "d70d36b5-cd19-4c20-affd-9772fab3cfe5"
-    },
-    {
-      "account": {
-        "email": "kien@gmail.com",
-        "username": "Kiennv2004",
-        "password": "Kien1234@"
-      },
-      "avata": null,
-      "id": "0933c4f0-16db-4a1c-9c81-3d8def8e8573"
-    },
-    {
-      "account": {
         "email": "kiendz@gmail.com",
         "username": "Kiendz",
         "password": "Kiendz123@"
       },
       "avata": "https://res.cloudinary.com/atmin/image/upload/v1760102670/xmfipfvtohdftjaswsnh.jpg",
-      "id": "e1671a1d-3532-4aa3-9415-52d67e2d9eae"
+      "id": "e1671a1d-3532-4aa3-9415-52d67e2d9eae",
+      "likes": [
+        "Recipe-3",
+        "Recipe-4",
+        "Recipe-5",
+        "Recipe-1",
+        "Recipe-2"
+      ],
+      "favorites": [
+        "Recipe-2",
+        "Recipe-3"
+      ]
     },
     {
       "account": {
@@ -105,8 +105,24 @@
         "username": "quydzai",
         "password": "Quy2007@"
       },
-      "avata": null,
-      "id": "425481b6-5826-4a87-b9fd-47408db9a807"
+      "avata": "https://res.cloudinary.com/atmin/image/upload/v1760319336/tuxjru9yjdw3g9dxtvnc.jpg",
+      "id": "425481b6-5826-4a87-b9fd-47408db9a807",
+      "favorites": [
+        "recipe-376"
+      ],
+      "likes": [
+        "Recipe-3",
+        "Recipe-7",
+        "a88db994-c136-43fd-ae64-c7aeb887637d",
+        "23cab5c1-2cf1-4b10-86e3-97e3850e0f20",
+        "recipe-376",
+        "recipe-768",
+        "Recipe-4",
+        "Recipe-1",
+        "Recipe-2",
+        "Recipe-5",
+        "Recipe-6"
+      ]
     },
     {
       "account": {
@@ -3003,7 +3019,7 @@
   "recipes": [
     {
       "image": "https://www.foodandwine.com/thmb/8YAIANQTZnGpVWj2XgY0dYH1V4I=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/spicy-chicken-curry-FT-RECIPE0321-58f84fdf7b484e7f86894203eb7834e7.jpg",
-      "like": "0",
+      "like": 7,
       "category": "Vegetables",
       "name": "Spicy Chicken Curry",
       "description": "This is recipe 1",
@@ -3014,21 +3030,21 @@
       "ingredients": [
         {
           "main": {
-            "id": 1,
+            "id": "Food-1",
             "serving": 1
           },
           "equivalents": []
         },
         {
           "main": {
-            "id": 4,
+            "id": "Food-2",
             "serving": 1
           },
           "equivalents": []
         },
         {
           "main": {
-            "id": 2,
+            "id": "Food-3",
             "serving": 1
           },
           "equivalents": []
@@ -3094,7 +3110,7 @@
     },
     {
       "image": "https://sarahscucinabella.com/wp-content/uploads/2022/05/Grilled-Salmon-Salad-for-One-2-720x720.jpg",
-      "like": "0",
+      "like": 5,
       "category": "Vegetables",
       "name": "Grilled Salmon Salad",
       "description": "This is recipe 2",
@@ -3105,21 +3121,21 @@
       "ingredients": [
         {
           "main": {
-            "id": 1,
+            "id": "Food-1",
             "serving": 1
           },
           "equivalents": []
         },
         {
           "main": {
-            "id": 4,
+            "id": "Food-2",
             "serving": 1
           },
           "equivalents": []
         },
         {
           "main": {
-            "id": 2,
+            "id": "Food-3",
             "serving": 1
           },
           "equivalents": []
@@ -3185,7 +3201,7 @@
     },
     {
       "image": "https://www.allrecipes.com/thmb/txgejbRaNYg1Pbzw87YKZsTAXYI=/0x512/filters:no_upscale():max_bytes(150000):strip_icc()/16311-simple-beef-stroganoff-DDMFS-4x3-1e966286eef54c0f96c882e569926eb3.jpg",
-      "like": "0",
+      "like": 6,
       "category": "Vegetables",
       "name": "Beef Stroganoff",
       "description": "This is recipe 3",
@@ -3196,21 +3212,21 @@
       "ingredients": [
         {
           "main": {
-            "id": 1,
+            "id": "Food-1",
             "serving": 1
           },
           "equivalents": []
         },
         {
           "main": {
-            "id": 4,
+            "id": "Food-2",
             "serving": 1
           },
           "equivalents": []
         },
         {
           "main": {
-            "id": 2,
+            "id": "Food-3",
             "serving": 1
           },
           "equivalents": []
@@ -3276,7 +3292,7 @@
     },
     {
       "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOFhcbP5r6JkEyqPApLr71n6U7GbJTGz8e8w&s",
-      "like": "0",
+      "like": 4,
       "category": "Vegetables",
       "name": "Vegetable Stir Fry",
       "description": "This is recipe 4",
@@ -3287,21 +3303,21 @@
       "ingredients": [
         {
           "main": {
-            "id": 1,
+            "id": "Food-1",
             "serving": 1
           },
           "equivalents": []
         },
         {
           "main": {
-            "id": 4,
+            "id": "Food-2",
             "serving": 1
           },
           "equivalents": []
         },
         {
           "main": {
-            "id": 2,
+            "id": "Food-3",
             "serving": 1
           },
           "equivalents": []
@@ -3367,7 +3383,7 @@
     },
     {
       "image": "https://cdn.loveandlemons.com/wp-content/uploads/2023/01/mushroom-risotto.jpg",
-      "like": "0",
+      "like": 5,
       "category": "Vegetables",
       "name": "Mushroom Risotto",
       "description": "This is recipe 5",
@@ -3378,21 +3394,21 @@
       "ingredients": [
         {
           "main": {
-            "id": 1,
+            "id": "Food-1",
             "serving": 1
           },
           "equivalents": []
         },
         {
           "main": {
-            "id": 4,
+            "id": "Food-2",
             "serving": 1
           },
           "equivalents": []
         },
         {
           "main": {
-            "id": 2,
+            "id": "Food-3",
             "serving": 1
           },
           "equivalents": []
@@ -3458,7 +3474,7 @@
     },
     {
       "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIgOucISXPullJISitXX0WuCO7ErdlNtQ4GQ&s",
-      "like": "0",
+      "like": 3,
       "category": "Fruits",
       "name": "Lemon Garlic Shrimp",
       "description": "This is recipe 6",
@@ -3469,35 +3485,21 @@
       "ingredients": [
         {
           "main": {
-            "id": 1,
+            "id": "Food-1",
             "serving": 1
           },
           "equivalents": []
         },
         {
           "main": {
-            "id": 3,
+            "id": "Food-2",
             "serving": 1
           },
           "equivalents": []
         },
         {
           "main": {
-            "id": 481,
-            "serving": 1
-          },
-          "equivalents": []
-        },
-        {
-          "main": {
-            "id": 563,
-            "serving": 1
-          },
-          "equivalents": []
-        },
-        {
-          "main": {
-            "id": 4,
+            "id": "Food-3",
             "serving": 1
           },
           "equivalents": []
@@ -3573,7 +3575,7 @@
     },
     {
       "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhLF7839URt1kRllnua84eoUKrzW-xr3gcug&s",
-      "like": "0",
+      "like": 3,
       "category": "Vegetables",
       "name": "Pasta Carbonara",
       "description": "This is recipe 7",
@@ -3584,14 +3586,21 @@
       "ingredients": [
         {
           "main": {
-            "id": 4,
+            "id": "Food-1",
             "serving": 1
           },
           "equivalents": []
         },
         {
           "main": {
-            "id": 2,
+            "id": "Food-2",
+            "serving": 1
+          },
+          "equivalents": []
+        },
+        {
+          "main": {
+            "id": "Food-3",
             "serving": 1
           },
           "equivalents": []
@@ -3662,7 +3671,7 @@
     },
     {
       "image": "https://res.cloudinary.com/atmin/image/upload/v1760058563/fvnxmkt6prti1ozbdq26.jpg",
-      "like": "0",
+      "like": 3,
       "category": "Món phụ",
       "name": "Recipe-1",
       "description": "a",
@@ -3752,7 +3761,7 @@
     },
     {
       "image": "https://res.cloudinary.com/atmin/image/upload/v1760062411/mglbbyafni262jpcggtr.jpg",
-      "like": "0",
+      "like": 3,
       "category": "Ăn sáng",
       "name": "Hot Dog",
       "description": "A healthy fusion hotdog made with grilled chicken, beef, and mashed potatoes.\nRich in protein and fiber from mung beans and carrots.\nPerfect for a quick, balanced, and energizing meal.",
@@ -3890,7 +3899,7 @@
     },
     {
       "image": "https://res.cloudinary.com/atmin/image/upload/v1760103004/jjhogiialbxsujdcfmiw.jpg",
-      "like": "0",
+      "like": 3,
       "category": "Món chính",
       "name": "Mỳ xào bò",
       "description": "Mì xào bò là món ăn thơm ngon, đậm đà và giàu dinh dưỡng, kết hợp giữa thịt bò mềm ngọt, rau củ tươi giòn và hương vị đặc trưng của nước tương, dầu hào. Sợi mì vàng dai hòa quyện cùng nước sốt mặn ngọt vừa miệng, tạo nên món ăn hấp dẫn, dễ thực hiện cho bữa trưa hay bữa tối. Bông cải xanh, cà rốt và ngò rí không chỉ giúp món ăn thêm màu sắc bắt mắt mà còn bổ sung nhiều vitamin và chất xơ, mang lại cảm giác ngon miệng mà vẫn đảm bảo dinh dưỡng cân bằng.",
@@ -4037,6 +4046,84 @@
       },
       "id": "recipe-768",
       "author": "Kiendz"
+    },
+    {
+      "image": "https://res.cloudinary.com/atmin/image/upload/v1760317561/gqutgpjcugfppuio1rjz.jpg",
+      "like": 3,
+      "category": "Đồ uống",
+      "name": "Nước chanh",
+      "description": "Ngọt",
+      "totalTime": "0:10",
+      "prepTime": "0:10",
+      "finalWeight": "100",
+      "protions": "1",
+      "ingredients": [
+        {
+          "main": {
+            "id": "Food-45",
+            "serving": 1
+          },
+          "equivalents": []
+        }
+      ],
+      "cookingSteps": [
+        {
+          "id": 1,
+          "content": "Vắt và uống",
+          "editable": false
+        },
+        {
+          "id": 2,
+          "content": "",
+          "editable": false
+        }
+      ],
+      "calories": 52.5,
+      "fat": 0.1,
+      "carb": 12,
+      "protein": 0.9,
+      "fiber": 2.4,
+      "weight": 100,
+      "micro": {
+        "cholesterol": 0,
+        "sodium": 0,
+        "water": 87,
+        "vitaminA": 11,
+        "vitaminB6": 0.1,
+        "vitaminB12": 0,
+        "vitaminC": 53.2,
+        "vitaminD": 0,
+        "vitaminE": 0.2,
+        "vitaminK": 0,
+        "starch": 0,
+        "lactose": 0,
+        "alcohol": 0,
+        "caffeine": 0,
+        "sugars": 9,
+        "calcium": 40,
+        "iron": 0.1,
+        "magnesium": 10,
+        "phosphorus": 14,
+        "potassium": 181,
+        "zinc": 0.1,
+        "copper": 0,
+        "fluoride": 3.3,
+        "manganese": 0,
+        "selenium": 0.5,
+        "thiamin": 0.1,
+        "riboflavin": 0,
+        "niacin": 0.3,
+        "pantothenicAcid": 0.3,
+        "folateTotal": 30,
+        "folicAcid": 0,
+        "transFats": 0,
+        "saturatedFats": 0,
+        "monoFats": 0,
+        "polyFats": 0,
+        "chloride": 0
+      },
+      "id": "recipe-376",
+      "author": "quydzai"
     }
   ]
 }

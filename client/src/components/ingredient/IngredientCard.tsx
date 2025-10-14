@@ -5,14 +5,21 @@ import { SwapOutlined } from '@ant-design/icons';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaTrash } from 'react-icons/fa';
 import { atminDispatch } from '../../hooks/reduxHook';
-import { addEquivalentIng } from '../../redux/reducers/createRecipe.reducer';
+import {
+    addEquivalentIng,
+    deleteEquivalentIng,
+    deleteMainIng,
+} from '../../redux/reducers/createRecipe.reducer';
 import type { FoodServing } from '../../interfaces/recipe.interface';
+import { Modal } from 'antd';
+import { toast } from 'react-toastify';
 
 interface FoodServingDevelop {
     id: number;
     name?: string;
     serving: number;
     weight?: string;
+    category?: string;
 }
 interface PropsIngredientCard {
     main: FoodServingDevelop;
@@ -33,6 +40,25 @@ const IngredientCard: React.FC<IngredientCardProps> = ({
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { main, equivalents } = ingredient;
     const dispatch = atminDispatch();
+    const [equiDelete, setEquiDelete] = useState<FoodServingDevelop | null>(
+        null
+    );
+
+    const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
+
+    const handleOk = () => {
+        if (equiDelete)
+            dispatch(
+                deleteEquivalentIng({ mainId: main.id, equiId: equiDelete.id })
+            );
+        else dispatch(deleteMainIng(main.id));
+        toast.success('Delete ingredient successfull');
+        setIsModalDeleteOpen(false);
+    };
+
+    const handleCancel = () => {
+        setIsModalDeleteOpen(false);
+    };
     return (
         <div className="bg-gray-50 rounded w-[812px]">
             <div className="flex items-center justify-between p-3 border border-gray-200 ">
@@ -56,7 +82,10 @@ const IngredientCard: React.FC<IngredientCardProps> = ({
                     </span>
                 </div>
                 <button className="text-gray-400 hover:text-gray-800">
-                    <FaTrash className="w-4 h-4 hover:text-red-500 cursor-pointer" />
+                    <FaTrash
+                        className="w-4 h-4 hover:text-red-500 cursor-pointer"
+                        onClick={() => setIsModalDeleteOpen(true)}
+                    />
                 </button>
             </div>
 
@@ -82,7 +111,13 @@ const IngredientCard: React.FC<IngredientCardProps> = ({
                                         </span>
                                     </div>
                                     <button className="text-gray-400 hover:text-gray-600">
-                                        <FaTrash className="w-4 h-4 hover:text-orange-500 cursor-pointer" />
+                                        <FaTrash
+                                            className="w-4 h-4 hover:text-orange-500 cursor-pointer"
+                                            onClick={() => {
+                                                setIsModalDeleteOpen(true);
+                                                setEquiDelete(item);
+                                            }}
+                                        />
                                     </button>
                                 </div>
                             ))}
@@ -122,10 +157,61 @@ const IngredientCard: React.FC<IngredientCardProps> = ({
                                 )
                             }
                             currentMainId={main.id}
+                            key={main.id}
+                            categoryProps={main.category}
                         />
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            <Modal
+                centered
+                title={null}
+                width={400}
+                open={isModalDeleteOpen}
+                onOk={handleOk}
+                onCancel={handleCancel}
+                okText="Delete"
+                cancelText="Cancel"
+                okButtonProps={{
+                    danger: true,
+                    className: 'bg-red-500 hover:bg-red-600',
+                }}
+                cancelButtonProps={{
+                    className: 'bg-gray-200 hover:bg-gray-300',
+                }}
+                className="rounded-xl overflow-hidden text-center"
+                style={{ padding: 0 }}
+            >
+                <div className="py-4  flex flex-col items-center gap-3">
+                    <h2 className="text-xl font-semibold text-gray-800">
+                        {equiDelete === null
+                            ? 'Delete ingredient'
+                            : 'Delete ingredient equivalent'}
+                    </h2>
+
+                    <p className="text-gray-500 text-sm">
+                        {equiDelete === null ? (
+                            <>
+                                Delete main ingredient{' '}
+                                <span className="font-medium text-gray-700">
+                                    {main.name}
+                                </span>{' '}
+                                and all equivalents?
+                            </>
+                        ) : (
+                            <>
+                                Are you sure you want to delete equivalent
+                                ingredient{' '}
+                                <span className="font-medium text-gray-700">
+                                    {equiDelete.name}
+                                </span>
+                                ?
+                            </>
+                        )}
+                    </p>
+                </div>
+            </Modal>
         </div>
     );
 };

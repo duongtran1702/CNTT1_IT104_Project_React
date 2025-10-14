@@ -107,6 +107,8 @@ export default function Register() {
             },
             avata: null,
             id: uuidv4(),
+            likes: [],
+            favorites: [],
         };
 
         // add user

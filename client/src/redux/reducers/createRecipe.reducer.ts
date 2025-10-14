@@ -100,8 +100,28 @@ export const createRecipeStore = createSlice({
                     action.payload.main.serving;
             } else {
                 state.ingredients.push(action.payload);
-                toast.success('Add ingredient successful!');
             }
+            toast.success('Add ingredient successful!');
+        },
+
+        deleteEquivalentIng: (
+            state,
+            action: PayloadAction<{ mainId: number; equiId: number }>
+        ) => {
+            const ing = state.ingredients.find(
+                (i) => i.main.id === action.payload.mainId
+            );
+            if (ing) {
+                ing.equivalents = ing.equivalents.filter(
+                    (i) => i.id !== action.payload.equiId
+                );
+            }
+        },
+
+        deleteMainIng: (state, action: PayloadAction<number>) => {
+            state.ingredients = state.ingredients.filter(
+                (i) => i.main.id !== action.payload
+            );
         },
 
         addEquivalentIng: (
@@ -131,6 +151,7 @@ export const createRecipeStore = createSlice({
                     } else {
                         ingredient.equivalents.push(equivalent);
                     }
+                    toast.success('Add ingredient equivalent successful!');
                 }
             }
         },
@@ -240,7 +261,9 @@ export const {
     addMainIng,
     addEquivalentIng,
     calMacronutrients,
-    setDetailRecipe
+    setDetailRecipe,
+    deleteEquivalentIng,
+    deleteMainIng,
 } = createRecipeStore.actions;
 
 export const createRecipeReducer = createRecipeStore.reducer;

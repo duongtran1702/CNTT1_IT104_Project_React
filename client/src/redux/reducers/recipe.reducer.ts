@@ -3,7 +3,12 @@ import type {
     InitialRecipeProps,
     Recipe,
 } from '../../interfaces/recipe.interface';
-import { createRecipe, filterRecipes, getRecipes } from '../../apis/recipe.api';
+import {
+    createRecipe,
+    filterRecipes,
+    getRecipes,
+    updateTotalLike,
+} from '../../apis/recipe.api';
 import type { DataFilter } from '../../interfaces/foods.interface';
 
 const initialState: InitialRecipeProps = {
@@ -49,6 +54,17 @@ const recipeSlice = createSlice({
                     state.recipeFilter = action.payload.data;
                     state.url = action.payload.url;
                     state.totalItems = action.payload.totalItems;
+                }
+            )
+            .addCase(
+                updateTotalLike.fulfilled,
+                (state, action: PayloadAction<Recipe>) => {
+                    const found = state.recipes.find(
+                        (i) => i.id === action.payload.id
+                    );
+                    if (found) {
+                        found.like = action.payload.like;
+                    }
                 }
             );
     },

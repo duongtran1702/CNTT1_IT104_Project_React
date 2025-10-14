@@ -42,6 +42,7 @@ const IngredientManager: React.FC = () => {
     const [expandedIngredients, setExpandedIngredients] = useState<number[]>(
         []
     );
+    
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const dispatch = atminDispatch();
@@ -115,6 +116,7 @@ const IngredientManager: React.FC = () => {
                         >
                             <ModalIngredient
                                 // onClose={() => setIsModalOpen(false)}
+                                key="manage-ingredient"
                                 onAddMainIng={(ing: Ingredient) =>
                                     dispatch(addMainIng(ing))
                                 }

@@ -10,20 +10,27 @@ import { CookingMethod } from '../components/CookingMethod';
 import { NutritionInfo } from '../components/NutritionInfo';
 import MacronutrientChart from '../components/MacronutrientChart';
 import MicronutrientCard from '../components/MicronutrientCard';
-// import { micronutrientData } from '../data/temporary';
 import { atminDispatch, atminSelector } from '../hooks/reduxHook';
 import { getRecipes } from '../apis/recipe.api';
 import { setDetailRecipe } from '../redux/reducers/createRecipe.reducer';
 import Favourite from '../components/Favorite';
+import { loadUser, updateFavorite } from '../apis/user.api';
 
 export const MainAddRecipe = () => {
     const [loading, setLoading] = useState(true);
     const [imageFile, setImageFile] = useState<File | null>(null);
-    const [isFavourite, setIsFavourite] = useState(false);
     useEffect(() => {
         const timer = setTimeout(() => setLoading(false), 200);
         return () => clearTimeout(timer);
     }, []);
+
+    const dataLocal = localStorage.getItem('currentUser');
+    const userLocal = dataLocal ? JSON.parse(dataLocal) : null;
+
+    const user = atminSelector((s) => s.user.userCurrent);
+    useEffect(() => {
+        if (!user) dispatch(loadUser(userLocal.id));
+    });
 
     const location = useLocation();
     const pathSegments = location.pathname.split('/');
@@ -32,6 +39,7 @@ export const MainAddRecipe = () => {
 
     const recipes = atminSelector((s) => s.recipe.recipes);
     const dispatch = atminDispatch();
+    
     useEffect(() => {
         if (recipes.length === 0) dispatch(getRecipes());
     }, [dispatch, recipes.length]);
@@ -73,16 +81,36 @@ export const MainAddRecipe = () => {
         ],
         [micro]
     );
-    if (id !== undefined && firstSegment === 'detail_recipe') {
-        const recipeDetail = recipes.find((i) => i.id === id);
-        console.log(id);
-        console.log(recipeDetail);
-        if (!recipeDetail) return;
-        console.log(recipeDetail);
-        dispatch(setDetailRecipe(recipeDetail));
-    }
+    useEffect(() => {
+        if (id !== undefined && firstSegment === 'detail_recipe') {
+            const recipeDetail = recipes.find((i) => i.id === id);
+            if (recipeDetail) {
+                dispatch(setDetailRecipe(recipeDetail));
+            }
+        }
+    }, [id, firstSegment, recipes, dispatch]);
+
+    const [isFavourite, setIsFavourite] = useState(false);
+
+    useEffect(() => {
+        if (user && id) {
+            setIsFavourite(user.favorites?.includes(id) ?? false);
+        }
+    }, [user, id]);
 
     const toggleFavourite = () => {
+        if (!user || !id) return;
+
+        const data = {
+            favorites: [...(user.favorites ?? []), id],
+            userId: user.id,
+        };
+
+        if (!isFavourite) dispatch(updateFavorite(data));
+        else {
+            const tmp = user.favorites.filter((i) => i !== id);
+            dispatch(updateFavorite({ favorites: tmp, userId: user.id }));
+        }
         setIsFavourite(!isFavourite);
     };
 

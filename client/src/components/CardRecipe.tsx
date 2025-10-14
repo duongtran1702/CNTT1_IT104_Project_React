@@ -6,7 +6,8 @@ import type { Recipe } from '../interfaces/recipe.interface';
 import atmin1 from '../assets/atmin-1.png';
 import { Avatar } from 'antd';
 import { atminDispatch, atminSelector } from '../hooks/reduxHook';
-import { getUsers } from '../apis/user.api';
+import { getUsers, loadUser, updateLike } from '../apis/user.api';
+import { updateTotalLike } from '../apis/recipe.api';
 
 type CardProps = {
     data: Recipe;
@@ -14,16 +15,79 @@ type CardProps = {
 };
 
 export const CardRecipe = ({ data, onClick }: CardProps) => {
-    const [liked, setLiked] = useState(false);
-    const users = atminSelector((s) => s.user.users);
     const dispatch = atminDispatch();
-    
+    const users = atminSelector((s) => s.user.users);
+    const user = atminSelector((s) => s.user.userCurrent);
+
+    const [liked, setLiked] = useState<boolean>(false);
+    const [likeCount, setLikeCount] = useState<number>(Number(data.like) || 0);
+
     useEffect(() => {
         if (users.length === 0) dispatch(getUsers());
     }, [dispatch, users]);
 
-    if (!data) return;
+    useEffect(() => {
+        const dataLocal = localStorage.getItem('currentUser');
+        const userLocal = dataLocal ? JSON.parse(dataLocal) : null;
+        //check id after login or change account
+        if (!user || user?.id !== userLocal.id) {
+            dispatch(loadUser(userLocal.id));
+        }
+    }, [dispatch, user]);
+
+    useEffect(() => {
+        if (user?.likes && data?.id) {
+            setLiked(user.likes.includes(data.id));
+        } else {
+            setLiked(false);
+        }
+    }, [user, data?.id]);
+
+    useEffect(() => {
+        setLikeCount(Number(data.like) || 0);
+    }, [data.like]);
+
+    if (!data) return null;
+
     const author = users.find((u) => u.account.username === data.author);
+
+    // Handler: optimistic update, call backend, rollback on fail
+    const handleLikeClick = async (e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (!user || !data.id) return;
+
+        const newLikes = liked
+            ? user.likes.filter((i) => i !== data.id)
+            : [...(user.likes ?? []), data.id];
+
+        const prevLiked = liked;
+        const prevCount = likeCount;
+        const optimisticCount = prevLiked
+            ? Math.max(0, prevCount - 1)
+            : prevCount + 1;
+        setLiked(!prevLiked);
+        setLikeCount(optimisticCount);
+
+        try {
+            await dispatch(
+                updateLike({ likes: newLikes, userId: user.id })
+            ).unwrap?.();
+
+            await dispatch(
+                updateTotalLike({
+                    totalLike: optimisticCount,
+                    recipeId: data.id,
+                })
+            ).unwrap?.();
+        } catch (err) {
+            // rollback UI if any request fails
+            setLiked(prevLiked);
+            setLikeCount(prevCount);
+
+            console.error('Update like failed', err);
+        }
+    };
+
     return (
         <div
             style={{
@@ -39,7 +103,7 @@ export const CardRecipe = ({ data, onClick }: CardProps) => {
                 boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
                 transition: 'all 0.3s ease',
                 cursor: 'pointer',
-                maxWidth:590
+                maxWidth: 590,
             }}
             onMouseEnter={(e) =>
                 (e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.1)')
@@ -49,7 +113,6 @@ export const CardRecipe = ({ data, onClick }: CardProps) => {
             }
             onClick={onClick}
         >
-            {/* Left Card */}
             <div
                 style={{
                     position: 'relative',
@@ -108,7 +171,6 @@ export const CardRecipe = ({ data, onClick }: CardProps) => {
                 </div>
             </div>
 
-            {/* Right Card */}
             <div
                 style={{
                     width: '340px',
@@ -168,10 +230,7 @@ export const CardRecipe = ({ data, onClick }: CardProps) => {
                             borderRadius: '5px',
                             cursor: 'pointer',
                         }}
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            setLiked(!liked);
-                        }}
+                        onClick={handleLikeClick}
                     >
                         {liked ? (
                             <HeartFilled
@@ -189,7 +248,7 @@ export const CardRecipe = ({ data, onClick }: CardProps) => {
                                 color: '#000',
                             }}
                         >
-                            {liked ? Number(data.like) + 1 : Number(data.like)}
+                            {likeCount}
                         </div>
                     </div>
                 </div>
@@ -225,12 +284,13 @@ export const CardRecipe = ({ data, onClick }: CardProps) => {
                         justifyContent: 'space-between',
                     }}
                 >
+                    {/* ... nutrition lists unchanged ... */}
                     <ul
                         style={{
                             listStyle: 'none',
                             padding: 0,
                             margin: 0,
-                            color: 'rgba(103, 106, 108, 1)',
+                            color: 'rgba(103,106,108,1)',
                             display: 'flex',
                             flexDirection: 'column',
                             gap: '5px',
@@ -248,7 +308,7 @@ export const CardRecipe = ({ data, onClick }: CardProps) => {
                             listStyle: 'none',
                             padding: 0,
                             margin: 0,
-                            color: 'rgba(103, 106, 108, 1)',
+                            color: 'rgba(103,106,108,1)',
                             display: 'flex',
                             flexDirection: 'column',
                             gap: '5px',
@@ -266,7 +326,7 @@ export const CardRecipe = ({ data, onClick }: CardProps) => {
                             listStyle: 'none',
                             padding: 0,
                             margin: 0,
-                            color: 'rgba(103, 106, 108, 1)',
+                            color: 'rgba(103,106,108,1)',
                             display: 'flex',
                             flexDirection: 'column',
                             gap: '5px',
@@ -284,7 +344,7 @@ export const CardRecipe = ({ data, onClick }: CardProps) => {
                             listStyle: 'none',
                             padding: 0,
                             margin: 0,
-                            color: 'rgba(103, 106, 108, 1)',
+                            color: 'rgba(103,106,108,1)',
                             display: 'flex',
                             flexDirection: 'column',
                             gap: '5px',
@@ -302,7 +362,7 @@ export const CardRecipe = ({ data, onClick }: CardProps) => {
                             listStyle: 'none',
                             padding: 0,
                             margin: 0,
-                            color: 'rgba(103, 106, 108, 1)',
+                            color: 'rgba(103,106,108,1)',
                             display: 'flex',
                             flexDirection: 'column',
                             gap: '5px',

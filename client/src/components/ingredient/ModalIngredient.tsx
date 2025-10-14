@@ -1,55 +1,71 @@
-import React, { useEffect, useState, type ChangeEvent } from 'react';
+import React, { useEffect, useMemo, useState, type ChangeEvent } from 'react';
 import { Plus } from 'lucide-react';
 import { atminDispatch, atminSelector } from '../../hooks/reduxHook';
-import { filterFoods, getFoods } from '../../apis/food.api';
-import type {
-    FilterFoodPayload,
-    InitialFoodProps,
-} from '../../interfaces/foods.interface';
+import { fetchFoodsApi, getFoods } from '../../apis/food.api';
+import type { FilterFoodPayload, Food } from '../../interfaces/foods.interface';
 import type {
     FoodServing,
     Ingredient,
 } from '../../interfaces/recipe.interface';
-import { calMacronutrients } from '../../redux/reducers/createRecipe.reducer';
 import { FaSortAmountDown, FaSortAmountUp } from 'react-icons/fa';
 import { IoIosArrowDown } from 'react-icons/io';
 import { Pagination, Select } from 'antd';
+import { calMacronutrients } from '../../redux/reducers/createRecipe.reducer';
+import { debounce } from 'lodash';
 
 interface ModalIngredientProps {
     onAddMainIng?: (ingredient: Ingredient) => void;
     onAddEquivalentIng?: (id: number, equivalent: FoodServing) => void;
     currentMainId?: number;
+    categoryProps?: string;
+}
+
+export interface FoodFilterState {
+    foodFilter: Food[];
+    totalItems: number;
 }
 
 const ModalIngredient: React.FC<ModalIngredientProps> = ({
     onAddEquivalentIng,
     onAddMainIng,
     currentMainId,
+    categoryProps,
 }) => {
     const [keyword, setKeyWord] = useState('');
+    const [debouncedKeyword, setDebouncedKeyword] = useState('');
+
     const [sortBy, setSortBy] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const dataFoods: InitialFoodProps = atminSelector((s) => s.food);
+    const foods: Food[] = atminSelector((s) => s.food.foods);
     const dispatch = atminDispatch();
+    const [dataFood, setDataFood] = useState<FoodFilterState>({
+        foodFilter: [],
+        totalItems: 0,
+    });
+
     const [sortOrder, setSortOrder] = useState<'increase' | 'decrease'>(
         'increase'
     );
+    const [category, setCategory] = useState<string>(() => {
+        if (currentMainId && categoryProps) return categoryProps;
+        return '';
+    });
+
     const [itemsPerPage, setItemsPerPage] = useState(5);
+
     const categoryOptions = Array.from(
-        new Set(dataFoods.foods.map((f) => f.category))
+        new Set(foods.map((f) => f.category))
     ).map((c) => ({ value: c, label: c.charAt(0).toUpperCase() + c.slice(1) }));
 
     categoryOptions.unshift({ value: '', label: 'All' });
 
-    const [category, setCategory] = useState('');
+    useEffect(() => {
+        if (foods.length === 0) dispatch(getFoods());
+    }, [dispatch, foods.length]);
 
     useEffect(() => {
-        if (dataFoods.foods.length === 0) dispatch(getFoods());
-    }, [dispatch, dataFoods]);
-
-    useEffect(() => {
-        const data: FilterFoodPayload = {
-            keyword,
+        const payload: FilterFoodPayload = {
+            keyword: debouncedKeyword,
             category,
             page: String(currentPage),
             sort: {
@@ -58,16 +74,28 @@ const ModalIngredient: React.FC<ModalIngredientProps> = ({
                 itemsPerPage: String(itemsPerPage),
             },
         };
-        dispatch(filterFoods(data));
+
+        (async () => {
+            const res = await fetchFoodsApi(payload);
+            setDataFood({
+                foodFilter: res.foodFilter,
+                totalItems: res.totalItems,
+            });
+        })();
     }, [
-        keyword,
+        debouncedKeyword,
         category,
         currentPage,
         sortBy,
         sortOrder,
-        dispatch,
         itemsPerPage,
     ]);
+
+    const handleAddEquivalent = (mainId: number, item: FoodServing) => {
+        if (onAddEquivalentIng) {
+            onAddEquivalentIng(mainId, item);
+        }
+    };
 
     const handleAddMain = (id: number, serving: number) => {
         if (onAddMainIng) {
@@ -76,15 +104,23 @@ const ModalIngredient: React.FC<ModalIngredientProps> = ({
                 equivalents: [],
             };
             onAddMainIng(newIngredient);
-            dispatch(calMacronutrients(dataFoods.foods));
+            dispatch(calMacronutrients(foods));
         }
     };
 
-    const handleAddEquivalent = (mainId: number, item: FoodServing) => {
-        if (onAddEquivalentIng) {
-            onAddEquivalentIng(mainId, item);
-        }
-    };
+    const handleDebounce = useMemo(
+        () =>
+            debounce((value: string) => {
+                setDebouncedKeyword(value);
+            }, 500),
+        []
+    );
+
+    useEffect(() => {
+        return () => {
+            handleDebounce.cancel();
+        };
+    }, [handleDebounce]);
 
     return (
         <div className="bg-gray-50 rounded p-1 space-y-4">
@@ -93,9 +129,10 @@ const ModalIngredient: React.FC<ModalIngredientProps> = ({
                     <input
                         placeholder="Search food"
                         value={keyword}
-                        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                            setKeyWord(e.target.value)
-                        }
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                            setKeyWord(e.target.value);
+                            handleDebounce(e.target.value);
+                        }}
                         className="focus:outline-none focus:border-[#36acf5] focus:shadow-[0_0_0_1px_rgba(22,119,255,0.2)] transition-all duration-200 w-[50%] border border-gray-300 h-10 rounded-[5px] text-gray-500 px-4 py-2"
                     />
 
@@ -161,7 +198,7 @@ const ModalIngredient: React.FC<ModalIngredientProps> = ({
                 </div>
 
                 {/* Table Rows */}
-                {dataFoods.foodFilter.map((item) => (
+                {dataFood.foodFilter.map((item) => (
                     <div
                         key={item.id}
                         className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr_60px] gap-4 px-4 py-3 border-b border-gray-200 hover:bg-gray-50 group items-center"
@@ -232,15 +269,14 @@ const ModalIngredient: React.FC<ModalIngredientProps> = ({
                 ))}
             </div>
 
-            {/* Pagination */}
             <div className="flex justify-center py-2">
                 <Pagination
                     current={currentPage}
                     pageSize={itemsPerPage}
-                    total={dataFoods.totalItems}
+                    total={dataFood.totalItems}
                     onChange={(page) => setCurrentPage(page)}
                     showSizeChanger
-                    pageSizeOptions={['5', '7', '10']}
+                    pageSizeOptions={['5', '8', '10']}
                     onShowSizeChange={(_, size) => {
                         setItemsPerPage(Number(size));
                         setCurrentPage(1);

@@ -28,7 +28,6 @@ export interface Recipe {
     micro: MicroNutrients;
 }
 
-
 export interface MicroNutrients {
     cholesterol: number;
     sodium: number;
@@ -101,4 +100,8 @@ export interface FilterRecipePayload {
     category: string;
     page: string;
     sort: Sort;
+}
+
+export interface FilterWithFavorites extends FilterRecipePayload {
+    favorites: string[];
 }

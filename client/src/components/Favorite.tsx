@@ -1,12 +1,10 @@
-import { Bookmark } from "lucide-react";
+import { Bookmark } from 'lucide-react';
 
-interface FavoriteProps{
-    onToggle:()=>void
-    isFavorite:boolean
+interface FavoriteProps {
+    onToggle: () => void;
+    isFavorite: boolean;
 }
-export default function Favourite({isFavorite,onToggle}:FavoriteProps) {
-    
-
+export default function Favourite({ isFavorite, onToggle }: FavoriteProps) {
     return (
         <div className="flex items-center justify-center ">
             <button

@@ -21,6 +21,7 @@ import { filterRecipes, getRecipes } from '../apis/recipe.api';
 import { IoIosArrowDown } from 'react-icons/io';
 import { resetCreateRecipe } from '../redux/reducers/createRecipe.reducer';
 
+
 export const MainRecipe = () => {
     const [keyword, setKeyWord] = useState('');
     const [sortBy, setSortBy] = useState('');
@@ -102,6 +103,10 @@ export const MainRecipe = () => {
         keyword,
     ]);
 
+    
+
+
+
     return (
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 w-[98%] flex flex-col justify-center mx-auto my-[1%]">
             {/* Title */}
@@ -176,7 +181,7 @@ export const MainRecipe = () => {
                             className="focus:outline-none focus:border-[#36acf5] focus:shadow-[0_0_0_1px_rgba(22,119,255,0.2)] transition-all duration-200 w-[50%] border border-gray-300 h-10 rounded-[5px] text-gray-500 px-4 py-2"
                         />
 
-                        <div className="relative flex-1 w-[25%]">
+                        <div className="relative flex-1 w-[25%] min-w-[250px]">
                             <div
                                 className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer hover:text-yellow-500"
                                 onClick={() =>
@@ -220,6 +225,7 @@ export const MainRecipe = () => {
                             style={{
                                 width: '25%',
                                 height: 40,
+                                minWidth: 250,
                                 borderRadius: 5,
                             }}
                             className="text-gray-700"
