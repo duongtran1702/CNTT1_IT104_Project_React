@@ -46,7 +46,9 @@
         "Recipe-3",
         "Recipe-4"
       ],
-      "favorites": []
+      "favorites": [
+        "Recipe-1"
+      ]
     },
     {
       "account": {
@@ -132,6 +134,49 @@
       },
       "avata": "https://res.cloudinary.com/atmin/image/upload/v1760106970/p0igsxshjmcpvftkdscp.jpg",
       "id": "eabaf855-0688-47d4-922d-ecdf64a872fe"
+    },
+    {
+      "account": {
+        "email": "atmin@gmail.com",
+        "username": "AtminTran",
+        "password": "Atmin123@"
+      },
+      "avata": null,
+      "id": "ec1afd14-55d9-4459-80ce-483226b98499",
+      "likes": [],
+      "favorites": []
+    },
+    {
+      "account": {
+        "email": "user1@gmail.com",
+        "username": "UserNumberOne",
+        "password": "User123@"
+      },
+      "avata": null,
+      "id": "fc2cd1c5-b7b5-4ae9-a2a3-4f587cc8e1ba",
+      "likes": [
+        "Recipe-2",
+        "Recipe-4",
+        "Recipe-3",
+        "Recipe-1",
+        "Recipe-5",
+        "Recipe-6"
+      ],
+      "favorites": [
+        "Recipe-1",
+        "Recipe-4"
+      ]
+    },
+    {
+      "account": {
+        "email": "duong@gmail.com",
+        "username": "DuongAdmin",
+        "password": "Duong123@"
+      },
+      "avata": null,
+      "id": "cd1297d4-a021-4804-8d16-37bd74a34027",
+      "likes": [],
+      "favorites": []
     }
   ],
   "foods": [
@@ -3019,7 +3064,7 @@
   "recipes": [
     {
       "image": "https://www.foodandwine.com/thmb/8YAIANQTZnGpVWj2XgY0dYH1V4I=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/spicy-chicken-curry-FT-RECIPE0321-58f84fdf7b484e7f86894203eb7834e7.jpg",
-      "like": 7,
+      "like": 8,
       "category": "Vegetables",
       "name": "Spicy Chicken Curry",
       "description": "This is recipe 1",
@@ -3110,7 +3155,7 @@
     },
     {
       "image": "https://sarahscucinabella.com/wp-content/uploads/2022/05/Grilled-Salmon-Salad-for-One-2-720x720.jpg",
-      "like": 5,
+      "like": 6,
       "category": "Vegetables",
       "name": "Grilled Salmon Salad",
       "description": "This is recipe 2",
@@ -3201,7 +3246,7 @@
     },
     {
       "image": "https://www.allrecipes.com/thmb/txgejbRaNYg1Pbzw87YKZsTAXYI=/0x512/filters:no_upscale():max_bytes(150000):strip_icc()/16311-simple-beef-stroganoff-DDMFS-4x3-1e966286eef54c0f96c882e569926eb3.jpg",
-      "like": 6,
+      "like": 7,
       "category": "Vegetables",
       "name": "Beef Stroganoff",
       "description": "This is recipe 3",
@@ -3292,7 +3337,7 @@
     },
     {
       "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOFhcbP5r6JkEyqPApLr71n6U7GbJTGz8e8w&s",
-      "like": 4,
+      "like": 5,
       "category": "Vegetables",
       "name": "Vegetable Stir Fry",
       "description": "This is recipe 4",
@@ -3383,7 +3428,7 @@
     },
     {
       "image": "https://cdn.loveandlemons.com/wp-content/uploads/2023/01/mushroom-risotto.jpg",
-      "like": 5,
+      "like": 6,
       "category": "Vegetables",
       "name": "Mushroom Risotto",
       "description": "This is recipe 5",
@@ -3474,7 +3519,7 @@
     },
     {
       "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIgOucISXPullJISitXX0WuCO7ErdlNtQ4GQ&s",
-      "like": 3,
+      "like": 4,
       "category": "Fruits",
       "name": "Lemon Garlic Shrimp",
       "description": "This is recipe 6",
@@ -4124,6 +4169,106 @@
       },
       "id": "recipe-376",
       "author": "quydzai"
+    },
+    {
+      "image": "https://res.cloudinary.com/atmin/image/upload/v1760470005/edm4efoai35etsn246u3.jpg",
+      "like": "0",
+      "category": "Đồ uống",
+      "name": "Nước cam ",
+      "description": "Nước cam bổ sung rất nhiều dưỡng chất",
+      "totalTime": "0:05",
+      "prepTime": "0:05",
+      "finalWeight": "200",
+      "protions": "1",
+      "ingredients": [
+        {
+          "main": {
+            "id": "Food-45",
+            "serving": 1
+          },
+          "equivalents": [
+            {
+              "id": "Food-5",
+              "serving": 1
+            }
+          ]
+        },
+        {
+          "main": {
+            "id": "Food-12",
+            "serving": 1
+          },
+          "equivalents": []
+        }
+      ],
+      "cookingSteps": [
+        {
+          "id": 1,
+          "content": "Vắt cam",
+          "editable": false
+        },
+        {
+          "id": 2,
+          "content": "Pha nước đường",
+          "editable": false
+        },
+        {
+          "id": 3,
+          "content": "Uống",
+          "editable": false
+        },
+        {
+          "id": 4,
+          "content": "",
+          "editable": false
+        }
+      ],
+      "calories": 452.5,
+      "fat": 0.1,
+      "carb": 112,
+      "protein": 0.9,
+      "fiber": 2.4,
+      "weight": 200,
+      "micro": {
+        "cholesterol": 0,
+        "sodium": 1,
+        "water": 87.2,
+        "vitaminA": 11,
+        "vitaminB6": 0.1,
+        "vitaminB12": 0,
+        "vitaminC": 53.2,
+        "vitaminD": 0,
+        "vitaminE": 0.2,
+        "vitaminK": 0,
+        "starch": 0,
+        "lactose": 0,
+        "alcohol": 0,
+        "caffeine": 0,
+        "sugars": 109,
+        "calcium": 41,
+        "iron": 0.1,
+        "magnesium": 10,
+        "phosphorus": 14,
+        "potassium": 183,
+        "zinc": 0.1,
+        "copper": 0,
+        "fluoride": 3.3,
+        "manganese": 0,
+        "selenium": 0.5,
+        "thiamin": 0.1,
+        "riboflavin": 0,
+        "niacin": 0.3,
+        "pantothenicAcid": 0.3,
+        "folateTotal": 30,
+        "folicAcid": 0,
+        "transFats": 0,
+        "saturatedFats": 0,
+        "monoFats": 0,
+        "polyFats": 0,
+        "chloride": 0
+      },
+      "id": "recipe-44",
+      "author": "UserNumberOne"
     }
   ]
 }

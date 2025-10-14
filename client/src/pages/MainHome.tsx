@@ -42,9 +42,23 @@ export const MainHome = () => {
 
     useEffect(() => {
         document.title = 'Recipes - Nutrium';
-        const timer = setTimeout(() => setLoading(false), 1800);
-        return () => clearTimeout(timer);
     }, []);
+
+    useEffect(() => {
+        const startTime = Date.now();
+
+        if (dataRecipes.status === 'success') {
+            const elapsed = Date.now() - startTime;
+            const remaining = 1000 - elapsed;
+
+            if (remaining > 0) {
+                const timer = setTimeout(() => setLoading(false), remaining);
+                return () => clearTimeout(timer);
+            } else {
+                setLoading(false);
+            }
+        }
+    }, [dataRecipes.status]);
 
     const user = atminSelector((s) => s.user.userCurrent);
     useEffect(() => {

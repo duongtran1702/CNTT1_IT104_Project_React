@@ -4,7 +4,7 @@ import Introduction from '../components/Introduction';
 import { BasicInfo } from '../components/BasicInfo';
 import { PublishBox } from '../components/PublishBox';
 import { AddImageRecipe } from '../components/AddImageRecipe';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import IngredientManager from '../components/ingredient/IngredientManager';
 import { CookingMethod } from '../components/CookingMethod';
 import { NutritionInfo } from '../components/NutritionInfo';
@@ -15,14 +15,19 @@ import { getRecipes } from '../apis/recipe.api';
 import { setDetailRecipe } from '../redux/reducers/createRecipe.reducer';
 import Favourite from '../components/Favorite';
 import { loadUser, updateFavorite } from '../apis/user.api';
+import { ArrowLeft } from 'lucide-react';
+import { PacmanLoader } from 'react-spinners';
 
 export const MainAddRecipe = () => {
     const [loading, setLoading] = useState(true);
+    const [upload, setUpload] = useState(false);
     const [imageFile, setImageFile] = useState<File | null>(null);
     useEffect(() => {
         const timer = setTimeout(() => setLoading(false), 200);
         return () => clearTimeout(timer);
     }, []);
+
+    const nvg = useNavigate();
 
     const dataLocal = localStorage.getItem('currentUser');
     const userLocal = dataLocal ? JSON.parse(dataLocal) : null;
@@ -39,7 +44,7 @@ export const MainAddRecipe = () => {
 
     const recipes = atminSelector((s) => s.recipe.recipes);
     const dispatch = atminDispatch();
-    
+
     useEffect(() => {
         if (recipes.length === 0) dispatch(getRecipes());
     }, [dispatch, recipes.length]);
@@ -126,10 +131,19 @@ export const MainAddRecipe = () => {
                     <div className="flex flex-col gap-5">
                         <AddImageRecipe onFileSelect={setImageFile} />
                         {firstSegment === 'detail_recipe' && (
-                            <Favourite
-                                onToggle={toggleFavourite}
-                                isFavorite={isFavourite}
-                            />
+                            <div className="flex flex-col justify-center items-center gap-3">
+                                <Favourite
+                                    onToggle={toggleFavourite}
+                                    isFavorite={isFavourite}
+                                />
+                                <button
+                                    onClick={() => nvg(-1)}
+                                    className="flex items-center gap-2 px-4 py-2 w-fit bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-xl transition-all duration-200 shadow-sm active:scale-95 cursor-pointer"
+                                >
+                                    <ArrowLeft size={18} />
+                                    Quay về
+                                </button>
+                            </div>
                         )}
                     </div>
                 )}
@@ -152,7 +166,7 @@ export const MainAddRecipe = () => {
                             {firstSegment !== 'detail_recipe' && (
                                 <PublishBox
                                     imageFile={imageFile}
-                                    onLoading={setLoading}
+                                    onLoading={setUpload}
                                 />
                             )}
                             <BasicInfo />
@@ -230,6 +244,29 @@ export const MainAddRecipe = () => {
                     )}
                 </div>
             </div>
+            {upload && (
+                <div
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        width: '100vw',
+                        height: '100vh',
+                        backgroundColor: 'rgba(0, 0, 0, 0.2)',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        zIndex: 1000,
+                    }}
+                >
+                    <PacmanLoader
+                        color="#27c043"
+                        margin={0}
+                        size={30}
+                        speedMultiplier={2}
+                    />
+                </div>
+            )}
         </div>
     );
 };

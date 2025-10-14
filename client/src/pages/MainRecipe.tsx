@@ -21,7 +21,6 @@ import { filterRecipes, getRecipes } from '../apis/recipe.api';
 import { IoIosArrowDown } from 'react-icons/io';
 import { resetCreateRecipe } from '../redux/reducers/createRecipe.reducer';
 
-
 export const MainRecipe = () => {
     const [keyword, setKeyWord] = useState('');
     const [sortBy, setSortBy] = useState('');
@@ -50,9 +49,23 @@ export const MainRecipe = () => {
 
     useEffect(() => {
         document.title = 'Recipes - Nutrium';
-        const timer = setTimeout(() => setLoading(false), 1800);
-        return () => clearTimeout(timer);
     }, []);
+
+    useEffect(() => {
+        const startTime = Date.now();
+
+        if (dataRecipes.status === 'success') {
+            const elapsed = Date.now() - startTime;
+            const remaining = 1000 - elapsed;
+
+            if (remaining > 0) {
+                const timer = setTimeout(() => setLoading(false), remaining);
+                return () => clearTimeout(timer);
+            } else {
+                setLoading(false);
+            }
+        }
+    }, [dataRecipes.status]);
 
     const debouncedDispatch = useMemo(
         () =>
@@ -103,9 +116,7 @@ export const MainRecipe = () => {
         keyword,
     ]);
 
-    
-
-
+    const user = atminSelector((s) => s.user.userCurrent);
 
     return (
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 w-[98%] flex flex-col justify-center mx-auto my-[1%]">
@@ -259,7 +270,7 @@ export const MainRecipe = () => {
                                 Favorites
                             </span>
                             <span className="ml-2 text-gray-600 px-2 py-0.5 rounded-md text-sm">
-                                0
+                                {user ? user.favorites.length : 0}
                             </span>
                         </div>
 

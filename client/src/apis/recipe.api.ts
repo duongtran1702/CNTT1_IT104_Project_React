@@ -41,21 +41,36 @@ export const filterRecipes = createAsyncThunk(
             );
         }
 
-        if (payload.page) {
-            query.append('_page', payload.page);
-            query.append('_limit', payload.sort.itemsPerPage);
-        }
-
-        const url = query.toString()
+        const baseUrl = query.toString()
             ? `recipes?${query.toString()}`
             : 'recipes';
 
-        const res = await api.get(url);
+        const res = await api.get(baseUrl);
+        let allRecipes = res.data;
+
+        const noSortOrFilter =
+            !payload.keyword.trim() &&
+            (!payload.category || payload.category === 'All') &&
+            (!payload.sort.by || payload.sort.by === 'default');
+
+        if (noSortOrFilter) {
+            allRecipes = [...allRecipes].reverse();
+        }
+
+        let recipes = allRecipes;
+        if (payload.page && payload.sort.itemsPerPage) {
+            const start =
+                (Number(payload.page) - 1) * Number(payload.sort.itemsPerPage);
+            const end = start + payload.sort.itemsPerPage;
+            recipes = allRecipes.slice(start, end);
+        }
+
         const data: DataFilter<Recipe> = {
-            data: res.data,
-            url,
-            totalItems: parseInt(res.headers['x-total-count'], 10),
+            data: recipes,
+            url: baseUrl,
+            totalItems: allRecipes.length,
         };
+
         return data;
     }
 );

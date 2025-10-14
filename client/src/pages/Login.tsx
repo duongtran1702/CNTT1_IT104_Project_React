@@ -11,6 +11,25 @@ type LoginType = {
     isRemember: boolean;
 };
 export default function Login() {
+    useEffect(() => {
+        document.title = 'Login';
+    }, []);
+
+    const [isLogin] = useState<boolean>(() => {
+        const dataLocal = localStorage.getItem('login');
+        if (!dataLocal) return false;
+        else {
+            const data = JSON.parse(dataLocal);
+            return data.isLogin;
+        }
+    });
+    const nvg = useNavigate();
+    useEffect(() => {
+        if (isLogin) {
+            nvg('/home');
+        }
+    }, [isLogin, nvg]);
+
     const [focused, setFocused] = useState<'email' | 'password' | null>(null);
     const [loading, setLoading] = useState(false);
 
@@ -27,7 +46,6 @@ export default function Login() {
 
     const users = atminSelector((s) => s.user.users);
     const dispatch = atminDispatch();
-    const nvg = useNavigate();
 
     useEffect(() => {
         if (users.length === 0) dispatch(getUsers());
@@ -67,6 +85,7 @@ export default function Login() {
 
             // Lưu thông tin user
             localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            localStorage.setItem('login', JSON.stringify({ isLogin: true }));
 
             toast.success('Login successful!', {
                 onClose: () => nvg('/home'),

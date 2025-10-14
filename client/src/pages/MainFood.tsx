@@ -1,12 +1,11 @@
-import { Pagination, Select } from 'antd';
-import { useEffect, useMemo, useState, type ChangeEvent } from 'react';
+import { Pagination, Select, Skeleton } from 'antd';
+import { useEffect, useMemo, useRef, useState, type ChangeEvent } from 'react';
 import { atminDispatch, atminSelector } from '../hooks/reduxHook';
 import { filterFoods, getFoods } from '../apis/food.api';
-
 import { getDetaiFood, resetDetailFood } from '../redux/reducers/food.reducer';
 import CardFood from '../components/CardFood';
 import { ModalAddFood } from '../components/ModalAddFood';
-import { Plus } from 'lucide-react';
+import { BsDatabaseAdd } from "react-icons/bs";
 import { IoIosArrowDown } from 'react-icons/io';
 import { FaSortAmountDown, FaSortAmountUp } from 'react-icons/fa';
 import type {
@@ -17,7 +16,6 @@ import { debounce } from 'lodash';
 
 export const FoodMain = () => {
     const [open, setOpen] = useState(false);
-
     const [keyword, setKeyWord] = useState('');
     const [sortBy, setSortBy] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
@@ -27,12 +25,36 @@ export const FoodMain = () => {
         'increase'
     );
     const [itemsPerPage, setItemsPerPage] = useState(6);
+    const [category, setCategory] = useState('');
+    const [loading, setLoading] = useState(true);
+
     const categoryOptions = Array.from(
         new Set(dataFoods.foods.map((f) => f.category))
     ).map((c) => ({ value: c, label: c.charAt(0).toUpperCase() + c.slice(1) }));
     categoryOptions.unshift({ value: '', label: 'All' });
-    const [category, setCategory] = useState('');
 
+    const loadStartTime = useRef<number | null>(null);
+
+    // Khi bắt đầu fetch
+    useEffect(() => {
+        if (dataFoods.status === 'pending') {
+            loadStartTime.current = Date.now();
+            setLoading(true);
+        }
+
+        if (dataFoods.status === 'success' && loadStartTime.current) {
+            const elapsed = Date.now() - loadStartTime.current;
+            const remaining = 1000 - elapsed;
+            if (remaining > 0) {
+                const timer = setTimeout(() => setLoading(false), remaining);
+                return () => clearTimeout(timer);
+            } else {
+                setLoading(false);
+            }
+        }
+    }, [dataFoods.status]);
+
+    // Debounce tìm kiếm
     const debouncedDispatch = useMemo(
         () =>
             debounce((kw: string) => {
@@ -89,11 +111,13 @@ export const FoodMain = () => {
 
     return (
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 w-[98%] flex flex-col justify-center mx-auto my-[1%]">
+            {/* Title */}
             <h3 className="text-xl font-[500] text-gray-800 mb-1">Foods</h3>
             <p className="text-gray-500 mb-4">
                 Search, check and create new ingredient
             </p>
 
+            {/* Filter Bar */}
             <div className="flex gap-4 items-center md:flex-row flex-col">
                 <input
                     placeholder="Search food"
@@ -153,69 +177,104 @@ export const FoodMain = () => {
                 />
             </div>
 
-            {/* Recipes Grid */}
-            <div
-                style={{
-                    display: 'grid',
-                    gridTemplateColumns: '1fr',
-                    gap: '30px',
-                    width: '100%',
-                    boxSizing: 'border-box',
-                    margin: '0 auto',
-                }}
-            >
-                <div className="flex flex-col gap-3 w-full my-5">
-                    {dataFoods.foodFilter.map((item) => (
-                        <CardFood
-                            key={item.id}
-                            data={item}
-                            onClick={() => {
-                                dispatch(getDetaiFood(item));
-                                setOpen(true);
-                            }}
-                        />
-                    ))}
+            {/* Foods List */}
+            <div className="flex flex-col gap-3 w-full my-5">
+                {loading
+                    ? Array.from({ length: 6 }).map((_, i) => (
+                          <div
+                              key={i}
+                              className="flex justify-between items-center border border-gray-200 rounded-[5px] px-4 py-3"
+                          >
+                              <div className="flex flex-col">
+                                  <Skeleton.Input
+                                      active
+                                      size="small"
+                                      style={{ width: 150, marginBottom: 4 }}
+                                  />
+                                  <Skeleton.Input
+                                      active
+                                      size="small"
+                                      style={{ width: 80 }}
+                                  />
+                              </div>
 
+                              <div className="flex gap-6">
+                                  {[
+                                      'Energy',
+                                      'Fat',
+                                      'Carbohydrate',
+                                      'Protein',
+                                  ].map((label) => (
+                                      <div key={label} className="text-right">
+                                          <Skeleton.Input
+                                              active
+                                              size="small"
+                                              style={{ width: 50 }}
+                                          />
+                                      </div>
+                                  ))}
+                              </div>
+                          </div>
+                      ))
+                    : dataFoods.foodFilter.map((item) => (
+                          <CardFood
+                              key={item.id}
+                              data={item}
+                              onClick={() => {
+                                  dispatch(getDetaiFood(item));
+                                  setOpen(true);
+                              }}
+                          />
+                      ))}
+
+                {!loading && (
                     <div
-                        className="w-full bg-white border border-gray-200 shadow-sm pl-5 h-fit rounded-[5px] cursor-pointer "
+                        className="w-full bg-white border border-gray-200 shadow-sm pl-5 h-fit rounded-[5px] cursor-pointer hover:bg-gray-200"
                         onClick={() => {
                             setOpen(true);
                             dispatch(resetDetailFood());
                         }}
                     >
-                        <button className="flex items-center gap-3 py-1 text-gray-600 transition-colors group cursor-pointer ">
+                        <button className="flex items-center gap-3 py-1 text-gray-600 transition-colors group cursor-pointer">
                             <div className="relative">
-                                <div className="w-10 h-10 flex items-center justify-center transition-colors">
-                                    <Plus size={20} className="text-gray-600" />
+                                <div className=" h-10 flex items-center justify-center transition-colors">
+                                    <BsDatabaseAdd size={20} className="text-gray-600" />
                                 </div>
-                                {/* Stack Effect */}
                             </div>
                             <span className="text-base font-medium cursor-pointer ">
                                 Add new Food
                             </span>
                         </button>
                     </div>
+                )}
 
-                    <ModalAddFood open={open} onClose={() => setOpen(false)} />
-                </div>
+                <ModalAddFood open={open} onClose={() => setOpen(false)} />
             </div>
 
             {/* Pagination */}
             <div className="flex justify-center py-2">
-                <Pagination
-                    current={currentPage}
-                    pageSize={itemsPerPage}
-                    total={dataFoods.totalItems}
-                    onChange={(page) => setCurrentPage(page)}
-                    showSizeChanger
-                    pageSizeOptions={['5', '8', '10']}
-                    onShowSizeChange={(_, size) => {
-                        setItemsPerPage(Number(size));
-                        setCurrentPage(1);
-                    }}
-                    showQuickJumper={false}
-                    style={{ cursor: 'pointer' }}
-                />
+                {loading ? (
+                    <Skeleton.Input
+                        active
+                        size="large"
+                        style={{ width: 200 }}
+                    />
+                ) : (
+                    <Pagination
+                        current={currentPage}
+                        pageSize={itemsPerPage}
+                        total={dataFoods.totalItems}
+                        onChange={(page) => setCurrentPage(page)}
+                        showSizeChanger
+                        pageSizeOptions={['5', '8', '10']}
+                        onShowSizeChange={(_, size) => {
+                            setItemsPerPage(Number(size));
+                            setCurrentPage(1);
+                        }}
+                        showQuickJumper={false}
+                        style={{ cursor: 'pointer' }}
+                    />
+                )}
             </div>
         </div>
     );

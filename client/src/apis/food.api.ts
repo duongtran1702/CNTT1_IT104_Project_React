@@ -41,7 +41,7 @@ export const filterFoods = createAsyncThunk(
             query.append('category', payload.category);
         }
 
-        if (payload.sort.by) {
+        if (payload.sort.by && payload.sort.by !== 'default') {
             query.append('_sort', payload.sort.by);
             query.append(
                 '_order',
@@ -49,20 +49,36 @@ export const filterFoods = createAsyncThunk(
             );
         }
 
-        if (payload.page) {
-            query.append('_page', payload.page);
-            query.append('_limit', payload.sort.itemsPerPage);
+        const baseUrl = query.toString()
+            ? `foods?${query.toString()}`
+            : 'foods';
+
+        const res = await api.get(baseUrl);
+        let allFoods = res.data;
+
+        const noSortOrFilter =
+            !payload.keyword.trim() &&
+            (!payload.category || payload.category === 'All') &&
+            (!payload.sort.by || payload.sort.by === 'default');
+
+        if (noSortOrFilter) {
+            allFoods = [...allFoods].reverse();
         }
 
-        const url = query.toString() ? `foods?${query.toString()}` : 'foods';
+        let foods = allFoods;
+        if (payload.page && payload.sort.itemsPerPage) {
+            const start =
+                (Number(payload.page) - 1) * Number(payload.sort.itemsPerPage);
+            const end = start + Number(payload.sort.itemsPerPage);
+            foods = allFoods.slice(start, end);
+        }
 
-        const res = await api.get(url);
-        
         const data: DataFilter<Food> = {
-            data: res.data,
-            url,
-            totalItems: parseInt(res.headers['x-total-count'], 10),
+            data: foods,
+            url: baseUrl,
+            totalItems: allFoods.length,
         };
+
         return data;
     }
 );

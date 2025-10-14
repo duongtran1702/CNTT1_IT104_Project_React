@@ -26,6 +26,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     const [isModalOpen, setIsModalOpen] = useState(false);
     const handleOk = () => {
         setIsModalOpen(false);
+        localStorage.removeItem('login');
         nvg('/login');
     };
 

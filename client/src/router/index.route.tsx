@@ -10,8 +10,7 @@ import { MainAddRecipe } from '../pages/MainAddRecipe';
 import { FoodMain } from '../pages/MainFood';
 import { MainHome } from '../pages/MainHome';
 import { MainRecipe } from '../pages/MainRecipe';
-
-
+import { PrivateRouter } from '../components/PrivateRouter';
 
 export const routers = createBrowserRouter([
     {
@@ -29,46 +28,56 @@ export const routers = createBrowserRouter([
     },
     {
         index: true,
-        element: <Navigate to="/login" replace />,
+        element: <Navigate to="/home" replace />,
     },
     {
         path: '/home',
         element: (
-            <LayoutAtmin>
-                <MainHome />
-            </LayoutAtmin>
+            <PrivateRouter>
+                <LayoutAtmin>
+                    <MainHome />
+                </LayoutAtmin>
+            </PrivateRouter>
         ),
     },
     {
         path: '/foods',
         element: (
-            <LayoutAtmin>
-                <FoodMain />
-            </LayoutAtmin>
+            <PrivateRouter>
+                <LayoutAtmin>
+                    <FoodMain />
+                </LayoutAtmin>
+            </PrivateRouter>
         ),
     },
     {
         path: '/add_recipe',
         element: (
-            <LayoutAtmin>
-                <MainAddRecipe />
-            </LayoutAtmin>
+            <PrivateRouter>
+                <LayoutAtmin>
+                    <MainAddRecipe />
+                </LayoutAtmin>
+            </PrivateRouter>
         ),
     },
     {
         path: '/detail_recipe/:id',
         element: (
-            <LayoutAtmin>
-                <MainAddRecipe />
-            </LayoutAtmin>
+            <PrivateRouter>
+                <LayoutAtmin>
+                    <MainAddRecipe />
+                </LayoutAtmin>
+            </PrivateRouter>
         ),
     },
     {
         path: '/recipes',
         element: (
-            <LayoutAtmin>
-                <MainRecipe />
-            </LayoutAtmin>
+            <PrivateRouter>
+                <LayoutAtmin>
+                    <MainRecipe />
+                </LayoutAtmin>
+            </PrivateRouter>
         ),
     },
     {

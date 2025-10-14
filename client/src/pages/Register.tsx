@@ -14,6 +14,25 @@ export default function Register() {
         'username' | 'email' | 'password' | 'confirmPassword' | null
     >(null);
 
+    useEffect(() => {
+        document.title = 'Register';
+    }, []);
+
+    const [isLogin] = useState<boolean>(() => {
+        const dataLocal = localStorage.getItem('login');
+        if (!dataLocal) return false;
+        else {
+            const data = JSON.parse(dataLocal);
+            return data.isLogin;
+        }
+    });
+
+    const nvg = useNavigate();
+
+    if (isLogin) {
+        nvg('/home');
+    }
+
     const [account, setAccount] = useState<Account>({
         username: '',
         email: '',
@@ -27,7 +46,6 @@ export default function Register() {
     useEffect(() => {
         if (users.length === 0) dispatch(getUsers());
     }, [dispatch, users]);
-    const nvg = useNavigate();
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -54,29 +72,35 @@ export default function Register() {
             return;
         }
 
-        // Check password not match
         if (account.password !== account.confirmPassword) {
             toast.warning('Passwords do not match!');
             return;
         }
 
-        if (account.password.length < 8) {
+        const password = account.password;
+
+        if (password.length < 8) {
             toast.error('The number of characters must be larger than 8');
             return;
         }
 
-        if (!/^[A-Z]/.test(account.password)) {
-            toast.warn('Password must start with an uppercase letter.');
+        if (!/[A-Z]/.test(password)) {
+            toast.error('Password must contain at least one uppercase letter');
             return;
         }
 
-        if (!/\d/.test(account.password)) {
-            toast.warn('Password must contain at least one number.');
+        if (!/[a-z]/.test(password)) {
+            toast.error('Password must contain at least one lowercase letter');
             return;
         }
 
-        if (!/[!@#$%^&*(),.?":{}|<>]/.test(account.password)) {
-            toast.warn('Password must contain at least one special character.');
+        if (!/[0-9]/.test(password)) {
+            toast.error('Password must contain at least one number');
+            return;
+        }
+
+        if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+            toast.error('Password must contain at least one special character');
             return;
         }
 
@@ -118,6 +142,7 @@ export default function Register() {
                 autoClose: 1000,
                 onClose: () => {
                     nvg('/login');
+                    localStorage.removeItem('currentUser');
                     setAccount({
                         username: '',
                         email: '',
@@ -207,7 +232,7 @@ export default function Register() {
                             onChange={handleChange}
                             type="password"
                             name="password"
-                            placeholder="Password"
+                            placeholder="e.g. Pass@2025"
                             onFocus={() => setFocused('password')}
                             onBlur={() => setFocused(null)}
                             className="w-full h-12 px-3 py-2 text-gray-900 text-base placeholder-gray-500 focus:outline-none"
